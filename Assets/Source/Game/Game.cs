@@ -11,7 +11,7 @@ public enum GameState
 
 public class Game : MonoBehaviour 
 {
-	private GameState 	_state 		= null;
+	private GameState 	_state 		= GameState.INTRO;
 	private Timer 		_stateTimer = new Timer(0f);
 
 	public static 	Game 	    instance	= null;
@@ -37,7 +37,7 @@ public class Game : MonoBehaviour
 	// Update is called once per frame
 	private void Update () 
 	{
-		if(_stateTimer.isFinished() == true)
+		if(_stateTimer.IsFinished() == true)
 		{
 			if(_state == GameState.INTRO)
 			{
@@ -56,16 +56,13 @@ public class Game : MonoBehaviour
 
 		if(state == GameState.INTRO)
 		{
-			_stateTimer.SetDuration(2f);
+			_stateTimer.duration = 2f;
 			_stateTimer.Start();
 		}
 		else if(state == GameState.GAME)
 		{
 			AudioManager.instance.mainMusic.Play();
 		}
-
-		//_stateTimer.SetDuration(0.7f);
-		//_stateTimer.Start();
 	}
 
 	public void Pause()

@@ -11,12 +11,6 @@ public class Player : MonoBehaviour
 		ChangeColor(Color.blue);
 	}
 
-	// Update is called once per frame
-	private void Update ()
-	{
-
-	}
-
 	public void Release ()
 	{
 	}
@@ -24,7 +18,6 @@ public class Player : MonoBehaviour
 	public void MoveLeft()
 	{
 		Move(-1f, 0f);
-		ParticleManager.instance.Play(ParticleManager.instance.testParticule, gameObject.transform.position);
 	}
 
 	public void MoveRight()
@@ -45,6 +38,7 @@ public class Player : MonoBehaviour
 	private void Move(float x, float y)
 	{
 		gameObject.transform.position += new Vector3(x * speed ,y * speed);
+
 		AudioManager.instance.plop.Play();
 	}
 

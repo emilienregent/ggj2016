@@ -3,11 +3,10 @@ using System.Collections;
 
 public class Timer
 {
-
-	private float _time = -1f;
+	private float _time 	= -1f;
 	private float _duration = 0f;
 
-	public float Duration { get { return _duration; } }
+	public 	float duration 	{ get { return _duration; } set { _duration = value; } }
 
 	// Use this for initialization
 	public Timer (float duration)
@@ -26,19 +25,16 @@ public class Timer
 		_time = -1;
 	}
 
-	public bool isFinished()
+	public bool IsFinished()
 	{
 		if(_time != -1 && Time.time - _time > _duration)
 		{
 			_time = -1;
+
 			return true;
 		}
-		return false;
-	}
 
-	public void SetDuration(float duration)
-	{
-		_duration = duration;
+		return false;
 	}
 
 	public bool IsRunning()
@@ -47,6 +43,7 @@ public class Timer
 		{
 			return true;
 		}
+
 		return false;
 	}
 }
