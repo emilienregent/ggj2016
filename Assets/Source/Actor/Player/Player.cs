@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Type;
 
 public class Player : MonoBehaviour
 {
@@ -17,23 +18,33 @@ public class Player : MonoBehaviour
 	private 		List<Minion> 	_minions 		= 	new List<Minion>();
 	[SerializeField]
 	private 		int 			_score 			= 	0;
-//	[SerializeField]
-//	private			Taille			_position 		= null;
+	[SerializeField]
+	private			Tile			_position 		= 	null;
 	private			bool			_canAction		= 	false;
+
+	public			Tile			position		{ get { return _position; } set { _position = value; } }
+	public			int				score			{ get { return _score; } set { _score = value; } }
+	public			bool			canAction		{ get { return _canAction; } }
+
 
 
 	// Use this for initialization
 	private void Start ()
 	{
-		Debug.Log ("New player (" + this.name + ") created with " + this._countActions + " action(s) remaining.");
+		#if DEBUG
+			Debug.Log ("New player (" + this.name + ") created with " + this._countActions + " action(s) remaining.");
+		#endif
 //		ChangeColor(Color.blue);
 	}
 
 	// Add a minion to the player
 	public void AddMinion(Minion minion) {
-			Debug.Log ("One minion with color " + minion.GetColor () + " added to the player");
-			minion.name = "Minion " + minion.GetColor() + " " + (this._minions.Count+1);
-			this._minions.Add (minion);
+		#if DEBUG
+				Debug.Log ("One minion with color " + minion.color + " added to the player");
+		#endif
+		minion.name = "Minion " + minion.color + " " + (this._minions.Count+1);
+		minion.transform.SetParent (this.transform.parent.transform);
+		this._minions.Add (minion);
 	}
 
 	// Remove a minion from the player
@@ -41,29 +52,30 @@ public class Player : MonoBehaviour
 		if (this._minions.Count > 0) {
 			Minion minionToRemove = null;
 			foreach (Minion minion in this._minions) {
-				if (minion.GetColor () == color) {
+				if (minion.color == color) {
 					minionToRemove = minion;
 					break;
 				}
 			}
 			if (minionToRemove != null) {
 				this._minions.Remove (minionToRemove);
-				Debug.Log ("One minion with color " + minionToRemove.GetColor () + " has been removed");
+				#if DEBUG
+					Debug.Log ("One minion with color " + minionToRemove.color + " has been removed");
+				#endif
 			} else {
-				Debug.Log ("ERROR NO MINION WITH COLOR " + color + " FOUND !");
+				#if DEBUG
+					Debug.Log ("ERROR NO MINION WITH COLOR " + color + " FOUND !");
+				#endif
 			}
 		} else {
-			Debug.Log ("The player hasn't any minions.");
+			#if DEBUG
+				Debug.Log ("The player hasn't any minions.");
+			#endif
 		}
 	}
 
 	public bool CanAddMinion() {
 		return this._minions.Count < _MAX_MINIONS;
-	}
-
-	// Check if the player can do an action
-	public bool CanAction() {
-		return this._canAction;
 	}
 
 	// Set if the player can do an action or not
@@ -77,7 +89,7 @@ public class Player : MonoBehaviour
 
 	// Sacrifice a minion to get a bonus/special action
 	public void SacrificeMinion(MinionColor color) {
-		if(this.CanAction() == true) {
+		if(this.canAction == true) {
             // Todo : A décommenter
 			// minion.Sacrifice ();
             switch (color)
@@ -99,31 +111,134 @@ public class Player : MonoBehaviour
                     break;
 
             }
-			this.SetAction (false);
+			this.SetAction(false);
+		}
+	}
+
+	// Return one minion of the selected color
+	public Minion GetMinion(MinionColor color) {
+		switch(color) {
+			case MinionColor.BLUE:
+				return this.GetOneMinionBlue();
+		case MinionColor.GREEN:
+				return this.GetOneMinionGreen ();
+			case MinionColor.RED:
+				return this.GetOneMinionRed();
+			case MinionColor.YELLOW:
+				return this.GetOneMinionYellow();
+			default:
+				return this.GetRandomMinion();
+		}
+	}
+
+	// Return one blue minion
+	private Minion GetOneMinionBlue() {
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.BLUE) {
+				return minion;
+			}
+		}
+
+		return null;
+	}
+
+	// Return one green minion
+	private Minion GetOneMinionGreen() {
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.GREEN) {
+				return minion;
+			}
+		}
+
+		return null;
+	}
+
+	// Return one red minion
+	private Minion GetOneMinionRed() {
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.RED) {
+				return minion;
+			}
+		}
+
+		return null;
+	}
+
+	// Return one yellow minion
+	private Minion GetOneMinionYellow() {
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.YELLOW) {
+				return minion;
+			}
+		}
+
+		return null;
+	}
+
+	// Return one random minion
+	private Minion GetRandomMinion() {
+		if (this.GetCountMinions () > 0) {
+			int randomIndex = Random.Range (0, this.GetCountMinions ());
+			return this._minions [randomIndex];
+		} else {
+			#if DEBUG
+			Debug.Log ("ERROR PLAYER " + this.name + " DOESN'T HAVE MINIONS");
+			#endif
+			return null;
 		}
 	}
 
 	// Return the total of minions of the player
-	public int getCountMinions() {
+	public int GetCountMinions() {
 		return this._minions.Count;
 	}
 
-//	public void setTaille(Taille position) {
-//		this._position = _position;
-//	}
-//
-//	public Taille getTaille() {
-//		return this._position;
-//	}
+	// Return the total of blue minions
+	public int GetCountMinionsBlue() {
+		int totalMinionBlue = 0;
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.BLUE) {
+				totalMinionBlue++;
+			}
+		}
 
-	// Set the score of the player
-	public void SetScore(int score) {
-		this._score = score;
+		return totalMinionBlue;
 	}
 
-	// Get the score of the player
-	public int GetScore() {
-		return this._score;
+	// Return the total of green minions
+	public int GetCountMinionsGreen() {
+		int totalMinionGreen = 0;
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.GREEN) {
+				totalMinionGreen++;
+			}
+		}
+
+		return totalMinionGreen;
+	}
+
+	// Return the total of red minions
+	public int GetCountMinionsRed() {
+		int totalMinionRed = 0;
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.RED) {
+				totalMinionRed++;
+			}
+		}
+
+		return totalMinionRed;
+	}
+
+	// Return the total of yellow minions
+	public int GetCountMinionsYellow() {
+		int totalMinionYellow = 0;
+		foreach(Minion minion in this._minions) {
+			if(minion.color == MinionColor.YELLOW) {
+				totalMinionYellow++;
+			}
+		}
+
+		return totalMinionYellow;
 	}
 
 	public void Release ()
@@ -132,25 +247,33 @@ public class Player : MonoBehaviour
 
 	public void MoveLeft()
 	{
-		Debug.Log ("Move Left !");
+		#if DEBUG
+			Debug.Log ("Move Left !");
+		#endif
 //		Move(-1f, 0f);
 	}
 
 	public void MoveRight()
 	{
-		Debug.Log ("Move Right !");
+		#if DEBUG
+			Debug.Log ("Move Right !");
+		#endif
 //		Move(1f, 0f);
 	}
 
 	public void MoveUp()
 	{
-		Debug.Log ("Move Upt !");
+		#if DEBUG
+			Debug.Log ("Move Upt !");
+		#endif
 //		Move(0f, 1f);
 	}
 
 	public void MoveDown()
 	{
-		Debug.Log ("Move Down !");
+		#if DEBUG
+			Debug.Log ("Move Down !");
+		#endif
 //		Move(0f, -1f);
 	}
 
@@ -176,11 +299,11 @@ public class Player : MonoBehaviour
 
 	private void Move(float x, float y)
 	{
-		if (this.CanAction () == true) {
+		if (this.canAction == true) {
 			gameObject.transform.position += new Vector3 (x * _speed, y * _speed);
 
 			AudioManager.instance.plop.Play ();
-			this.SetAction (false);
+			this.SetAction(false);
 		}
 	}
 

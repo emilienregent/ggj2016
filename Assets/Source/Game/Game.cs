@@ -28,14 +28,20 @@ public class Game : MonoBehaviour
 	private			MinionYellow	_minionYellow	=	null;
     private         int             _mapIndex       =   0;
 
+	private 		GameObject		_gameElements	= null;
+	public			GameObject		gameElements	{get { return _gameElements; } }
+
 	public static 	Game 	    	instance		= 	null;
 	public 			List<Player>	players			= 	new List<Player>();
 	public 			GameState 		state 			{ get { return _state; } }
     public          int             mapIndex        { get { return _mapIndex; } }
+	public			Player			currentPlayer	{ get { return _currentPlayer; } }
 
 	private void Awake()
 	{
 		instance = this;
+		this._gameElements = GameObject.Find ("GameElements");
+
         SwitchState(GameState.INTRO);
 
         // Initialize all players
@@ -52,11 +58,6 @@ public class Game : MonoBehaviour
 		Application.targetFrameRate = 60;
 #endif
     }
-
-	// Get current active player
-	public Player GetCurrentPlayer() {
-		return this._currentPlayer;
-	}
 
 	// Set the next player as active
 	public void SetNextPlayer() {
@@ -81,11 +82,17 @@ public class Game : MonoBehaviour
 		this.players [playerIndex] = Instantiate (this.players [playerIndex]) as Player;
 		this.players [playerIndex].name = "Player " + (playerIndex + 1);
 
+		GameObject playerElements = new GameObject(this.players [playerIndex].name + " Elements");
+		playerElements.transform.SetParent (this.gameElements.transform);
+		this.players [playerIndex].transform.SetParent (playerElements.transform);
+
 		foreach(MinionColor color in this._minions_start) {
 			if (this.players [playerIndex].CanAddMinion () == true) {
 				this.players [playerIndex].AddMinion (this.createMinion (color));
 			} else {
-				Debug.Log("Max minions reached for player " + this.players [playerIndex].name);
+				#if DEBUG
+					Debug.Log("Max minions reached for player " + this.players [playerIndex].name);
+				#endif
 			}
 		}
 	}

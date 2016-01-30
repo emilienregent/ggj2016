@@ -5,7 +5,7 @@ public class MinionYellow : Minion {
 
 	// Use this for initialization
 	private void Awake () {
-		this.SetColor(MinionColor.YELLOW);
+		this.color = MinionColor.YELLOW;
 	}
 	
 	// Update is called once per frame

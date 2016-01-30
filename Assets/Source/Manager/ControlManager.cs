@@ -52,7 +52,7 @@ public class ControlManager : MonoBehaviour
     private void UpdateGame (GamepadState state)
     {
 
-        if(Game.instance.GetCurrentPlayer().CanAction() == false)
+		if(Game.instance.currentPlayer.canAction == false)
         {
             return;
         }
@@ -61,7 +61,7 @@ public class ControlManager : MonoBehaviour
         {
             if (releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().MoveLeft();
+				Game.instance.currentPlayer.MoveLeft();
             }
             else
             {
@@ -79,7 +79,7 @@ public class ControlManager : MonoBehaviour
         {
             if (releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().MoveUp();
+				Game.instance.currentPlayer.MoveUp();
             }
             else
             {
@@ -97,7 +97,7 @@ public class ControlManager : MonoBehaviour
         {
             if (releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().MoveRight();
+				Game.instance.currentPlayer.MoveRight();
             }
             else
             {
@@ -115,7 +115,7 @@ public class ControlManager : MonoBehaviour
         {
             if (releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().MoveDown();
+				Game.instance.currentPlayer.MoveDown();
             }
             else
             {
@@ -133,7 +133,7 @@ public class ControlManager : MonoBehaviour
         {
             if (releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().SacrificeMinion(MinionColor.GREEN);
+				Game.instance.currentPlayer.SacrificeMinion(MinionColor.GREEN);
             }
             else
             {
@@ -151,7 +151,7 @@ public class ControlManager : MonoBehaviour
         {
             if (releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().SacrificeMinion(MinionColor.RED);
+				Game.instance.currentPlayer.SacrificeMinion(MinionColor.RED);
             }
             else
             {
@@ -169,7 +169,7 @@ public class ControlManager : MonoBehaviour
         {
             if(releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().SacrificeMinion(MinionColor.YELLOW);
+				Game.instance.currentPlayer.SacrificeMinion(MinionColor.YELLOW);
             }
             else
             {
@@ -187,7 +187,7 @@ public class ControlManager : MonoBehaviour
         {
             if(releaseAction == true)
             {
-                Game.instance.GetCurrentPlayer().SacrificeMinion(MinionColor.BLUE);
+				Game.instance.currentPlayer.SacrificeMinion(MinionColor.BLUE);
             }
             else
             {
