@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
 		#if DEBUG
 			Debug.Log ("New player (" + this.name + ") created with " + this._countActions + " action(s) remaining.");
 		#endif
-//		ChangeColor(Color.blue);
 	}
 
 	// Add a minion to the player
@@ -96,11 +95,6 @@ public class Player : MonoBehaviour
 	// Set if the player can do an action or not
 	public void SetAction(bool canAction) {
 		this._canAction = canAction;
-        if (canAction == false)
-        {
-			this.CleanPlayer ();
-            Game.instance.SetNextPlayer();
-		}
     }
 
 	// Sacrifice a minion to get a bonus/special action
@@ -112,7 +106,7 @@ public class Player : MonoBehaviour
 			this.RemoveMinion (color);
 			minion.Kill ();
 
-			this.SetAction (false);
+            Game.instance.EndTurn();
 		}
 	}
 
@@ -273,25 +267,6 @@ public class Player : MonoBehaviour
 	{
 	}
 
-    public bool canMoveLeft()
-    {
-        int tmpIndex = tileIndex - (1 * _speed);
-
-        // Out of bound
-        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
-        {
-            return false;
-        }
-
-        // Same line or not
-        if (tmpIndex % Game.instance.mapManager.map.columns > tileIndex % Game.instance.mapManager.map.columns)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
 	public void CleanPlayer() {
 //		this._canWalkThroughObstacle = false;
 		this._speed = 1;
@@ -342,7 +317,6 @@ public class Player : MonoBehaviour
 
 	public void UseMinionGreen()
 	{
-//		ChangeColor(Color.green);
 		if (this.GetCountMinionsGreen () > 0) {
 			this.SacrificeMinion (MinionColor.GREEN);
 		}
@@ -350,7 +324,6 @@ public class Player : MonoBehaviour
 
 	public void UseMinionBlue()
 	{
-//		ChangeColor(Color.blue);
 		if (this.GetCountMinionsBlue () > 0) {
 			this.SacrificeMinion (MinionColor.BLUE);
 		}
@@ -358,7 +331,6 @@ public class Player : MonoBehaviour
 
 	public void UseMinionYellow()
 	{
-//		ChangeColor(Color.yellow);
 		if (this.GetCountMinionsYellow () > 0) {
 			this.SacrificeMinion (MinionColor.YELLOW);
 		}
@@ -366,7 +338,6 @@ public class Player : MonoBehaviour
 
 	public void UseMinionRed()
 	{
-//		ChangeColor(Color.red);
 		if (this.GetCountMinionsRed () > 0) {
 			this.SacrificeMinion (MinionColor.RED);
 		}
@@ -380,15 +351,9 @@ public class Player : MonoBehaviour
 
 			Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
 
-			// AudioManager.instance.plop.Play ();
-			this.SetAction(false);
+            // AudioManager.instance.plop.Play ();
+            Game.instance.EndTurn();
 		}
 	}
 
-	private void ChangeColor(Color color)
-	{
-#if DEBUG
-        Debug.Log(color);
-#endif
-	}
 }

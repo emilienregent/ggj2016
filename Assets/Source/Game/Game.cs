@@ -21,8 +21,7 @@ public class Game : MonoBehaviour
 
 	private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
-	[SerializeField]
-	private			float			_defaultDuration	=	4f;
+    private         Timer           _turnTimer      =   new Timer(0f);
 	[SerializeField]
 	private 		Player			_currentPlayer 	= 	null;
 	[SerializeField]
@@ -48,8 +47,9 @@ public class Game : MonoBehaviour
     public          int             mapIndex        { get { return _mapIndex; } }
 	public			Player			currentPlayer	{ get { return _currentPlayer; } }
     public          MapManager      mapManager      { get { return (MapManager) _managers[ManagerType.MAP]; } }
-	public			float			defaultDuration { get { return _defaultDuration; } }
     public          Dictionary<int, BandOfMinion> tileToMinions  { get { return _tileToMinions; } set { _tileToMinions = value; } }
+    [SerializeField]
+    public			float			defaultDuration = 4f;
 
 	private void Awake()
 	{
@@ -90,7 +90,6 @@ public class Game : MonoBehaviour
 
         // Set active player
         this._currentPlayer = this.players[0];
-        this._currentPlayer.SetAction(true);
 
 		SwitchState(GameState.INTRO);
     }
@@ -98,10 +97,23 @@ public class Game : MonoBehaviour
 	// Set the next player as active
 	public void SetNextPlayer() {
 		this._currentPlayer = this.GetNextPlayer ();
-        this._currentPlayer.SetAction(true);
+        ControlManager.instance.Clean();
+        this.StartTurn();
+    }
 
-		this._stateTimer.duration = this._defaultDuration - this._currentPlayer.timeMalus;
-		this._stateTimer.Start ();
+    public void StartTurn()
+    {
+        Debug.Log("Start Turn");
+        this._turnTimer.duration = this.defaultDuration - this._currentPlayer.timeMalus;
+        this._turnTimer.Start();
+        this.currentPlayer.SetAction(true);
+    }
+
+    public void EndTurn()
+    {
+        Debug.Log("End Turn");
+        this._currentPlayer.SetAction(false);
+        this.SetNextPlayer();
     }
 
 	public Player GetNextPlayer() {
@@ -170,18 +182,29 @@ public class Game : MonoBehaviour
 	// Update is called once per frame
 	private void Update () 
 	{
-		if(_stateTimer.IsFinished() == true)
-		{
-			if(_state == GameState.INTRO)
-			{
-				SwitchState(GameState.GAME);
-			} 
-			else if(_state == GameState.GAME)
-			{
-				this.currentPlayer.SetAction (false);
-				// Do things
-			}
-		}
+        switch(_state)
+        {
+            case GameState.INTRO:
+                if(_stateTimer.IsFinished() == true)
+                {
+                    SwitchState(GameState.GAME);
+                }
+                break;
+
+            case GameState.GAME:
+                if(_turnTimer.IsFinished() == true)
+                {
+                    if(ActionLoader.instance.isActive == false)
+                    {
+                        this.EndTurn();
+                    }
+                    else
+                    {
+                        ActionLoader.instance.endTurn = true;
+                    }
+                }
+                break;
+        }
 	}
 
 	private void SwitchState(GameState state)
@@ -196,9 +219,8 @@ public class Game : MonoBehaviour
 		else if(state == GameState.GAME)
 		{
 			AudioManager.instance.mainMusic.Play();
-			this._stateTimer.duration = this._defaultDuration - this._currentPlayer.timeMalus;
-			this._stateTimer.Start ();
-		}
+            this.StartTurn();
+        }
 	}
 
 	public void Pause()
