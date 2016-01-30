@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Manager;
 using Type;
+using GamepadInput;
 
 public enum GameState
 {
@@ -16,7 +17,7 @@ public class Game : MonoBehaviour
 {
 	private const	int 			_MAX_PLAYERS	=	2;
     [SerializeField]
-	private 	 	MinionColor[] 	_minions_start	= 	{MinionColor.BLUE, MinionColor.GREEN, MinionColor.RED, MinionColor.YELLOW, MinionColor.GREEN, MinionColor.RED};
+	private 	 	MinionColor[] 	_minions_start	=   new MinionColor[0];
 
 	private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
@@ -42,7 +43,6 @@ public class Game : MonoBehaviour
 	public 			List<Player>	players			= 	new List<Player>();
 	public 			GameState 		state 			{ get { return _state; } }
     public          int             mapIndex        { get { return _mapIndex; } }
-
 	public			Player			currentPlayer	{ get { return _currentPlayer; } }
     public          MapManager      mapManager      { get { return (MapManager) _managers[ManagerType.MAP]; } }
 
@@ -117,13 +117,15 @@ public class Game : MonoBehaviour
 
         player.name = "Player " + (playerIndex + 1);
         player.tileIndex = tileIndex;
+        player.controllerIndex = (GamePad.Index)(playerIndex + 1);
         playerElements.name = player.name + " Elements";
         //player.gameObject.transform.position = mapManager.map.GetPositionFromIndex(tileIndex);
 
 		playerElements.transform.SetParent (this.gameElements.transform);
 		player.transform.SetParent (playerElements.transform);
-
+  
 		foreach(MinionColor color in this._minions_start) {
+
             if (player.CanAddMinion () == true) {
                 player.AddMinion (this.createMinion(color));
 			} else {

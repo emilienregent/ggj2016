@@ -2,26 +2,29 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Type;
+using GamepadInput;
 
 public class Player : MonoBehaviour
 {
 	// Constantes
 	[SerializeField]
-	private const 	int 			_MAX_MINIONS 	= 	6;
+	private const 	int 			_MAX_MINIONS 	    = 	6;
 
 	// Privates attributes
 	[SerializeField]
-	private 		float 			_speed 			= 	0.1f;
+	private 		int 			_speed 			    = 	1;
 	[SerializeField]
-	private 		int 			_countActions 	= 	1;
+	private 		int 			_countActions 	    = 	1;
 	[SerializeField]
-	private 		List<Minion> 	_minions 		= 	new List<Minion>();
+	private 		List<Minion> 	_minions 		    = 	new List<Minion>();
 	[SerializeField]
 	private 		int 			_score 			= 	0;
 	[SerializeField]
     private			int			    _tileIndex 		= 	0;
 	private			bool			_canAction		= 	false;
+    private         GamePad.Index   _controllerIndex = GamePad.Index.One;
 
+    public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
     public			int			    tileIndex		{ get { return _tileIndex; } set { 
             _tileIndex = value; 
             gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
@@ -29,8 +32,9 @@ public class Player : MonoBehaviour
 	public			int				score			{ get { return _score; } set { _score = value; } }
 	public			bool			canAction		{ get { return _canAction; } }
 
-	// Use this for initialization
-	private void Start ()
+
+    // Use this for initialization
+    private void Start ()
 	{
 		#if DEBUG
 			Debug.Log ("New player (" + this.name + ") created with " + this._countActions + " action(s) remaining.");
@@ -121,7 +125,7 @@ public class Player : MonoBehaviour
 		switch(color) {
 			case MinionColor.BLUE:
 				return this.GetOneMinionBlue();
-		case MinionColor.GREEN:
+		    case MinionColor.GREEN:
 				return this.GetOneMinionGreen ();
 			case MinionColor.RED:
 				return this.GetOneMinionRed();
@@ -246,36 +250,112 @@ public class Player : MonoBehaviour
 	{
 	}
 
+    public bool canMoveLeft()
+    {
+        int tmpIndex = tileIndex - (1 * _speed);
+
+        // Out of bound
+        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
+        {
+            return false;
+        }
+
+        // Same line or not
+        if (tmpIndex % Game.instance.mapManager.map.columns > tileIndex % Game.instance.mapManager.map.columns)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 	public void MoveLeft()
 	{
 		#if DEBUG
 			Debug.Log ("Move Left !");
 		#endif
-//		Move(-1f, 0f);
-	}
+        Move(-1 * _speed);
+    }
 
-	public void MoveRight()
+    public bool canMoveRight()
+    {
+        int tmpIndex = tileIndex + (1 * _speed);
+
+        // Out of bound
+        if(tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count -1)
+        {
+            return false;
+        }
+
+        // Same line or not
+        if(tmpIndex % Game.instance.mapManager.map.columns < tileIndex % Game.instance.mapManager.map.columns)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void MoveRight()
 	{
 		#if DEBUG
 			Debug.Log ("Move Right !");
 		#endif
-//		Move(1f, 0f);
-	}
+        Move(1 * _speed);
+    }
 
-	public void MoveUp()
+    public bool canMoveUp()
+    {
+        int tmpIndex = tileIndex + (-1 * Game.instance.mapManager.map.columns * _speed);
+
+        // Out of bound
+        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
+        {
+            return false;
+        }
+
+        // Same line or not
+        if (tmpIndex % Game.instance.mapManager.map.columns != tileIndex % Game.instance.mapManager.map.columns)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void MoveUp()
 	{
 		#if DEBUG
-			Debug.Log ("Move Upt !");
+			Debug.Log ("Move Up !");
 		#endif
-//		Move(0f, 1f);
-	}
+        Move(-1 * Game.instance.mapManager.map.columns * _speed);
+    }
 
-	public void MoveDown()
+    public bool canMoveDown()
+    {
+        int tmpIndex = tileIndex + (Game.instance.mapManager.map.columns * _speed);
+
+        // Out of bound
+        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
+        {
+            return false;
+        }
+
+        // Same line or not
+        if (tmpIndex % Game.instance.mapManager.map.columns != tileIndex % Game.instance.mapManager.map.columns)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void MoveDown()
 	{
 		#if DEBUG
 			Debug.Log ("Move Down !");
 		#endif
-//		Move(0f, -1f);
+        Move(Game.instance.mapManager.map.columns * _speed);
 	}
 
 	public void UseMinionGreen()
@@ -298,10 +378,10 @@ public class Player : MonoBehaviour
 		ChangeColor(Color.red);
 	}
 
-	private void Move(float x, float y)
+	private void Move(int index)
 	{
 		if (this.canAction == true) {
-			gameObject.transform.position += new Vector3 (x * _speed, y * _speed);
+            tileIndex += index;
 
 			AudioManager.instance.plop.Play ();
 			this.SetAction(false);
@@ -310,6 +390,8 @@ public class Player : MonoBehaviour
 
 	private void ChangeColor(Color color)
 	{
-		GetComponent<SpriteRenderer>().color = color;
+#if DEBUG
+        Debug.Log(color);
+#endif
 	}
 }

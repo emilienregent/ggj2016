@@ -29,8 +29,8 @@ public class ControlManager : MonoBehaviour
 	private void Update ()
 	{
 
-		GamePad.Index controller = GamePad.Index.One;
-		GamepadState state = GamePad.GetState(controller);
+        GamePad.Index controller = GamePad.Index.One;
+        GamepadState state = GamePad.GetState(controller);
 
         switch (Game.instance.state)
         {
@@ -39,6 +39,8 @@ public class ControlManager : MonoBehaviour
                 break;
 
             case GameState.GAME:
+                controller = Game.instance.currentPlayer.controllerIndex;
+                state = GamePad.GetState(controller);
                 UpdateGame(state);
                 break;                
         }
@@ -65,8 +67,11 @@ public class ControlManager : MonoBehaviour
             }
             else
             {
-                _currentInput = GamePadInput.Left;
-                loadAction = true;
+                if (Game.instance.currentPlayer.canMoveLeft() == true)
+                {
+                    _currentInput = GamePadInput.Left;
+                    loadAction = true;
+                }
             }
         }
         else if (_currentInput == GamePadInput.Left)
@@ -83,8 +88,11 @@ public class ControlManager : MonoBehaviour
             }
             else
             {
-                _currentInput = GamePadInput.Up;
-                loadAction = true;
+                if (Game.instance.currentPlayer.canMoveUp() == true)
+                {
+                    _currentInput = GamePadInput.Up;
+                    loadAction = true;
+                }
             }
         }
         else if (_currentInput == GamePadInput.Up)
@@ -101,8 +109,11 @@ public class ControlManager : MonoBehaviour
             }
             else
             {
-                _currentInput = GamePadInput.Right;
-                loadAction = true;
+                if (Game.instance.currentPlayer.canMoveRight() == true)
+                {
+                    _currentInput = GamePadInput.Right;
+                    loadAction = true;
+                }
             }
         }
         else if (_currentInput == GamePadInput.Right)
@@ -119,8 +130,11 @@ public class ControlManager : MonoBehaviour
             }
             else
             {
-                _currentInput = GamePadInput.Down;
-                loadAction = true;
+                if (Game.instance.currentPlayer.canMoveDown() == true)
+                {
+                    _currentInput = GamePadInput.Down;
+                    loadAction = true;
+                }
             }
         }
         else if (_currentInput == GamePadInput.Down)
