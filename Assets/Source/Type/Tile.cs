@@ -8,7 +8,7 @@ namespace Type
         DEFAULT,
         START_P1,
         START_P2,
-        FINISH,
+        ALTAR,
         MINION_GREEN,
         MINION_RED, 
         MINION_BLUE,
