@@ -73,10 +73,21 @@ namespace Tools
                         EditorGUILayout.BeginHorizontal();
                         for (int x = 0; x < _maps[i].columns; x++)
                         {
+                            EditorGUILayout.BeginVertical();
+
                             int         index   = _maps[i].GetIndexFromPosition(x, y);
                             TileType    type    = (TileType) EditorGUILayout.EnumPopup((TileType) _maps[i].tiles[index].type);
 
+                            EditorGUILayout.BeginHorizontal();
+                            GUI.enabled = type >= TileType.MINION_GREEN && type <= TileType.MINION_YELLOW;
+                            int quantity = EditorGUILayout.IntSlider(_maps[i].tiles[index].quantity, 1, 5);
+                            GUI.enabled = true;
+                            EditorGUILayout.EndHorizontal();
+
                             _maps[i].tiles[index].type = (int)type;
+                            _maps[i].tiles[index].quantity = quantity;
+
+                            EditorGUILayout.EndVertical();
                         }
                         EditorGUILayout.EndHorizontal();
                     }

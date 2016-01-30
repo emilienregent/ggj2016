@@ -11,7 +11,6 @@ public enum MinionColor
 	YELLOW
 }
 
-
 public abstract class Minion : MonoBehaviour {
     private static float RANGE = 5f;
     private static float SPEED = 5f;
@@ -82,7 +81,6 @@ public abstract class Minion : MonoBehaviour {
 
         if (distance <= 0.5f)
         {
-            Debug.Log(gameObject.name + " finished his movement");
             _isMoving = false;
         }
     }

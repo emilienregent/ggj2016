@@ -23,16 +23,19 @@ namespace Type
         private int         _size       = 10;
         private int         _type       = 0;
         private int         _index      = -1;
+        private int         _quantity   = 0;
 
         public  GameObject  gameObject  { get { return _gameObject; } set { _gameObject = value; } }
         public  int         size        { get { return _size; } set { _size = value; } }
         public  int         type        { get { return _type; } set { _type = value; } }
         public  int         index       { get { return _index; } }
+        public  int         quantity    { get { return _quantity; } set { _quantity = value; } }
 
-        public Tile(int type, int index = -1)
+        public Tile(int type, int index = -1, int quantity = 0)
         {
-            _type   = type;
-            _index  = index;
+            _type       = type;
+            _index      = index;
+            _quantity   = quantity;
         }
 
         public void ApplyOnPlayer(Player player)
@@ -48,14 +51,6 @@ namespace Type
                         Game.instance.tileToMinions[_index].AnchorToPlayer(player);
                     }
                     break;
-            }
-        }
-
-        private void CreateMinion(Player player, MinionColor color)
-        {
-            if (player.CanAddMinion() == true)
-            {
-                player.AddMinion(Game.instance.CreateMinion(color));
             }
         }
 

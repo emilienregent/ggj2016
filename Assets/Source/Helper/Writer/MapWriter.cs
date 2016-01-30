@@ -50,6 +50,29 @@ namespace Helper.Writer
                     
                     stream.WriteLine(res);
                 }
+                stream.WriteLine("\t\t\t],");
+
+                stream.WriteLine("\t\t\t\"quantities\" : [");
+
+                for (int y = 0; y < maps[i].lines; y++)
+                {
+                    string res = "\t\t\t\t";
+
+                    for (int x = 0; x < maps[i].columns; x++)
+                    {
+                        int index = maps[i].GetIndexFromPosition(x, y);
+
+                        res += maps[i].tiles[index].quantity;
+
+                        if (x < maps[i].columns - 1)
+                            res += ",";
+                    }
+
+                    if (y < maps[i].lines - 1)
+                        res += ",";
+
+                    stream.WriteLine(res);
+                }
                 stream.WriteLine("\t\t\t]");
 
                 if (i < maps.Count - 1)

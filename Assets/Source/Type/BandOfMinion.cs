@@ -8,21 +8,21 @@ namespace Type
     {
         private List<Minion> _minions = new List<Minion>();
 
-        public BandOfMinion(Tile tile, int count = 1)
+        public BandOfMinion(Tile tile)
         {
             switch((TileType) tile.type)
             {
                 case TileType.MINION_RED:
-                    Initialize(MinionColor.RED, count);
+                    Initialize(MinionColor.RED, tile.quantity);
                     break;
                 case TileType.MINION_BLUE:
-                    Initialize(MinionColor.BLUE, count);
+                    Initialize(MinionColor.BLUE, tile.quantity);
                     break;
                 case TileType.MINION_GREEN:
-                    Initialize(MinionColor.GREEN, count);
+                    Initialize(MinionColor.GREEN, tile.quantity);
                     break;
                 case TileType.MINION_YELLOW:
-                    Initialize(MinionColor.YELLOW, count);
+                    Initialize(MinionColor.YELLOW, tile.quantity);
                     break;
             }
 

@@ -31,10 +31,11 @@ namespace Helper.Parser
                         {
                             for (int x = 0; x < map.columns; x++)
                             {
-                                int index = map.GetIndexFromPosition(x, y);
-                                int type = node["tiles"][index].AsInt;
+                                int index       = map.GetIndexFromPosition(x, y);
+                                int type        = node["tiles"][index].AsInt;
+                                int quantity    = node["quantities"][index].AsInt;
 
-                                map.tiles.Add(new Tile(type, index));
+                                map.tiles.Add(new Tile(type, index, quantity));
                             }
                         }
 
