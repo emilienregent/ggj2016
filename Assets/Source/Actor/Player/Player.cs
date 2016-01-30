@@ -69,12 +69,36 @@ public class Player : MonoBehaviour
 	// Set if the player can do an action or not
 	public void SetAction(bool canAction) {
 		this._canAction = canAction;
-	}
+        if (canAction == false)
+        {
+            Game.instance.SetNextPlayer();
+        }
+    }
 
 	// Sacrifice a minion to get a bonus/special action
-	public void SacrificeMinion(Minion minion) {
+	public void SacrificeMinion(MinionColor color) {
 		if(this.CanAction() == true) {
-			minion.Sacrifice ();
+            // Todo : A décommenter
+			// minion.Sacrifice ();
+            switch (color)
+            {
+                case MinionColor.GREEN:
+                    UseMinionGreen();
+                    break;
+
+                case MinionColor.RED:
+                    UseMinionRed();
+                    break;
+
+                case MinionColor.YELLOW:
+                    UseMinionYellow();
+                    break;
+
+                case MinionColor.BLUE:
+                    UseMinionBlue();
+                    break;
+
+            }
 			this.SetAction (false);
 		}
 	}
@@ -130,7 +154,27 @@ public class Player : MonoBehaviour
 //		Move(0f, -1f);
 	}
 
-	private void Move (float x, float y)
+	public void UseMinionGreen()
+	{
+		ChangeColor(Color.green);
+	}
+
+	public void UseMinionBlue()
+	{
+		ChangeColor(Color.blue);
+	}
+
+	public void UseMinionYellow()
+	{
+		ChangeColor(Color.yellow);
+	}
+
+	public void UseMinionRed()
+	{
+		ChangeColor(Color.red);
+	}
+
+	private void Move(float x, float y)
 	{
 		if (this.CanAction () == true) {
 			gameObject.transform.position += new Vector3 (x * _speed, y * _speed);

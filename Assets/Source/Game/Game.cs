@@ -34,11 +34,22 @@ public class Game : MonoBehaviour
 	private void Awake()
 	{
 		instance = this;
+        SwitchState(GameState.INTRO);
+
+        // Initialize all players
+        for (int i = 0; i < _MAX_PLAYERS; i++)
+        {
+            this.InitializePlayer(i);
+        }
+
+        // Set active player
+        this._currentPlayer = this.players[0];
+        this._currentPlayer.SetAction(true);
 
 #if UNITY_EDITOR
 		Application.targetFrameRate = 60;
 #endif
-	}
+    }
 
 	// Get current active player
 	public Player GetCurrentPlayer() {
@@ -61,15 +72,6 @@ public class Game : MonoBehaviour
 	// Use this for initialization
 	private void Start () 
 	{
-//		SwitchState(GameState.INTRO);
-
-		// Initialize all players
-		for(int i = 0; i < _MAX_PLAYERS; i++) {
-			this.InitializePlayer(i);
-		}
-	
-		// Set active player
-		this._currentPlayer = this.players [0];
 	}
 
 	// Initialize one player
