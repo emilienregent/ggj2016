@@ -1,0 +1,169 @@
+fileFormatVersion: 2
+guid: 829216cae0212d94eb85df954bf186e7
+timeCreated: 1454140575
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: _root_Soldier
+    100002: Body
+    100004: Head
+    100006: Mask
+    100008: //RootNode
+    100010: Weapon_00
+    100012: Weapon_01
+    100014: Soldier_Body
+    100016: Soldier_Head
+    100018: Soldier_Mask
+    100020: Soldier_Weapon_L
+    100022: Soldier_Weapon_R
+    400000: _root_Soldier
+    400002: Body
+    400004: Head
+    400006: Mask
+    400008: //RootNode
+    400010: Weapon_00
+    400012: Weapon_01
+    400014: Soldier_Body
+    400016: Soldier_Head
+    400018: Soldier_Mask
+    400020: Soldier_Weapon_L
+    400022: Soldier_Weapon_R
+    2300000: Body
+    2300002: Head
+    2300004: Mask
+    2300006: Weapon_00
+    2300008: Weapon_01
+    2300010: Soldier_Body
+    2300012: Soldier_Head
+    2300014: Soldier_Mask
+    2300016: Soldier_Weapon_L
+    2300018: Soldier_Weapon_R
+    3300000: Body
+    3300002: Head
+    3300004: Mask
+    3300006: Weapon_00
+    3300008: Weapon_01
+    3300010: Soldier_Body
+    3300012: Soldier_Head
+    3300014: Soldier_Mask
+    3300016: Soldier_Weapon_L
+    3300018: Soldier_Weapon_R
+    4300000: Body
+    4300002: Weapon_00
+    4300004: Head
+    4300006: Mask
+    4300008: Weapon_01
+    4300010: Soldier_Body
+    4300012: Soldier_Weapon_L
+    4300014: Soldier_Head
+    4300016: Soldier_Mask
+    4300018: Soldier_Weapon_R
+    7400000: Walk
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: _root_Soldier
+        weight: 1
+      - path: Soldier_Body
+        weight: 1
+      - path: Soldier_Body/Soldier_Head
+        weight: 1
+      - path: Soldier_Body/Soldier_Head/Soldier_Mask
+        weight: 1
+      - path: Soldier_Body/Soldier_Weapon_L
+        weight: 1
+      - path: Soldier_Body/Soldier_Weapon_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

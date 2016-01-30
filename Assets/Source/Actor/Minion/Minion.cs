@@ -13,21 +13,41 @@ public enum MinionColor
 
 
 public abstract class Minion : MonoBehaviour {
-	protected	int				_maxPowers		=	0;
+    private static float RANGE = 5f;
+    private static float SPEED = 5f;
+	protected	int				_maxPowers		= 0;
 	[SerializeField]
 	protected 	MinionColor 	_color;
-	[SerializeField]
 	private		int			    _tileIndex 		= 	0;
-	protected 	bool			_canSacrifice 	= 	true;
-
-	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
-	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
 	public		int			    tileIndex		{ get { return _tileIndex; } set { 
 			_tileIndex = value; 
 			gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
 		} }
 	
 	// Trigger one bonus of the minion
+    protected	Transform 	    _anchor		    = null;
+	protected 	bool			_canSacrifice 	= true;
+    private     bool            _isAnchored     = false;
+    private     bool            _isMoving       = false;
+    private     Vector3         _targetPosition = Vector3.zero;
+
+	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
+	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
+    public		Transform		anchor		    
+    { 
+        get 
+        { 
+            return _anchor; 
+        } 
+        set 
+        { 
+            _anchor         = value; 
+            _isMoving       = false;
+            _targetPosition = _anchor.position;
+        }
+    }
+
+	// Trigger one bonus of the minion, and kill the minion
 	public void Sacrifice() {
 		if(this.canSacrifice == true) {
 			#if DEBUG
@@ -52,10 +72,46 @@ public abstract class Minion : MonoBehaviour {
 			Debug.Log ("New Minion with color " + this._color);
 		#endif
 	}
+
+    private void Move()
+    {
+        float speed = _isAnchored == true ? SPEED * 0.5f : SPEED;
+        transform.position = Vector3.MoveTowards(transform.position, _targetPosition, speed * Time.deltaTime);
+
+        float distance = Vector3.Distance(transform.position, _targetPosition);
+
+        if (Mathf.Approximately(distance, 0f) == true)
+        {
+            _isMoving = false;
+        }
+    }
 	
 	// Update is called once per frame
-	private void Update () {
-	
-	}
+    public virtual void Update () 
+    {
+        if (_isMoving == true)
+        {
+            Move();
+        }
+        else
+        {
+            float distance = Vector3.Distance(transform.position, _anchor.position);
 
+            if (distance > RANGE)
+            {
+                _isAnchored     = false;
+                _targetPosition = _anchor.position;
+            }
+            else
+            {
+                _isAnchored     = true;
+                _targetPosition = _anchor.position + new Vector3(Random.Range(-RANGE, RANGE), 0f, Random.Range(-RANGE, RANGE));
+            }
+
+            _isMoving = true;
+            transform.LookAt(_targetPosition);
+            transform.rotation = Quaternion.Euler(270f, transform.rotation.eulerAngles.y, 0f);
+        }
+
+	}
 }

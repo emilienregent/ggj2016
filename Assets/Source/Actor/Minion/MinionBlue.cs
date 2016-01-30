@@ -11,8 +11,8 @@ public class MinionBlue : Minion {
 	}
 	
 	// Update is called once per frame
-	private void Update () {
-	
+    override public void Update () {
+        base.Update();
 	}
 
 	// Execute one random power of the minion

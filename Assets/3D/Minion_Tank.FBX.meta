@@ -1,0 +1,167 @@
+fileFormatVersion: 2
+guid: 641ee2661a8ecde4abe3812b967f8ea8
+timeCreated: 1454140574
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Body
+    100002: Head
+    100004: Mask
+    100006: //RootNode
+    100008: Shield_0
+    100010: Shield_001
+    100012: _root_Tank
+    100014: Tank_Body
+    100016: Tank_Head
+    100018: Tank_Mask
+    100020: Tank_Weapon_L
+    100022: Tank_Weapon_R
+    400000: Body
+    400002: Head
+    400004: Mask
+    400006: //RootNode
+    400008: Shield_0
+    400010: Shield_001
+    400012: _root_Tank
+    400014: Tank_Body
+    400016: Tank_Head
+    400018: Tank_Mask
+    400020: Tank_Weapon_L
+    400022: Tank_Weapon_R
+    2300000: Body
+    2300002: Head
+    2300004: Mask
+    2300006: Shield_0
+    2300008: Shield_001
+    2300010: Tank_Body
+    2300012: Tank_Head
+    2300014: Tank_Mask
+    2300016: Tank_Weapon_L
+    2300018: Tank_Weapon_R
+    3300000: Body
+    3300002: Head
+    3300004: Mask
+    3300006: Shield_0
+    3300008: Shield_001
+    3300010: Tank_Body
+    3300012: Tank_Head
+    3300014: Tank_Mask
+    3300016: Tank_Weapon_L
+    3300018: Tank_Weapon_R
+    4300000: Body
+    4300002: Head
+    4300004: Mask
+    4300006: Shield_0
+    4300008: Shield_001
+    4300010: Tank_Body
+    4300012: Tank_Head
+    4300014: Tank_Mask
+    4300016: Tank_Weapon_R
+    4300018: Tank_Weapon_L
+    7400000: Walk
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 20
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Tank_Body
+        weight: 1
+      - path: Tank_Body/Tank_Head
+        weight: 1
+      - path: Tank_Body/Tank_Head/Tank_Mask
+        weight: 1
+      - path: Tank_Body/Tank_Weapon_L
+        weight: 1
+      - path: Tank_Body/Tank_Weapon_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

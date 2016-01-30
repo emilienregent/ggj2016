@@ -57,13 +57,12 @@ public class ControlManager : MonoBehaviour
 
     private void UpdateGame (GamepadState state)
     {
-
 		if(Game.instance.currentPlayer.canAction == false)
         {
             return;
         }
 
-        if (state.Left == true)
+        if (state.Left == true || Input.GetButton("Left"))
         {
             if (releaseMove == true)
             {
@@ -85,7 +84,7 @@ public class ControlManager : MonoBehaviour
             loadMove = false;
         }
 
-        if (state.Up == true)
+        if (state.Up == true || Input.GetButton("Up"))
         {
             if (releaseMove == true)
             {
@@ -107,7 +106,7 @@ public class ControlManager : MonoBehaviour
             loadMove = false;
         }
 
-        if (state.Right == true)
+        if (state.Right == true || Input.GetButton("Right"))
         {
             if (releaseMove == true)
             {
@@ -129,7 +128,7 @@ public class ControlManager : MonoBehaviour
             loadMove = false;
         }
 
-        if (state.Down == true)
+        if (state.Down == true || Input.GetButton("Down"))
         {
             if (releaseMove == true)
             {

@@ -9,10 +9,10 @@ public class MinionGreen : Minion {
 		this._maxPowers = 3;
 	}
 	
-	// Update is called once per frame
-	private void Update () {
-	
-	}
+    // Update is called once per frame
+    override public void Update () {
+        base.Update();
+    }
 
 	// Execute one random power of the minion
 	override protected void ExecuteRandomPower() {

@@ -51,7 +51,8 @@ public class Player : MonoBehaviour
 		#if DEBUG
 				Debug.Log ("One minion with color " + minion.color + " added to the player");
 		#endif
-		minion.name = "Minion " + minion.color + " " + (this._minions.Count+1);
+        minion.name = "Minion " + minion.color + " " + (this._minions.Count+1);
+        minion.anchor = this.transform;
 		minion.transform.SetParent (this.transform.parent.transform);
 		this._minions.Add (minion);
 	}
