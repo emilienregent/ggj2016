@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Type
@@ -48,6 +47,36 @@ namespace Type
             }
 
             return 0;
+        }
+
+        public int GetRandomAvailableIndex()
+        {
+            List<int> indexes = new List<int>();
+
+            for (int i = 0; i < _tiles.Count; i++)
+            {
+                Tile tile = _tiles[i];
+
+                if (tile.type == (int)TileType.DEFAULT)
+                {
+                    bool hasPlayer = false;
+
+                    for (int j = 0; j < Game.instance.players.Count; j++)
+                    {
+                        if (Game.instance.players[j].tileIndex == i)
+                        {
+                            hasPlayer = true;
+                        }
+                    }
+
+                    if (hasPlayer == false)
+                    {
+                        indexes.Add(i);
+                    }
+                }
+            }
+
+            return indexes[Random.Range(0, indexes.Count)];
         }
     }
 }
