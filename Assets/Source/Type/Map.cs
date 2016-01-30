@@ -82,33 +82,66 @@ namespace Type
         // Retourne toutes les tiles TYPE dans la zone X*Y autour de indexTile
         // permet de récupérer tous les obstacles dans la zone
         // permet de récupérer toutes les positions valides dans la zone
-        /*public List<int> GetArea(int indexTile, int columns, int lines, TileType type) {
+        public List<int> GetArea(int indexTile, int columns, int lines, TileType type) 
+        {
+            if (lines % 2 == 0)
+            {
+                lines++;
+            }
+
+            if (columns % 2 == 0)
+            {
+                columns++;
+            }  
+
             List<int>   indexes = new List<int>();
-            int         tiles   = columns * lines;
-            int         start   = indexTile - Mathf.FloorToInt(lines * 0.5f) * _columns;
-            int         left    = indexTile - Mathf.FloorToInt(columns * 0.5f);
-
-            // Left border not on the same line
-            if(left % _columns > indexTile % _columns)
-                left = 
-
-            // Limit on top-left border of the grid.
-            if (start < 0)
-                start = 0;
+            int         left    = Mathf.Max(0, indexTile - Mathf.FloorToInt(columns * 0.5f));
 
 
+            // Get left border
+            if (IsOnSameLine(indexTile, left) == false)
+            {
+                left = indexTile - indexTile % _columns;
+                columns--;
+            }
 
-            for (int i = 0; i < lines; i += _columns)
+            // Goes up to get top-left corner
+            int start = left - Mathf.FloorToInt(lines * 0.5f) * _columns;
+
+            while(start < 0)
+            {
+                start = left - Mathf.FloorToInt(--lines * 0.5f) * _columns;
+            }
+
+            int index = start;
+
+            for (int i = 0; i < lines; i++)
             {
                 for (int j = 0; j < columns; j++)
                 {
+                    int nextIndex = start + j + i * _columns;
+
+                    if (nextIndex >= _tiles.Count)
+                    {
+                        return indexes;
+                    }
+                    else if (IsOnSameLine(index, nextIndex) == true || j == 0)
+                    {
+                        index = nextIndex;
+
+                        if (_tiles[index].type == (int)type || ((int)type >= (int)TileType.OBSTACLE_1 && _tiles[index].type >= (int)TileType.OBSTACLE_1))
+                        {
+                            indexes.Add(index);
+                        }
+                    }
                 }
             }
 
             return indexes;
-        }*/
+        }
 
-        public List<int> GetAllObstacles() {
+        public List<int> GetAllObstacles() 
+        {
             List<int> indexes = new List<int>();
 
             for (int i = 0; i < _tiles.Count; i++)
@@ -124,14 +157,16 @@ namespace Type
             return indexes;
         }
         
-        public void TransformTile(int indexTile, TileType type) {
+        public void TransformTile(int indexTile, TileType type) 
+        {
             if (indexTile < _tiles.Count)
             {
                 _tiles[indexTile].type = (int)type;
             }
         }
         
-        public void MoveAltar(int indexTile) {
+        public void MoveAltar(int indexTile) 
+        {
             int currentIndexOfAltar = 0;
 
             for (int i = 0; i < _tiles.Count; i++)
@@ -150,7 +185,24 @@ namespace Type
                 _tiles[indexTile].type = (int)TileType.ALTAR;
                 _tiles[currentIndexOfAltar].type = (int)TileType.DEFAULT;
             }
+        }
 
+        public bool IsOnSameLine(int currentTileIndex, int newTileIndex)
+        {
+            // Horizontal move ?
+            int delta = newTileIndex - currentTileIndex;
+
+            // Same line or not
+            if(delta > 0)
+            {
+                return (newTileIndex % _columns > currentTileIndex % _columns);
+            }
+            if(delta < 0)
+            {
+                return (newTileIndex % _columns < currentTileIndex % _columns);
+            }
+
+            return false;
         }
     }
 }
