@@ -2,6 +2,8 @@
 using Type;
 using System.IO;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
 
 namespace Helper.Writer
 {
@@ -60,6 +62,8 @@ namespace Helper.Writer
             stream.WriteLine("}");
             stream.Flush();
             stream.Close();
+
+            AssetDatabase.ImportAsset(MapConfiguration.PATH);
 
             File.Delete(MapConfiguration.PATH.Replace(MapConfiguration.EXTENSION, ".lock"));
         }
