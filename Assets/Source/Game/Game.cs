@@ -11,13 +11,25 @@ public enum GameState
 
 public class Game : MonoBehaviour 
 {
-	private GameState 	_state 		= GameState.INTRO;
-	private Timer 		_stateTimer = new Timer(0f);
+	private const	int 			_MAX_PLAYERS	=	2;
+	private 	 	MinionColor[] 	_minions_start	= 	{MinionColor.BLUE, MinionColor.GREEN, MinionColor.RED, MinionColor.YELLOW, MinionColor.GREEN, MinionColor.RED};
 
-	public static 	Game 	    instance	= null;
-	public 			Player 	    player		= null;
-	public 			int 	    score 		= 0;
-	public 			GameState 	state 		{ get { return _state; } }
+	private 		GameState 		_state 			= 	GameState.INTRO;
+	private 		Timer 			_stateTimer 	= 	new Timer(0f);
+	[SerializeField]
+	private 		Player			_currentPlayer 	= 	null;
+	[SerializeField]
+	private			MinionBlue 		_minionBlue 	= 	null;
+	[SerializeField]
+	private			MinionGreen		_minionGreen	=	null;
+	[SerializeField]
+	private			MinionRed		_minionRed		=	null;
+	[SerializeField]
+	private			MinionYellow	_minionYellow	=	null;
+
+	public static 	Game 	    	instance		= 	null;
+	public 			List<Player>	players			= 	new List<Player>();
+	public 			GameState 		state 			{ get { return _state; } }
 
 	private void Awake()
 	{
@@ -27,11 +39,67 @@ public class Game : MonoBehaviour
 		Application.targetFrameRate = 60;
 #endif
 	}
-		
+
+	// Get current active player
+	public Player GetCurrentPlayer() {
+		return this._currentPlayer;
+	}
+
+	// Set the next player as active
+	public void SetNextPlayer() {
+		int playerIndex = this.players.IndexOf (this._currentPlayer);
+
+		if(playerIndex == (this.players.Count -1)) {
+			this._currentPlayer = this.players[0];
+		} else {
+			this._currentPlayer = this.players[playerIndex + 1];
+		}
+
+		this._currentPlayer.SetAction (true);
+	}
+
 	// Use this for initialization
 	private void Start () 
 	{
-		SwitchState(GameState.INTRO);
+//		SwitchState(GameState.INTRO);
+
+		// Initialize all players
+		for(int i = 0; i < _MAX_PLAYERS; i++) {
+			this.InitializePlayer(i);
+		}
+	
+		// Set active player
+		this._currentPlayer = this.players [0];
+	}
+
+	// Initialize one player
+	private void InitializePlayer(int playerIndex) {
+		this.players [playerIndex] = Instantiate (this.players [playerIndex]) as Player;
+		this.players [playerIndex].name = "Player " + (playerIndex + 1);
+
+		foreach(MinionColor color in this._minions_start) {
+			if (this.players [playerIndex].CanAddMinion () == true) {
+				this.players [playerIndex].AddMinion (this.createMinion (color));
+			} else {
+				Debug.Log("Max minions reached for player " + this.players [playerIndex].name);
+			}
+		}
+	}
+
+	// Create a minion
+	private Minion createMinion(MinionColor color) {
+		switch(color) {
+			case MinionColor.BLUE:
+				return Instantiate (this._minionBlue) as MinionBlue;
+			case MinionColor.GREEN:
+				return Instantiate (this._minionGreen) as MinionGreen;
+			case MinionColor.RED:
+				return Instantiate (this._minionRed) as MinionRed;
+			case MinionColor.YELLOW:
+				return Instantiate (this._minionYellow) as MinionYellow;
+			default:
+				return null;
+		}
 	}
 	
 	// Update is called once per frame
