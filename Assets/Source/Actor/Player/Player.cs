@@ -30,7 +30,9 @@ public class Player : MonoBehaviour
             _tileIndex = value; 
             gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
         } }
-	public			int				score			{ get { return _score; } set { _score = value; } }
+
+    public          int             speed           { get { return _speed; } }
+    public			int				score			{ get { return _score; } set { _score = value; } }
 	public			bool			canAction		{ get { return _canAction; } }
 	public			bool			canWalkThroughObstacle		{ get { return _canWalkThroughObstacle; } set { _canWalkThroughObstacle = value; }  }
 
@@ -260,122 +262,58 @@ public class Player : MonoBehaviour
 
 	public void Release ()
 	{
-	}
+    }
 
-    public bool canMoveLeft()
+    public void CleanPlayer()
     {
-        int tmpIndex = tileIndex - (1 * _speed);
-
-        // Out of bound
-        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
-        {
-            return false;
-        }
-
-        // Same line or not
-        if (tmpIndex % Game.instance.mapManager.map.columns > tileIndex % Game.instance.mapManager.map.columns)
-        {
-            return false;
-        }
-
-        return true;
+        this._canWalkThroughObstacle = false;
+        this._canAction = false;
     }
 
-	public void CleanPlayer() {
-		this._canWalkThroughObstacle = false;
-		this._canAction = false;
-	}
-
-	public void MoveLeft()
-	{
-		#if DEBUG
-			Debug.Log ("Move Left !");
-		#endif
-        Move(-1 * _speed);
-    }
-
-    public bool canMoveRight()
+    public bool CanMove(int newTileIndex)
     {
-        int tmpIndex = tileIndex + (1 * _speed);
-
-        // Out of bound
-        if(tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count -1)
+        if (newTileIndex < 0 || newTileIndex > Game.instance.mapManager.map.tiles.Count - 1)
         {
             return false;
         }
 
-        // Same line or not
-        if(tmpIndex % Game.instance.mapManager.map.columns < tileIndex % Game.instance.mapManager.map.columns)
+        // Horizontal move ?
+        int delta = newTileIndex - _tileIndex;
+        if (Mathf.Abs(delta) == _speed)
         {
+            // Same line or not
+            if(delta > 0)
+            {
+                return (newTileIndex % Game.instance.mapManager.map.columns > _tileIndex % Game.instance.mapManager.map.columns);
+            }
+            if(delta < 0)
+            {
+                return (newTileIndex % Game.instance.mapManager.map.columns < _tileIndex % Game.instance.mapManager.map.columns);
+            }
             return false;
+            
+        } else
+        {
+            // Same column or not
+            return (newTileIndex % Game.instance.mapManager.map.columns == _tileIndex % Game.instance.mapManager.map.columns);
         }
 
-        return true;
     }
 
-    public void MoveRight()
-	{
-		#if DEBUG
-			Debug.Log ("Move Right !");
-		#endif
-        Move(1 * _speed);
-    }
-
-    public bool canMoveUp()
+    public void Move(int newTileIndex)
     {
-        int tmpIndex = tileIndex + (-1 * Game.instance.mapManager.map.columns * _speed);
-
-        // Out of bound
-        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
+        if (this.canAction == true)
         {
-            return false;
-        }
+            tileIndex = newTileIndex;
 
-        // Same line or not
-        if (tmpIndex % Game.instance.mapManager.map.columns != tileIndex % Game.instance.mapManager.map.columns)
-        {
-            return false;
-        }
+            Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
 
-        return true;
+            // AudioManager.instance.plop.Play ();
+            this.SetAction(false);
+        }
     }
 
-    public void MoveUp()
-	{
-		#if DEBUG
-			Debug.Log ("Move Up !");
-		#endif
-        Move(-1 * Game.instance.mapManager.map.columns * _speed);
-    }
-
-    public bool canMoveDown()
-    {
-        int tmpIndex = tileIndex + (Game.instance.mapManager.map.columns * _speed);
-
-        // Out of bound
-        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
-        {
-            return false;
-        }
-
-        // Same line or not
-        if (tmpIndex % Game.instance.mapManager.map.columns != tileIndex % Game.instance.mapManager.map.columns)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public void MoveDown()
-	{
-		#if DEBUG
-			Debug.Log ("Move Down !");
-		#endif
-        Move(Game.instance.mapManager.map.columns * _speed);
-	}
-
-	public void UseMinionGreen()
+    public void UseMinionGreen()
 	{
 		ChangeColor(Color.green);
 	}
@@ -393,19 +331,6 @@ public class Player : MonoBehaviour
 	public void UseMinionRed()
 	{
 		ChangeColor(Color.red);
-	}
-
-	private void Move(int index)
-	{
-		if (this.canAction == true) {
-            tileIndex += index;
-
-            Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
-
-			AudioManager.instance.plop.Play ();
-
-			this.CleanPlayer ();
-		}
 	}
 
 	private void ChangeColor(Color color)

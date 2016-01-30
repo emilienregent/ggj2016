@@ -10,10 +10,14 @@ public enum GamePadInput
 public class ControlManager : MonoBehaviour
 {
     private GamePadInput    _currentInput   = GamePadInput.Default;
+    private int             _newTileIndex;
 
     public static   ControlManager  instance        = null;
+    public          bool            loadMove        = false;
+    public          bool            releaseMove     = false;   
     public          bool            loadAction      = false;
     public          bool            releaseAction   = false;
+    public          int             newTileIndex { get { return _newTileIndex; } }
 
     private void Awake()
     {
@@ -61,86 +65,90 @@ public class ControlManager : MonoBehaviour
 
         if (state.Left == true)
         {
-            if (releaseAction == true)
+            if (releaseMove == true)
             {
-				Game.instance.currentPlayer.MoveLeft();
+				Game.instance.currentPlayer.Move(_newTileIndex);
             }
             else
             {
-                if (Game.instance.currentPlayer.canMoveLeft() == true)
+                _newTileIndex = Game.instance.currentPlayer.tileIndex - (1 * Game.instance.currentPlayer.speed);
+                if (Game.instance.currentPlayer.CanMove(_newTileIndex) == true)
                 {
                     _currentInput = GamePadInput.Left;
-                    loadAction = true;
+                    loadMove = true;
                 }
             }
         }
         else if (_currentInput == GamePadInput.Left)
         {
             _currentInput = GamePadInput.Default;
-            loadAction = false;
+            loadMove = false;
         }
 
         if (state.Up == true)
         {
-            if (releaseAction == true)
+            if (releaseMove == true)
             {
-				Game.instance.currentPlayer.MoveUp();
+				Game.instance.currentPlayer.Move(_newTileIndex);
             }
             else
             {
-                if (Game.instance.currentPlayer.canMoveUp() == true)
+                _newTileIndex = Game.instance.currentPlayer.tileIndex - (1 * Game.instance.currentPlayer.speed * Game.instance.mapManager.map.columns);
+                if (Game.instance.currentPlayer.CanMove(_newTileIndex) == true)
                 {
                     _currentInput = GamePadInput.Up;
-                    loadAction = true;
+                    loadMove = true;
                 }
             }
         }
         else if (_currentInput == GamePadInput.Up)
         {
             _currentInput = GamePadInput.Default;
-            loadAction = false;
+            loadMove = false;
         }
 
         if (state.Right == true)
         {
-            if (releaseAction == true)
+            if (releaseMove == true)
             {
-				Game.instance.currentPlayer.MoveRight();
+				Game.instance.currentPlayer.Move(_newTileIndex);
             }
             else
             {
-                if (Game.instance.currentPlayer.canMoveRight() == true)
+                _newTileIndex = Game.instance.currentPlayer.tileIndex + (1 * Game.instance.currentPlayer.speed);
+                if (Game.instance.currentPlayer.CanMove(_newTileIndex) == true)
                 {
                     _currentInput = GamePadInput.Right;
-                    loadAction = true;
+                    loadMove = true;
                 }
             }
         }
         else if (_currentInput == GamePadInput.Right)
         {
             _currentInput = GamePadInput.Default;
-            loadAction = false;
+            loadMove = false;
         }
 
         if (state.Down == true)
         {
-            if (releaseAction == true)
+            if (releaseMove == true)
             {
-				Game.instance.currentPlayer.MoveDown();
+				Game.instance.currentPlayer.Move(_newTileIndex);
             }
             else
             {
-                if (Game.instance.currentPlayer.canMoveDown() == true)
+                _newTileIndex = Game.instance.currentPlayer.tileIndex + (1 * Game.instance.currentPlayer.speed * Game.instance.mapManager.map.columns);
+                if (Game.instance.currentPlayer.CanMove(_newTileIndex) == true)
                 {
                     _currentInput = GamePadInput.Down;
-                    loadAction = true;
+                    loadMove = true;
                 }
             }
         }
         else if (_currentInput == GamePadInput.Down)
         {
             _currentInput = GamePadInput.Default;
-            loadAction = false;
+            loadMove = false;
         }
 
         if (state.A == true)
@@ -217,8 +225,14 @@ public class ControlManager : MonoBehaviour
 
         if(releaseAction == true)
         {
-            releaseAction = false;
             loadAction = false;
+            releaseAction = false;
+        }
+
+        if (releaseMove == true)
+        {
+            loadMove = false;
+            releaseMove = false;
         }
     }
 }

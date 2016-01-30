@@ -34,6 +34,7 @@ namespace Manager
                 Tile        tile    = _map.tiles[i];
                 GameObject  go      = tile.type < _gameObjects.Length ? _gameObjects[tile.type] : _gameObjects[0];
                 GameObject  tileGO  = GameObject.Instantiate(go);
+                tile.gameObject = tileGO;
 
                 tileGO.name = "Tile " + i;
                 tileGO.transform.position = _map.GetPositionFromIndex(i);

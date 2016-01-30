@@ -19,11 +19,13 @@ namespace Type
 
     public class Tile
     {
-        private int _size   = 10;
-        private int _type   = 0;
+        private GameObject  _gameObject = null;
+        private int         _size       = 10;
+        private int         _type       = 0;
 
-        public  int size    { get { return _size; } set { _size = value; } }
-        public  int type    { get { return _type; } set { _type = value; } }
+        public  GameObject  gameObject  { get { return _gameObject; } set { _gameObject = value; } }
+        public  int         size        { get { return _size; } set { _size = value; } }
+        public  int         type        { get { return _type; } set { _type = value; } }
 
         public Tile(int type)
         {
