@@ -38,6 +38,8 @@ public class Game : MonoBehaviour
     private         Dictionary<ManagerType, IManager>   _managers       = new Dictionary<ManagerType, IManager>();
     private         Dictionary<int, BandOfMinion>       _tileToMinions  = new Dictionary<int, BandOfMinion>();
 
+    private         int             _numberOfTurn               =   0;
+    private         int             _numberOfTurnSinceRespawn   =   0;
 	private 		GameObject		_gameElements	= 	null;
 	public			GameObject		gameElements	{get { return _gameElements; } }
 
@@ -104,6 +106,7 @@ public class Game : MonoBehaviour
     public void StartTurn()
     {
         Debug.Log("Start Turn");
+        _numberOfTurn++;
         this._turnTimer.duration = this.defaultDuration - this._currentPlayer.timeMalus;
         this._turnTimer.Start();
         this.currentPlayer.SetAction(true);
@@ -114,6 +117,20 @@ public class Game : MonoBehaviour
         Debug.Log("End Turn");
         this._currentPlayer.SetAction(false);
         this.SetNextPlayer();
+
+        if (_numberOfTurn % 2 == 0)
+        {
+            if (++_numberOfTurnSinceRespawn % 3 == 0 && Minion.number < 24)
+            {
+                int index = mapManager.map.GetRandomAvailableIndex();
+
+                mapManager.map.TransformTile(index, (TileType)Random.Range((int)TileType.MINION_GREEN, (int)TileType.MINION_YELLOW));
+            }
+            else if (Minion.number >= 24)
+            {
+                _numberOfTurnSinceRespawn = 0;
+            }
+        }
     }
 
 	public Player GetNextPlayer() {
@@ -165,6 +182,9 @@ public class Game : MonoBehaviour
 
 	// Create a minion
 	public Minion CreateMinion(MinionColor color) {
+
+        Minion.number++;
+
 		switch(color) {
 			case MinionColor.BLUE:
 				return Instantiate (this._minionBlue) as MinionBlue;

@@ -44,7 +44,7 @@ namespace Manager
             }
         }
 
-        private void PopulateTile(Tile tile)
+        private void PopulateTile(Tile tile, int count = 0)
         {
             switch ((TileType) tile.type)
             {
@@ -52,7 +52,7 @@ namespace Manager
                 case TileType.MINION_BLUE:
                 case TileType.MINION_GREEN:
                 case TileType.MINION_YELLOW:
-                    Game.instance.tileToMinions.Add(tile.index, new BandOfMinion(tile));
+                    Game.instance.tileToMinions.Add(tile.index, new BandOfMinion(tile, count));
                     break;
             }
         }
@@ -69,6 +69,8 @@ namespace Manager
             Destroy(tile.gameObject);
 
             tile.gameObject = tileGO;
+
+            PopulateTile(tile, Random.Range(1, 5));
         }
     }
 }

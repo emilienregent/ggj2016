@@ -12,6 +12,7 @@ public enum MinionColor
 }
 
 public abstract class Minion : MonoBehaviour {
+    public static int number = 0;
     private static float RANGE = 5f;
     private static float SPEED = 5f;
 	protected	int				_maxPowers		= 0;
@@ -59,6 +60,7 @@ public abstract class Minion : MonoBehaviour {
 
 	// Kill the minion
 	public void Kill() {
+        Minion.number--;
 		Destroy (this.gameObject);
 	}
 

@@ -8,21 +8,23 @@ namespace Type
     {
         private List<Minion> _minions = new List<Minion>();
 
-        public BandOfMinion(Tile tile)
+        public BandOfMinion(Tile tile, int count = 0)
         {
+            int quantity = tile.quantity > 0 ? tile.quantity : count;
+                
             switch((TileType) tile.type)
             {
                 case TileType.MINION_RED:
-                    Initialize(MinionColor.RED, tile.quantity);
+                    Initialize(MinionColor.RED, quantity);
                     break;
                 case TileType.MINION_BLUE:
-                    Initialize(MinionColor.BLUE, tile.quantity);
+                    Initialize(MinionColor.BLUE, quantity);
                     break;
                 case TileType.MINION_GREEN:
-                    Initialize(MinionColor.GREEN, tile.quantity);
+                    Initialize(MinionColor.GREEN, quantity);
                     break;
                 case TileType.MINION_YELLOW:
-                    Initialize(MinionColor.YELLOW, tile.quantity);
+                    Initialize(MinionColor.YELLOW, quantity);
                     break;
             }
 
@@ -66,7 +68,7 @@ namespace Type
                 }
                 else
                 {
-                    GameObject.Destroy(minion.gameObject);
+                    minion.Kill();
                 }
             }
         }
