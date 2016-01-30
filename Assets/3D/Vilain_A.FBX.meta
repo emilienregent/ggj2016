@@ -42,11 +42,12 @@ ModelImporter:
     7400002: YouDie
     7400004: GoThere
     7400006: Walk
+    7400008: Take 001
     9500000: //RootNode
     13700000: Vilain_Arms
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
@@ -58,7 +59,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 0
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -212,7 +213,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Walk
       takeName: Take 001
-      firstFrame: 100
+      firstFrame: 101
       lastFrame: 130
       wrapMode: 0
       orientationOffsetY: 0
@@ -221,7 +222,55 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Vilain_Arms
+        weight: 1
+      - path: Vilain_Body
+        weight: 1
+      - path: Vilain_Body/Bone001
+        weight: 1
+      - path: Vilain_Body/Bone001/Bone002
+        weight: 1
+      - path: Vilain_Body/Bone001/Bone002/Vilain_Hand_L
+        weight: 1
+      - path: Vilain_Body/Bone001(mirrored)
+        weight: 1
+      - path: Vilain_Body/Bone001(mirrored)/Bone002(mirrored)
+        weight: 1
+      - path: Vilain_Body/Bone001(mirrored)/Bone002(mirrored)/Vilain_Hand_L001
+        weight: 1
+      - path: Vilain_Body/Vilain_Head
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 260
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
