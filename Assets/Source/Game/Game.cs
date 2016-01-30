@@ -139,7 +139,7 @@ public class Game : MonoBehaviour
 	}
 
 	// Create a minion
-	private Minion CreateMinion(MinionColor color) {
+	public Minion CreateMinion(MinionColor color) {
 		switch(color) {
 			case MinionColor.BLUE:
 				return Instantiate (this._minionBlue) as MinionBlue;
@@ -149,8 +149,9 @@ public class Game : MonoBehaviour
 				return Instantiate (this._minionRed) as MinionRed;
 			case MinionColor.YELLOW:
 				return Instantiate (this._minionYellow) as MinionYellow;
-			default:
-				return null;
+		default:
+			MinionColor randomColor = (MinionColor) Random.Range (1, System.Enum.GetValues(typeof(MinionColor)).Length);
+			return this.CreateMinion (randomColor);
 		}
 	}
 	

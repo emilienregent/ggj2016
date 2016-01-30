@@ -49,7 +49,7 @@ namespace Type
         {
             if (player.CanAddMinion() == true)
             {
-                player.AddMinion(Game.instance.createMinion(color));
+                player.AddMinion(Game.instance.CreateMinion(color));
             }
         }
     }
