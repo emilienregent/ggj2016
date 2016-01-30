@@ -161,7 +161,7 @@ namespace Type
         {
             if (indexTile < _tiles.Count)
             {
-                _tiles[indexTile].type = (int)type;
+                _tiles[indexTile].SetType(type);
             }
         }
         
@@ -182,8 +182,8 @@ namespace Type
 
             if (indexTile < _tiles.Count)
             {
-                _tiles[indexTile].type = (int)TileType.ALTAR;
-                _tiles[currentIndexOfAltar].type = (int)TileType.DEFAULT;
+                TransformTile(indexTile, TileType.ALTAR);
+                TransformTile(currentIndexOfAltar, TileType.DEFAULT);
             }
         }
 

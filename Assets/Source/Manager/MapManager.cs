@@ -41,5 +41,19 @@ namespace Manager
                 tileGO.transform.SetParent(_root.transform);
             }
         }
+
+        public void RefreshTile(Tile tile)
+        {
+            GameObject  go      = tile.type < _gameObjects.Length ? _gameObjects[tile.type] : _gameObjects[0];
+            GameObject  tileGO  = GameObject.Instantiate(go);
+
+            tileGO.name = tile.gameObject.name;
+            tileGO.transform.position = tile.gameObject.transform.position;
+            tileGO.transform.SetParent(_root.transform);
+
+            Destroy(tile.gameObject);
+
+            tile.gameObject = tileGO;
+        }
     }
 }

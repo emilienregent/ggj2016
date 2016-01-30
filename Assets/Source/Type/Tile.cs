@@ -54,5 +54,12 @@ namespace Type
                 player.AddMinion(Game.instance.CreateMinion(color));
             }
         }
+
+        public void SetType(TileType type)
+        {
+            _type = (int)type;
+
+            Game.instance.mapManager.RefreshTile(this);
+        }
     }
 }
