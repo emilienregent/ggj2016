@@ -36,7 +36,8 @@ public class Game : MonoBehaviour
     private         int             _mapIndex       =   0;
     [SerializeField]
     private         GameObject      _managerRoot    = 	null;
-    private         Dictionary<ManagerType, IManager>  _managers = new Dictionary<ManagerType, IManager>();
+    private         Dictionary<ManagerType, IManager>   _managers       = new Dictionary<ManagerType, IManager>();
+    private         Dictionary<int, BandOfMinion>       _tileToMinions  = new Dictionary<int, BandOfMinion>();
 
 	private 		GameObject		_gameElements	= 	null;
 	public			GameObject		gameElements	{get { return _gameElements; } }
@@ -48,6 +49,7 @@ public class Game : MonoBehaviour
 	public			Player			currentPlayer	{ get { return _currentPlayer; } }
     public          MapManager      mapManager      { get { return (MapManager) _managers[ManagerType.MAP]; } }
 	public			float			defaultDuration { get { return _defaultDuration; } }
+    public          Dictionary<int, BandOfMinion> tileToMinions  { get { return _tileToMinions; } set { _tileToMinions = value; } }
 
 	private void Awake()
 	{
@@ -128,7 +130,6 @@ public class Game : MonoBehaviour
         player.tileIndex = tileIndex;
         player.controllerIndex = (GamePad.Index)(playerIndex + 1);
         playerElements.name = player.name + " Elements";
-        //player.gameObject.transform.position = mapManager.map.GetPositionFromIndex(tileIndex);
 
 		playerElements.transform.SetParent (this.gameElements.transform);
 		player.transform.SetParent (playerElements.transform);

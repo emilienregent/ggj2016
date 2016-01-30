@@ -34,7 +34,7 @@ namespace Helper.Parser
                                 int index = map.GetIndexFromPosition(x, y);
                                 int type = node["tiles"][index].AsInt;
 
-                                map.tiles.Add(new Tile(type));
+                                map.tiles.Add(new Tile(type, index));
                             }
                         }
 

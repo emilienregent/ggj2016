@@ -39,6 +39,21 @@ namespace Manager
                 tileGO.name = "Tile " + i;
                 tileGO.transform.position = _map.GetPositionFromIndex(i);
                 tileGO.transform.SetParent(_root.transform);
+
+                PopulateTile(tile);
+            }
+        }
+
+        private void PopulateTile(Tile tile)
+        {
+            switch ((TileType) tile.type)
+            {
+                case TileType.MINION_RED:
+                case TileType.MINION_BLUE:
+                case TileType.MINION_GREEN:
+                case TileType.MINION_YELLOW:
+                    Game.instance.tileToMinions.Add(tile.index, new BandOfMinion(tile));
+                    break;
             }
         }
 

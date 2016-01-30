@@ -22,14 +22,17 @@ namespace Type
         private GameObject  _gameObject = null;
         private int         _size       = 10;
         private int         _type       = 0;
+        private int         _index      = -1;
 
         public  GameObject  gameObject  { get { return _gameObject; } set { _gameObject = value; } }
         public  int         size        { get { return _size; } set { _size = value; } }
         public  int         type        { get { return _type; } set { _type = value; } }
+        public  int         index       { get { return _index; } }
 
-        public Tile(int type)
+        public Tile(int type, int index = -1)
         {
-            _type = type;
+            _type   = type;
+            _index  = index;
         }
 
         public void ApplyOnPlayer(Player player)
