@@ -80,12 +80,12 @@ namespace Tools
 
                             EditorGUILayout.BeginHorizontal();
                             GUI.enabled = type >= TileType.MINION_GREEN && type <= TileType.MINION_YELLOW;
-                            int quantity = EditorGUILayout.IntSlider(_maps[i].tiles[index].quantity, 1, 5);
+                            int quantity = EditorGUILayout.IntField(_maps[i].tiles[index].quantity);
                             GUI.enabled = true;
                             EditorGUILayout.EndHorizontal();
 
                             _maps[i].tiles[index].type = (int)type;
-                            _maps[i].tiles[index].quantity = quantity;
+                            _maps[i].tiles[index].quantity = Mathf.Max(Mathf.Min(quantity, 5), 1);
 
                             EditorGUILayout.EndVertical();
                         }
