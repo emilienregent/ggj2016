@@ -33,7 +33,7 @@ public class MinionRed : Minion {
 
 	// Kill all the minions of the other player
 	private void KillAllMinions() {
-		// TODO : foreach P2 minons ; p2.remove; minion.kill();
+		Game.instance.GetNextPlayer ().KillAllMinions ();
 #if DEBUG
 		Debug.Log ("All minions of the other player have been killed");
 #endif
@@ -41,10 +41,10 @@ public class MinionRed : Minion {
 
 	// Invert the controls of the player, and play wierd sounds
 	private void InvertControl() {
+		Game.instance.GetNextPlayer ().speed *= -1;
 #if DEBUG
 		Debug.Log ("The other player has his controls inverted");
 #endif
-		// TODO : P2.controlManager.invert;
 	}
 
 	// Disperse all the minions of the other player

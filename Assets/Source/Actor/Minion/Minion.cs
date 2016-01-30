@@ -60,7 +60,7 @@ public abstract class Minion : MonoBehaviour {
 
 	// Kill the minion
 	public void Kill() {
-		Destroy (this);
+		Destroy (this.gameObject);
 	}
 
 	// Execute one random power of the minion

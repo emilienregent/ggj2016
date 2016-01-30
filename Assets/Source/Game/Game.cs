@@ -22,6 +22,8 @@ public class Game : MonoBehaviour
 	private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
 	[SerializeField]
+	private			float			_defaultDuration	=	0f;
+	[SerializeField]
 	private 		Player			_currentPlayer 	= 	null;
 	[SerializeField]
 	private			MinionBlue 		_minionBlue 	= 	null;
@@ -33,10 +35,10 @@ public class Game : MonoBehaviour
 	private			MinionYellow	_minionYellow	=	null;
     private         int             _mapIndex       =   0;
     [SerializeField]
-    private         GameObject      _managerRoot    = null;
+    private         GameObject      _managerRoot    = 	null;
     private         Dictionary<ManagerType, IManager>  _managers = new Dictionary<ManagerType, IManager>();
 
-	private 		GameObject		_gameElements	= null;
+	private 		GameObject		_gameElements	= 	null;
 	public			GameObject		gameElements	{get { return _gameElements; } }
 
 	public static 	Game 	    	instance		= 	null;
@@ -87,24 +89,30 @@ public class Game : MonoBehaviour
         this._currentPlayer = this.players[0];
         this._currentPlayer.SetAction(true);
 
-        SwitchState(GameState.INTRO);
+		SwitchState(GameState.INTRO);
     }
 
 	// Set the next player as active
 	public void SetNextPlayer() {
-        int playerIndex = this.players.IndexOf(this._currentPlayer);
-
-        if (playerIndex == (this.players.Count - 1))
-        {
-            this._currentPlayer = this.players[0];
-        }
-        else
-        {
-            this._currentPlayer = this.players[playerIndex + 1];
-        }
-
+		this._currentPlayer = this.GetNextPlayer ();
         this._currentPlayer.SetAction(true);
+
+		this._stateTimer.duration = this._defaultDuration - this._currentPlayer.timeMalus;
+		this._stateTimer.Start ();
     }
+
+	public Player GetNextPlayer() {
+		int playerIndex = this.players.IndexOf(this._currentPlayer);
+
+		if (playerIndex == (this.players.Count - 1))
+		{
+			return this.players[0];
+		}
+		else
+		{
+			return this.players[playerIndex + 1];
+		}
+	}
 
 	// Initialize one player
 	private void InitializePlayer(int playerIndex) {
@@ -166,6 +174,7 @@ public class Game : MonoBehaviour
 			} 
 			else if(_state == GameState.GAME)
 			{
+				this.currentPlayer.SetAction (false);
 				// Do things
 			}
 		}
@@ -183,6 +192,8 @@ public class Game : MonoBehaviour
 		else if(state == GameState.GAME)
 		{
 			AudioManager.instance.mainMusic.Play();
+			this._stateTimer.duration = this._defaultDuration - this._currentPlayer.timeMalus;
+			this._stateTimer.Start ();
 		}
 	}
 

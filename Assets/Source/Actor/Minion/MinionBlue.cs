@@ -52,6 +52,9 @@ public class MinionBlue : Minion {
 	// Switch the position of the two players
 	private void SwitchPlayersPositions() {
 		// TODO : moveP1ToP2, moveP2ToP1; moveMinionsP1; moveMinionsP2;
+		int currentPlayerIndexTile = Game.instance.currentPlayer.tileIndex;
+		Game.instance.currentPlayer.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(Game.instance.GetNextPlayer ().tileIndex);
+		Game.instance.GetNextPlayer ().transform.position = Game.instance.mapManager.map.GetPositionFromIndex(currentPlayerIndexTile);
 #if DEBUG
 		Debug.Log ("Position of the 2 players has been switched !");
 #endif

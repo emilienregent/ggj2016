@@ -23,7 +23,9 @@ public class Player : MonoBehaviour
     private			int			    _tileIndex 		= 	0;
 	private			bool			_canAction		= 	false;
     private         GamePad.Index   _controllerIndex = GamePad.Index.One;
-	private			bool			_canWalkThroughObstacle 	= 	false;
+//	private			bool			_canWalkThroughObstacle 	= 	false;
+	private			float			_timeMalus		=	0f;
+	private			int				_speedBonus		=	0;
 
     public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
     public			int			    tileIndex		{ get { return _tileIndex; } set { 
@@ -31,10 +33,12 @@ public class Player : MonoBehaviour
             gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
         } }
 
-    public          int             speed           { get { return _speed; } }
     public			int				score			{ get { return _score; } set { _score = value; } }
 	public			bool			canAction		{ get { return _canAction; } }
-	public			bool			canWalkThroughObstacle		{ get { return _canWalkThroughObstacle; } set { _canWalkThroughObstacle = value; }  }
+//	public			bool			canWalkThroughObstacle		{ get { return _canWalkThroughObstacle; } set { _canWalkThroughObstacle = value; }  }
+	public			int				speed			{ get { return _speed; } set { _speed = value; } }
+	public			int				speedBonus	{ get { return _speedBonus; } set { _speedBonus = value; } }
+	public			float			timeMalus		{ get { return _timeMalus; } set { _timeMalus = value; } }
 
 
     // Use this for initialization
@@ -93,6 +97,7 @@ public class Player : MonoBehaviour
 		this._canAction = canAction;
         if (canAction == false)
         {
+			this.CleanPlayer ();
             Game.instance.SetNextPlayer();
         }
     }
@@ -124,7 +129,8 @@ public class Player : MonoBehaviour
                     break;
 
             }
-			this.CleanPlayer ();
+
+			this.SetAction (false);
 		}
 	}
 
@@ -133,6 +139,15 @@ public class Player : MonoBehaviour
 		Minion minion = this.GetMinion (color);
 		this._minions.Remove (minion);
 		minion.Kill ();
+	}
+
+	public void KillAllMinions() {
+		Minion minion = null;
+		while(this.GetCountMinions () > 0) {
+			minion = this._minions [0];
+			this.RemoveMinion (minion.color);
+			minion.Kill ();
+		}
 	}
 
 	// Return one minion of the selected color
@@ -263,13 +278,37 @@ public class Player : MonoBehaviour
 
 	public void Release ()
 	{
+	}
+
+    public bool canMoveLeft()
+    {
+        int tmpIndex = tileIndex - (1 * _speed);
+
+        // Out of bound
+        if (tmpIndex < 0 || tmpIndex > Game.instance.mapManager.map.tiles.Count - 1)
+        {
+            return false;
+        }
+
+        // Same line or not
+        if (tmpIndex % Game.instance.mapManager.map.columns > tileIndex % Game.instance.mapManager.map.columns)
+        {
+            return false;
+        }
+
+        return true;
     }
 
-    public void CleanPlayer()
-    {
-        this._canWalkThroughObstacle = false;
-        this._canAction = false;
-    }
+	public void CleanPlayer() {
+//		this._canWalkThroughObstacle = false;
+		this._speed = 1;
+		this._canAction = false;
+
+		if(this.speedBonus > 0) {
+			this.speed = this.speedBonus;
+			this.speedBonus = 0;
+		}
+	}
 
     public bool CanMove(int newTileIndex)
     {
@@ -301,20 +340,7 @@ public class Player : MonoBehaviour
 
     }
 
-    public void Move(int newTileIndex)
-    {
-        if (this.canAction == true)
-        {
-            tileIndex = newTileIndex;
-
-            Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
-
-            // AudioManager.instance.plop.Play ();
-            this.SetAction(false);
-        }
-    }
-
-    public void UseMinionGreen()
+	public void UseMinionGreen()
 	{
 		ChangeColor(Color.green);
 	}
@@ -332,6 +358,19 @@ public class Player : MonoBehaviour
 	public void UseMinionRed()
 	{
 		ChangeColor(Color.red);
+	}
+
+	public void Move(int newTileIndex)
+	{
+		if (this.canAction == true)
+		{
+			tileIndex = newTileIndex;
+
+			Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
+
+			// AudioManager.instance.plop.Play ();
+			this.SetAction(false);
+		}
 	}
 
 	private void ChangeColor(Color color)

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Type;
 
 public class MinionYellow : Minion {
 
@@ -33,24 +34,26 @@ public class MinionYellow : Minion {
 
 	// Reduce the timer of the other player
 	private void ReduceTime() {
+		Game.instance.GetNextPlayer ().timeMalus = BonusConfiguration.TIME_MALUS;
 #if DEBUG
 		Debug.Log ("The other player will lost X second on his next turn");
 #endif
-		// TODO : getOtherPlayer, player.timeMalus = X;
 	}
 
 	// Move the player X tiles away
 	private void IncreaseMovingSpeed() {
+		Game.instance.currentPlayer.speedBonus = BonusConfiguration.SPEED_BONUS;
+
 #if DEBUG
 		Debug.Log ("The player has moved X tiles away");
 #endif
-		// TODO : select a random direction, move X
 	}
 
 	private void TeleportPlayer() {
+		int randomIndex = Game.instance.mapManager.map.GetRandomAvailableIndex ();
+		Game.instance.currentPlayer.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(randomIndex);
 #if DEBUG
 		Debug.Log ("The player has been teleported to a random position");
 #endif
-		// TODO : select one valid position, move player to this position
 	}
 }
