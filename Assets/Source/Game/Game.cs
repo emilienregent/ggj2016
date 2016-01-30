@@ -139,7 +139,7 @@ public class Game : MonoBehaviour
 	}
 
 	// Create a minion
-	private Minion createMinion(MinionColor color) {
+	public Minion createMinion(MinionColor color) {
 		switch(color) {
 			case MinionColor.BLUE:
 				return Instantiate (this._minionBlue) as MinionBlue;

@@ -29,5 +29,28 @@ namespace Type
         {
             _type = type;
         }
+
+        public void ApplyOnPlayer(Player player)
+        {
+            switch (type)
+            {
+                case TileType.MINION_RED : CreateMinion(player, MinionColor.RED);
+                    break;
+                case TileType.MINION_BLUE : CreateMinion(player, MinionColor.BLUE);
+                    break;
+                case TileType.MINION_GREEN : CreateMinion(player, MinionColor.GREEN);
+                    break;
+                case TileType.MINION_YELLOW : CreateMinion(player, MinionColor.YELLOW);
+                    break;
+            }
+        }
+
+        private void CreateMinion(Player player, MinionColor color)
+        {
+            if (player.CanAddMinion() == true)
+            {
+                player.AddMinion(Game.instance.createMinion(color));
+            }
+        }
     }
 }

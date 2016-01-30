@@ -400,6 +400,8 @@ public class Player : MonoBehaviour
 		if (this.canAction == true) {
             tileIndex += index;
 
+            Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
+
 			AudioManager.instance.plop.Play ();
 
 			this.CleanPlayer ();
