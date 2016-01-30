@@ -135,7 +135,9 @@ public class Game : MonoBehaviour
 		foreach(MinionColor color in this._minions_start) {
 
             if (player.CanAddMinion () == true) {
-                player.AddMinion (this.CreateMinion(color));
+                Minion minion = this.CreateMinion(color);
+                minion.transform.position = player.transform.position;
+                player.AddMinion(minion);
 			} else {
 #if DEBUG
 					Debug.Log("Max minions reached for player " + player.name);
