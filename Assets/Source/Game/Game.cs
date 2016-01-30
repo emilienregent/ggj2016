@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Manager;
+using Type;
 
 public enum GameState
 {
@@ -27,6 +29,9 @@ public class Game : MonoBehaviour
 	[SerializeField]
 	private			MinionYellow	_minionYellow	=	null;
     private         int             _mapIndex       =   0;
+    [SerializeField]
+    private         GameObject      _managerRoot    = null;
+    private         Dictionary<ManagerType, IManager>  _managers = new Dictionary<ManagerType, IManager>();
 
 	private 		GameObject		_gameElements	= null;
 	public			GameObject		gameElements	{get { return _gameElements; } }
@@ -35,15 +40,43 @@ public class Game : MonoBehaviour
 	public 			List<Player>	players			= 	new List<Player>();
 	public 			GameState 		state 			{ get { return _state; } }
     public          int             mapIndex        { get { return _mapIndex; } }
+
 	public			Player			currentPlayer	{ get { return _currentPlayer; } }
+    public          MapManager      mapManager      { get { return (MapManager) _managers[ManagerType.MAP]; } }
 
 	private void Awake()
 	{
 		instance = this;
+
 		this._gameElements = GameObject.Find ("GameElements");
 
         SwitchState(GameState.INTRO);
 
+        if (_managerRoot != null)
+        {
+            foreach(Transform child in _managerRoot.transform)
+            {
+                IManager manager = child.GetComponent<IManager>();
+
+                if (manager != null)
+                {
+                    _managers.Add(manager.type, manager);
+                }
+            }
+        }
+
+        foreach(KeyValuePair<ManagerType, IManager> pair in _managers)
+        {
+            pair.Value.Initialize();
+        }
+
+#if UNITY_EDITOR
+		Application.targetFrameRate = 60;
+#endif
+    }
+
+    private void Start()
+    {
         // Initialize all players
         for (int i = 0; i < _MAX_PLAYERS; i++)
         {
@@ -53,48 +86,51 @@ public class Game : MonoBehaviour
         // Set active player
         this._currentPlayer = this.players[0];
         this._currentPlayer.SetAction(true);
-
-#if UNITY_EDITOR
-		Application.targetFrameRate = 60;
-#endif
     }
 
 	// Set the next player as active
 	public void SetNextPlayer() {
-		int playerIndex = this.players.IndexOf (this._currentPlayer);
+        int playerIndex = this.players.IndexOf(this._currentPlayer);
 
-		if(playerIndex == (this.players.Count -1)) {
-			this._currentPlayer = this.players[0];
-		} else {
-			this._currentPlayer = this.players[playerIndex + 1];
-		}
+        if (playerIndex == (this.players.Count - 1))
+        {
+            this._currentPlayer = this.players[0];
+        }
+        else
+        {
+            this._currentPlayer = this.players[playerIndex + 1];
+        }
 
-		this._currentPlayer.SetAction (true);
-	}
-
-	// Use this for initialization
-	private void Start () 
-	{
-	}
+        this._currentPlayer.SetAction(true);
+    }
 
 	// Initialize one player
 	private void InitializePlayer(int playerIndex) {
-		this.players [playerIndex] = Instantiate (this.players [playerIndex]) as Player;
-		this.players [playerIndex].name = "Player " + (playerIndex + 1);
+        
+        Player player = Instantiate (this.players[playerIndex]) as Player;
 
-		GameObject playerElements = new GameObject(this.players [playerIndex].name + " Elements");
+        TileType    tileType        = playerIndex == 0 ? TileType.START_P1 : TileType.START_P2;
+        int         tileIndex       = mapManager.map.GetStartIndex(tileType);
+        GameObject  playerElements  = new GameObject();
+
+        player.name = "Player " + (playerIndex + 1);
+        playerElements.name = player.name + " Elements";
+        player.gameObject.transform.position = mapManager.map.GetPositionFromIndex(tileIndex);
+
 		playerElements.transform.SetParent (this.gameElements.transform);
-		this.players [playerIndex].transform.SetParent (playerElements.transform);
+		player.transform.SetParent (playerElements.transform);
 
 		foreach(MinionColor color in this._minions_start) {
-			if (this.players [playerIndex].CanAddMinion () == true) {
-				this.players [playerIndex].AddMinion (this.createMinion (color));
+            if (player.CanAddMinion () == true) {
+                player.AddMinion (this.createMinion(color));
 			} else {
-				#if DEBUG
-					Debug.Log("Max minions reached for player " + this.players [playerIndex].name);
-				#endif
+#if DEBUG
+					Debug.Log("Max minions reached for player " + player.name);
+#endif
 			}
 		}
+
+        this.players[playerIndex] = player;
 	}
 
 	// Create a minion

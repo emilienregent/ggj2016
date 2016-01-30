@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Type
 {
@@ -22,6 +23,31 @@ namespace Type
         public int GetIndexFromPosition(int x, int y)
         {
             return x + y * _columns;
+        }
+
+        public Vector3 GetPositionFromIndex(int index)
+        {
+            if (index < _tiles.Count)
+            {
+                int size = _tiles[index].size;
+
+                return new Vector3(- (index % _columns) * size, 0f, (index / _columns) * size);
+            }
+
+            return new Vector3();
+        }
+
+        public int GetStartIndex(TileType type)
+        {
+            for (int i = 0; i < _tiles.Count; i++)
+            {
+                if (_tiles[i].type == (int)type)
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
     }
 }

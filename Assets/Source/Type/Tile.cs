@@ -6,8 +6,15 @@ namespace Type
     public enum TileType
     {
         DEFAULT,
-        OBSTACLE,
-        MINION
+        START_P1,
+        START_P2,
+        FINISH,
+        MINION_GREEN,
+        MINION_RED, 
+        MINION_BLUE,
+        MINION_YELLOW,
+        OBSTACLE_1,
+        OBSTACLE_2
     }
 
     public class Tile

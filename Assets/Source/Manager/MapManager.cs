@@ -4,39 +4,41 @@ using System.Collections.Generic;
 using Type;
 using Helper.Parser;
 
-public class MapManager : MonoBehaviour
+namespace Manager
 {
-    [SerializeField]
-    private GameObject[] _gameObjects = new GameObject[0];
-
-    private List<Map>   _maps   = new List<Map>();
-    private Map         _map    = null;
-    private GameObject  _root   = null;
-
-    private void Awake()
+    public class MapManager : IManager
     {
-        Debug.Log("Awake Map Manager");
-    }
+        [SerializeField]
+        private GameObject[] _gameObjects = new GameObject[0];
 
-    // Use this for initialization
-    private void Start()
-    {
-        Debug.Log("Start Map Manager");
+        private List<Map>   _maps   = new List<Map>();
+        private Map         _map    = null;
+        private GameObject  _root   = null;
 
-        _root   = new GameObject("Map");
-        _maps   = MapParser.Parse();
-        _map    = _maps[Game.instance.mapIndex];
+        public  ManagerType type    = ManagerType.MAP;
+        public  Map         map     { get { return _map; } }
 
-        Debug.Log("Create a map with " + _map.tiles.Count + " tiles on " + _map.lines + " lines and " + _map.columns + " columns");
-
-        for (int i = 0; i < _map.tiles.Count; i++)
+        // Use this for initialization
+        override public void Initialize()
         {
-            Tile        tile    = _map.tiles[i];
-            GameObject  tileGO  = Instantiate(_gameObjects[tile.type]);
+            _root   = new GameObject("Map");
+            _maps   = MapParser.Parse();
+            _map    = _maps[Game.instance.mapIndex];
 
-            tileGO.name = "Tile " + i;
-            tileGO.transform.position = new Vector3(- (i % _map.columns) * tile.size, 0f, (i / _map.columns) * tile.size);
-            tileGO.transform.SetParent(_root.transform);
+    #if DEBUG
+            Debug.Log("Create a map with " + _map.tiles.Count + " tiles on " + _map.lines + " lines and " + _map.columns + " columns");
+    #endif
+
+            for (int i = 0; i < _map.tiles.Count; i++)
+            {
+                Tile        tile    = _map.tiles[i];
+                GameObject  go      = tile.type < _gameObjects.Length ? _gameObjects[tile.type] : _gameObjects[0];
+                GameObject  tileGO  = GameObject.Instantiate(go);
+
+                tileGO.name = "Tile " + i;
+                tileGO.transform.position = _map.GetPositionFromIndex(i);
+                tileGO.transform.SetParent(_root.transform);
+            }
         }
     }
 }
