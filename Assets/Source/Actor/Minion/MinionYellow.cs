@@ -52,7 +52,7 @@ public class MinionYellow : Minion {
 
 	private void TeleportPlayer() {
 		int randomIndex = Game.instance.mapManager.map.GetRandomAvailableIndex ();
-		Game.instance.currentPlayer.tileIndex = randomIndex;
+		Game.instance.currentPlayer.Teleport (randomIndex);
 #if DEBUG
 		Debug.Log ("The player has been teleported to a random position");
 #endif
