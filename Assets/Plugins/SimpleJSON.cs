@@ -714,7 +714,13 @@ namespace SimpleJSON
         {
             get { return m_Dict.Count; }
         }
- 
+        public ArrayList GetKeys() // The method is named "GetKeys()"
+        {
+            ArrayList arrayOfStrings = new ArrayList(); // declares new array
+            foreach (KeyValuePair<string, JSONNode> N in m_Dict) // for each key/values
+                arrayOfStrings.Add(N.Key); // I add only the keys
+            return arrayOfStrings; // And then I get them all :D
+        }
  
         public override void Add(string aKey, JSONNode aItem)
         {

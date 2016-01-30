@@ -26,10 +26,12 @@ public class Game : MonoBehaviour
 	private			MinionRed		_minionRed		=	null;
 	[SerializeField]
 	private			MinionYellow	_minionYellow	=	null;
+    private         int             _mapIndex       =   0;
 
 	public static 	Game 	    	instance		= 	null;
 	public 			List<Player>	players			= 	new List<Player>();
 	public 			GameState 		state 			{ get { return _state; } }
+    public          int             mapIndex        { get { return _mapIndex; } }
 
 	private void Awake()
 	{
