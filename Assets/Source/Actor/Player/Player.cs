@@ -18,11 +18,12 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	private 		List<Minion> 	_minions 		    = 	new List<Minion>();
 	[SerializeField]
-	private 		int 			_score 			= 	0;
+	private 		int 			_score 						= 	0;
 	[SerializeField]
     private			int			    _tileIndex 		= 	0;
 	private			bool			_canAction		= 	false;
     private         GamePad.Index   _controllerIndex = GamePad.Index.One;
+	private			bool			_canWalkThroughObstacle 	= 	false;
 
     public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
     public			int			    tileIndex		{ get { return _tileIndex; } set { 
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
         } }
 	public			int				score			{ get { return _score; } set { _score = value; } }
 	public			bool			canAction		{ get { return _canAction; } }
+	public			bool			canWalkThroughObstacle		{ get { return _canWalkThroughObstacle; } set { _canWalkThroughObstacle = value; }  }
 
 
     // Use this for initialization
@@ -96,7 +98,10 @@ public class Player : MonoBehaviour
 	public void SacrificeMinion(MinionColor color) {
 		if(this.canAction == true) {
             // Todo : A décommenter
-			// minion.Sacrifice ();
+			Minion minion = this.GetMinion(color);
+		 	minion.Sacrifice ();
+			minion.Kill ();
+
             switch (color)
             {
                 case MinionColor.GREEN:
@@ -116,8 +121,15 @@ public class Player : MonoBehaviour
                     break;
 
             }
-			this.SetAction(false);
+			this.CleanPlayer ();
 		}
+	}
+
+	// Kill one minion, without trigger his effect
+	public void KillMinion(MinionColor color) {
+		Minion minion = this.GetMinion (color);
+		this._minions.Remove (minion);
+		minion.Kill ();
 	}
 
 	// Return one minion of the selected color
@@ -269,6 +281,11 @@ public class Player : MonoBehaviour
         return true;
     }
 
+	public void CleanPlayer() {
+		this._canWalkThroughObstacle = false;
+		this._canAction = false;
+	}
+
 	public void MoveLeft()
 	{
 		#if DEBUG
@@ -384,7 +401,8 @@ public class Player : MonoBehaviour
             tileIndex += index;
 
 			AudioManager.instance.plop.Play ();
-			this.SetAction(false);
+
+			this.CleanPlayer ();
 		}
 	}
 

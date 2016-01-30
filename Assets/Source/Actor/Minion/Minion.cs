@@ -13,26 +13,36 @@ public enum MinionColor
 
 
 public abstract class Minion : MonoBehaviour {
-
+	protected	int				_maxPowers		=	0;
 	[SerializeField]
 	protected 	MinionColor 	_color;
 	[SerializeField]
-	protected	Tile 			_position	=	null;
-	public		MinionColor		color		{ get { return _color; } set { _color = value; } }
+	protected	Tile 			_position		=	null;
+	protected 	bool			_canSacrifice 	= 	true;
 
-	public		Tile			position	{ get { return _position; } set { _position = value; } }
+	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
+	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
+	public		Tile			position		{ get { return _position; } set { _position = value; } }
 
 	// Trigger one bonus of the minion, and kill the minion
 	public void Sacrifice() {
-		#if DEBUG
-			Debug.Log ("Minion's power activated !");
-		#endif
-//		this.ExecuteRandomPower ();
-		// TODO : destroy minion object
+		if(this.canSacrifice == true) {
+			#if DEBUG
+				Debug.Log ("Minion's power activated !");
+			#endif
+			this.ExecuteRandomPower ();
+			// TODO : destroy minion object
+		}
+
+	}
+
+	// Kill the minion
+	public void Kill() {
+		Destroy (this);
 	}
 
 	// Execute one random power of the minion
-//	protected abstract void ExecuteRandomPower ();
+	protected abstract void ExecuteRandomPower ();
 
 	// Use this for initialization
 	private void Start () {
