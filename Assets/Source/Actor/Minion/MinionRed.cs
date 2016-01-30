@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Type;
 
 public class MinionRed : Minion {
 
@@ -17,7 +19,7 @@ public class MinionRed : Minion {
 	// Execute one random power of the minion
 	override protected void ExecuteRandomPower() {
 		int random = Random.Range (0, this._maxPowers);
-
+		random = 2;
 		switch(random) {
 			case 0:
 				this.KillAllMinions ();
@@ -49,9 +51,24 @@ public class MinionRed : Minion {
 
 	// Disperse all the minions of the other player
 	private void DisperseMinions() {
+		List<int> freeTiles = Game.instance.mapManager.map.GetArea (Game.instance.GetNextPlayer ().tileIndex, (int)BonusConfiguration.DISPERSION_MINIONS_AREA.x, (int)BonusConfiguration.DISPERSION_MINIONS_AREA.y, TileType.DEFAULT);
+
+		foreach(int tileIndex in freeTiles) {
+			if (Game.instance.GetNextPlayer ().GetCountMinions (MinionColor.ANY) <= 0) {
+				break;
+			}
+
+			MinionColor randomColor = Game.instance.GetNextPlayer ().GetMinion (MinionColor.ANY).color;
+
+			List<Minion> minions = Game.instance.GetNextPlayer ().GetMinions (randomColor);
+			foreach(Minion minion in minions) {
+				Game.instance.GetNextPlayer ().RemoveMinion (minion.color);
+				minion.tileIndex = tileIndex;
+				minion.anchor = Game.instance.mapManager.map.tiles [tileIndex].gameObject.transform;
+			}
+		}
 #if DEBUG
 		Debug.Log ("The minions of the other player have been dispersed");
 #endif
-		// TODO : getValidPositionsAroundP2, foreach positions put all minions of color X		
 	}
 }

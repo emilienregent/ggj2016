@@ -14,6 +14,11 @@ namespace Type {
 
 		public static Vector2 	GENERATE_MINIONS_AREA 	= new Vector2(3, 3);
 
+		public static Vector2	DISPERSION_MINIONS_AREA = new Vector2(3, 3);
+
+		public static int		MIN_POP_MINIONS			= 3;
+		public static int		MAX_POP_MINIONS			= 5;
+
 		public BonusConfiguration() {
 			
 		}

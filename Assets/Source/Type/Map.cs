@@ -136,7 +136,7 @@ namespace Type
                     }
                 }
             }
-
+			indexes.Remove (indexTile);
             return indexes;
         }
 

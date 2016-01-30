@@ -54,6 +54,21 @@ namespace Type
             }
         }
 
+		public static TileType getTileTypeForColor(MinionColor color) {
+			switch(color) {
+				case MinionColor.BLUE:
+					return TileType.MINION_BLUE;
+				case MinionColor.GREEN:
+					return TileType.MINION_GREEN;
+				case MinionColor.RED:
+					return TileType.MINION_RED;
+				case MinionColor.YELLOW:
+					return TileType.MINION_YELLOW;
+				default :
+					return TileType.DEFAULT;
+			}
+		}
+
         public void SetType(TileType type)
         {
             _type = (int)type;

@@ -40,7 +40,8 @@ public class Player : MonoBehaviour
 	public			int				speed			{ get { return _speed; } set { _speed = value; } }
 	public			int				speedBonus		{ get { return _speedBonus; } set { _speedBonus = value; } }
 	public			float			timeMalus		{ get { return _timeMalus; } set { _timeMalus = value; } }
-	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }	
+	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }
+	public			List<Minion>	minions			{ get { return _minions; } set { _minions = value; } }
 
     // Use this for initialization
     private void Start ()
@@ -196,6 +197,20 @@ public class Player : MonoBehaviour
 			Debug.Log ("ERROR PLAYER " + this.name + " DOESN'T HAVE MINIONS");
 			#endif
 			return null;
+		}
+	}
+
+	public List<Minion> GetMinions(MinionColor color) {
+		if(color == MinionColor.ANY) {
+			return this.minions;
+		} else {
+			List<Minion> minions = new List<Minion> ();
+			foreach(Minion minion in this._minions) {
+				if(minion.color == color) {
+					minions.Add (minion);
+				}
+			}
+			return minions;
 		}
 	}
 

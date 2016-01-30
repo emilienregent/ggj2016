@@ -73,28 +73,28 @@ public class ControlManager : MonoBehaviour
         if(isTriggered == false)
         {
             /* Actions */
-            if (GamePad.GetButtonDown(GamePad.Button.A, Game.instance.currentPlayer.controllerIndex) == true)
+			if (GamePad.GetButtonDown(GamePad.Button.A, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.GREEN) > 0)
             {
                 buttonTriggered = GamePad.Button.A;
                 isTriggered = true;
                 currentMode = Mode.Action;
                 return;
             }
-            if (GamePad.GetButtonDown(GamePad.Button.B, Game.instance.currentPlayer.controllerIndex) == true)
+			if (GamePad.GetButtonDown(GamePad.Button.B, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.RED) > 0)
             {
                 buttonTriggered = GamePad.Button.B;
                 isTriggered = true;
                 currentMode = Mode.Action;
                 return;
             }
-            if (GamePad.GetButtonDown(GamePad.Button.X, Game.instance.currentPlayer.controllerIndex) == true)
+			if (GamePad.GetButtonDown(GamePad.Button.X, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.BLUE) > 0)
             {
                 buttonTriggered = GamePad.Button.X;
                 isTriggered = true;
                 currentMode = Mode.Action;
                 return;
             }
-            if (GamePad.GetButtonDown(GamePad.Button.Y, Game.instance.currentPlayer.controllerIndex) == true)
+			if (GamePad.GetButtonDown(GamePad.Button.Y, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.YELLOW) > 0)
             {
                 buttonTriggered = GamePad.Button.Y;
                 isTriggered = true;

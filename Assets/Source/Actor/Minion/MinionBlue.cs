@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MinionBlue : Minion {
 	
@@ -34,7 +35,8 @@ public class MinionBlue : Minion {
 
 	// Move the Altar to an other location
 	private void MoveAltar() {
-		// TODO : Game.instance.getAltarPosition(); Game.instance.getRandomPosition(); Game.instance.Altar.setPosition()
+		int newIndexPosition = Game.instance.mapManager.map.GetRandomAvailableIndex ();
+		Game.instance.mapManager.map.MoveAltar (newIndexPosition);
 #if DEBUG
 		Debug.Log ("The Altar has been moved !");
 #endif
@@ -42,8 +44,22 @@ public class MinionBlue : Minion {
 
 	// Switch the minions of the two players.
 	private void SwitchMinions() {
-		// TODO : getMinions P2, setMinionsP2(minionsP1), setMinionsP1(minionsP2)
-		// TODO : setPositions of minions
+		List<Minion> currentPlayerMinions = Game.instance.currentPlayer.minions;
+		List<Minion> nextPlayerMinions = Game.instance.GetNextPlayer ().minions;
+
+		Game.instance.currentPlayer.minions = nextPlayerMinions;
+		Game.instance.GetNextPlayer ().minions = currentPlayerMinions;
+
+		foreach(Minion minion in Game.instance.currentPlayer.minions) {
+			minion.tileIndex = Game.instance.currentPlayer.tileIndex;
+			minion.anchor = Game.instance.currentPlayer.transform;
+		}
+
+		foreach(Minion minion in Game.instance.GetNextPlayer ().minions) {
+			minion.tileIndex = Game.instance.GetNextPlayer ().tileIndex;
+			minion.anchor = Game.instance.GetNextPlayer ().transform;
+		}
+
 #if DEBUG
 		Debug.Log ("Minions of the 2 players have been switched !");
 #endif
@@ -51,10 +67,25 @@ public class MinionBlue : Minion {
 
 	// Switch the position of the two players
 	private void SwitchPlayersPositions() {
-		// TODO : moveP1ToP2, moveP2ToP1; moveMinionsP1; moveMinionsP2;
 		int currentPlayerIndexTile = Game.instance.currentPlayer.tileIndex;
-		Game.instance.currentPlayer.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(Game.instance.GetNextPlayer ().tileIndex);
-		Game.instance.GetNextPlayer ().transform.position = Game.instance.mapManager.map.GetPositionFromIndex(currentPlayerIndexTile);
+		int nextPlayerIndexTile = Game.instance.GetNextPlayer ().tileIndex;
+		Game.instance.currentPlayer.tileIndex = 0;
+		Game.instance.GetNextPlayer ().tileIndex = currentPlayerIndexTile;
+		Game.instance.currentPlayer.tileIndex = nextPlayerIndexTile;
+
+		List<Minion> currentPlayerMinions = Game.instance.currentPlayer.minions;
+		List<Minion> nextPlayerMinions = Game.instance.GetNextPlayer ().minions;
+
+		foreach(Minion minion in currentPlayerMinions) {
+			minion.tileIndex = Game.instance.currentPlayer.tileIndex;
+			minion.anchor = Game.instance.currentPlayer.transform;
+		}
+
+		foreach(Minion minion in nextPlayerMinions) {
+			minion.tileIndex = Game.instance.GetNextPlayer ().tileIndex;
+			minion.anchor = Game.instance.GetNextPlayer ().transform;
+		}
+
 #if DEBUG
 		Debug.Log ("Position of the 2 players has been switched !");
 #endif
