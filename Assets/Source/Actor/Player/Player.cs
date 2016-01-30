@@ -21,17 +21,25 @@ public class Player : MonoBehaviour
 	private 		int 			_score 						= 	0;
 	[SerializeField]
     private			int			    _tileIndex 		= 	0;
+	[SerializeField]
+	private 		Animator		_animator		= null;
 	private			bool			_canAction		= 	false;
     private         GamePad.Index   _controllerIndex = GamePad.Index.One;
 //	private			bool			_canWalkThroughObstacle 	= 	false;
 	private			float			_timeMalus		=	0f;
 	private			int				_speedBonus		=	0;
 	private			int				_invertedControlLeft = 0;
+	private 		bool 			_isMoving 		= false;
+	private 		Vector3			_targetPosition = Vector3.zero;
+	private 		float			_moveSpeed 		= 7f;
+	private			float			_rotationSpeed 	= 1f;
+	private			Quaternion		_targetRotation = Quaternion.identity;
+	private 		bool 			_isTurning		= false;
+
 
     public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
     public			int			    tileIndex		{ get { return _tileIndex; } set { 
             _tileIndex = value; 
-            gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
         } }
 
     public			int				score			{ get { return _score; } set { _score = value; } }
@@ -49,6 +57,18 @@ public class Player : MonoBehaviour
 		#if DEBUG
 			Debug.Log ("New player (" + this.name + ") created with " + this._countActions + " action(s) remaining.");
 		#endif
+	}
+
+	public void Update()
+	{
+		if (_isMoving == true) 
+		{
+			Moving ();
+		}
+		if (_isTurning == true) 
+		{
+			Turning ();
+		}
 	}
 
 	// Add a minion to the player
@@ -364,11 +384,58 @@ public class Player : MonoBehaviour
 		{
 			tileIndex = newTileIndex;
 
-			Game.instance.mapManager.map.tiles[tileIndex].ApplyOnPlayer(this);
+			Tile newTile = Game.instance.mapManager.map.tiles [tileIndex];
+
+			newTile.ApplyOnPlayer(this);
+
+			MoveTo (newTile);
 
             // AudioManager.instance.plop.Play ();
             Game.instance.EndTurn();
 		}
 	}
+		
+	private void MoveTo(Tile newTile)
+	{
 
+		_animator.SetTrigger ("GoThere");
+
+		_isTurning = true;
+
+		_targetPosition = newTile.gameObject.transform.position;
+
+		_targetRotation = Quaternion.LookRotation ( newTile.gameObject.transform.position - gameObject.transform.position, Vector3.up);
+	}
+
+	private void Turning()
+	{
+		transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, 0.5f /*_rotationSpeed * Time.deltaTime*/);
+
+		float angle = Quaternion.Angle(transform.rotation, _targetRotation);
+
+		if (Mathf.Approximately(angle, 0f) == true)
+		{
+			_isTurning = false;
+			_isMoving = true;
+		}
+	}
+
+	private void Moving()
+	{
+		transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
+
+		float distance = Vector3.Distance(transform.position, _targetPosition);
+
+		if (Mathf.Approximately(distance, 0f) == true)
+		{
+			_isMoving = false;
+		}
+	}
+
+	public void Teleport(int tileIndex)
+	{
+		_tileIndex = tileIndex;
+		gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(tileIndex);
+	}
+		
 }

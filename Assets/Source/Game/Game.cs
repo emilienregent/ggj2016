@@ -139,7 +139,8 @@ public class Game : MonoBehaviour
         GameObject  playerElements  = new GameObject();
 
         player.name = "Player " + (playerIndex + 1);
-        player.tileIndex = tileIndex;
+		player.Teleport (tileIndex);
+
         player.controllerIndex = (GamePad.Index)(playerIndex + 1);
         playerElements.name = player.name + " Elements";
 
