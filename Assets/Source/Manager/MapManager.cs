@@ -14,13 +14,13 @@ namespace Manager
         private List<Map>   _maps   = new List<Map>();
         private Map         _map    = null;
         private GameObject  _root   = null;
-
-        public  ManagerType type    = ManagerType.MAP;
         public  Map         map     { get { return _map; } }
 
         // Use this for initialization
         override public void Initialize()
         {
+            type = ManagerType.MAP;
+
             _root   = new GameObject("Map");
             _maps   = MapParser.Parse();
             _map    = _maps[Game.instance.mapIndex];

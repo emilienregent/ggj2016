@@ -7,6 +7,7 @@ using Type;
 
 public enum GameState
 {
+    NONE,
 	INTRO, 
 	GAME
 }
@@ -14,9 +15,10 @@ public enum GameState
 public class Game : MonoBehaviour 
 {
 	private const	int 			_MAX_PLAYERS	=	2;
+    [SerializeField]
 	private 	 	MinionColor[] 	_minions_start	= 	{MinionColor.BLUE, MinionColor.GREEN, MinionColor.RED, MinionColor.YELLOW, MinionColor.GREEN, MinionColor.RED};
 
-	private 		GameState 		_state 			= 	GameState.INTRO;
+	private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
 	[SerializeField]
 	private 		Player			_currentPlayer 	= 	null;
@@ -49,8 +51,6 @@ public class Game : MonoBehaviour
 		instance = this;
 
 		this._gameElements = GameObject.Find ("GameElements");
-
-        SwitchState(GameState.INTRO);
 
         if (_managerRoot != null)
         {
@@ -86,6 +86,8 @@ public class Game : MonoBehaviour
         // Set active player
         this._currentPlayer = this.players[0];
         this._currentPlayer.SetAction(true);
+
+        SwitchState(GameState.INTRO);
     }
 
 	// Set the next player as active
