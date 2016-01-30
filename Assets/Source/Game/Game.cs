@@ -127,7 +127,7 @@ public class Game : MonoBehaviour
 		foreach(MinionColor color in this._minions_start) {
 
             if (player.CanAddMinion () == true) {
-                player.AddMinion (this.createMinion(color));
+                player.AddMinion (this.CreateMinion(color));
 			} else {
 #if DEBUG
 					Debug.Log("Max minions reached for player " + player.name);
@@ -139,7 +139,7 @@ public class Game : MonoBehaviour
 	}
 
 	// Create a minion
-	public Minion createMinion(MinionColor color) {
+	private Minion CreateMinion(MinionColor color) {
 		switch(color) {
 			case MinionColor.BLUE:
 				return Instantiate (this._minionBlue) as MinionBlue;

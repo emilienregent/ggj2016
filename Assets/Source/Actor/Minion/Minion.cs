@@ -17,21 +17,23 @@ public abstract class Minion : MonoBehaviour {
 	[SerializeField]
 	protected 	MinionColor 	_color;
 	[SerializeField]
-	protected	Tile 			_position		=	null;
+	private		int			    _tileIndex 		= 	0;
 	protected 	bool			_canSacrifice 	= 	true;
 
 	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
 	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
-	public		Tile			position		{ get { return _position; } set { _position = value; } }
-
-	// Trigger one bonus of the minion, and kill the minion
+	public		int			    tileIndex		{ get { return _tileIndex; } set { 
+			_tileIndex = value; 
+			gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
+		} }
+	
+	// Trigger one bonus of the minion
 	public void Sacrifice() {
 		if(this.canSacrifice == true) {
 			#if DEBUG
 				Debug.Log ("Minion's power activated !");
 			#endif
 			this.ExecuteRandomPower ();
-			// TODO : destroy minion object
 		}
 
 	}

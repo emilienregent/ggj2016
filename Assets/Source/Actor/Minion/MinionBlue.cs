@@ -56,28 +56,4 @@ public class MinionBlue : Minion {
 		Debug.Log ("Position of the 2 players has been switched !");
 #endif
 	}
-
-	// Move through an obstacle
-	private void WalkThroughObstacle() {
-		// TODO : set player flag to true
-#if DEBUG
-		Debug.Log ("Move through an obstacle");
-#endif
-	}
-
-	// Reveals all the minions of the map
-	private void RevealMinions() {
-		// TODO : flag on minions ? (wild/owned) OR only close minions ?
-#if DEBUG
-		Debug.Log ("All minions have been revealed.");
-#endif
-	}
-
-	// Infect all the minions of the other player, they can't be sacrificed
-	private void InfectMinions() {
-		// TODO : set minions canBeSacrifice to false
-#if DEBUG
-		Debug.Log ("All the minions of the other player have been infected.");
-#endif
-	}
 }

@@ -79,4 +79,23 @@ namespace Type
             return indexes[Random.Range(0, indexes.Count)];
         }
     }
+
+//	public List<int> GetTileInArea(int indexTile, int x, int y, TileType type) {
+//		// Retourne toutes les tiles TYPE dans la zone X*Y autour de indexTile
+//		// permet de récupérer tous les obstacles dans la zone
+//		// permet de récupérer toutes les positions valides dans la zone
+//	}
+
+//	public List<int> GetAllObstacles() {
+//		// Retourne toutes les positions des obstacles
+//	}
+
+//	public void TransformTile(int indexTile, TileType type) {
+//		// Transforme la tile à la position indexTile en tile de type type
+//	}
+
+//	public void MoveAltar(int indexTile) {
+//		// Déplace l'autel à la position indexTile
+//	}
+
 }

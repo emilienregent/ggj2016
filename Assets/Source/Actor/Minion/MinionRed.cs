@@ -33,7 +33,7 @@ public class MinionRed : Minion {
 
 	// Kill all the minions of the other player
 	private void KillAllMinions() {
-		// TODO : foreach P2 minons ; kill();
+		// TODO : foreach P2 minons ; p2.remove; minion.kill();
 #if DEBUG
 		Debug.Log ("All minions of the other player have been killed");
 #endif
