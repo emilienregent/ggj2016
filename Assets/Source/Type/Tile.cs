@@ -32,7 +32,7 @@ namespace Type
 
         public void ApplyOnPlayer(Player player)
         {
-            switch (type)
+            switch ((TileType) type)
             {
                 case TileType.MINION_RED : CreateMinion(player, MinionColor.RED);
                     break;
