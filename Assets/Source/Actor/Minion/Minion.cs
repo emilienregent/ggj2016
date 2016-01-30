@@ -80,8 +80,9 @@ public abstract class Minion : MonoBehaviour {
 
         float distance = Vector3.Distance(transform.position, _targetPosition);
 
-        if (Mathf.Approximately(distance, 0f) == true)
+        if (distance <= 0.5f)
         {
+            Debug.Log(gameObject.name + " finished his movement");
             _isMoving = false;
         }
     }
@@ -112,6 +113,5 @@ public abstract class Minion : MonoBehaviour {
             transform.LookAt(_targetPosition);
             transform.rotation = Quaternion.Euler(270f, transform.rotation.eulerAngles.y, 0f);
         }
-
 	}
 }

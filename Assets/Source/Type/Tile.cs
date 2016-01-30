@@ -39,13 +39,14 @@ namespace Type
         {
             switch ((TileType) type)
             {
-                case TileType.MINION_RED : CreateMinion(player, MinionColor.RED);
-                    break;
-                case TileType.MINION_BLUE : CreateMinion(player, MinionColor.BLUE);
-                    break;
-                case TileType.MINION_GREEN : CreateMinion(player, MinionColor.GREEN);
-                    break;
-                case TileType.MINION_YELLOW : CreateMinion(player, MinionColor.YELLOW);
+                case TileType.MINION_RED: 
+                case TileType.MINION_BLUE:
+                case TileType.MINION_GREEN:
+                case TileType.MINION_YELLOW:
+                    if (Game.instance.tileToMinions.ContainsKey(_index) == true)
+                    {
+                        Game.instance.tileToMinions[_index].AnchorToPlayer(player);
+                    }
                     break;
             }
         }
