@@ -34,7 +34,8 @@ public class MinionYellow : Minion {
 
 	// Reduce the timer of the other player
 	private void ReduceTime() {
-		Game.instance.GetNextPlayer ().timeMalus = BonusConfiguration.TIME_MALUS;
+		Game.instance.GetNextPlayer ().timeMalus = Game.instance.defaultDuration * BonusConfiguration.TIME_MALUS;
+		Game.instance.GetNextPlayer ().invertedControlLeft = BonusConfiguration.TIME_MALUS_LEFT;
 #if DEBUG
 		Debug.Log ("The other player will lost X second on his next turn");
 #endif

@@ -22,7 +22,7 @@ public class Game : MonoBehaviour
 	private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
 	[SerializeField]
-	private			float			_defaultDuration	=	0f;
+	private			float			_defaultDuration	=	4f;
 	[SerializeField]
 	private 		Player			_currentPlayer 	= 	null;
 	[SerializeField]
@@ -47,6 +47,7 @@ public class Game : MonoBehaviour
     public          int             mapIndex        { get { return _mapIndex; } }
 	public			Player			currentPlayer	{ get { return _currentPlayer; } }
     public          MapManager      mapManager      { get { return (MapManager) _managers[ManagerType.MAP]; } }
+	public			float			defaultDuration { get { return _defaultDuration; } }
 
 	private void Awake()
 	{

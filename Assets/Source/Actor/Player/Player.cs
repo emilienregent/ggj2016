@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
 //	private			bool			_canWalkThroughObstacle 	= 	false;
 	private			float			_timeMalus		=	0f;
 	private			int				_speedBonus		=	0;
+	private			int				_invertedControlLeft = 0;
 
     public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
     public			int			    tileIndex		{ get { return _tileIndex; } set { 
@@ -37,9 +38,9 @@ public class Player : MonoBehaviour
 	public			bool			canAction		{ get { return _canAction; } }
 //	public			bool			canWalkThroughObstacle		{ get { return _canWalkThroughObstacle; } set { _canWalkThroughObstacle = value; }  }
 	public			int				speed			{ get { return _speed; } set { _speed = value; } }
-	public			int				speedBonus	{ get { return _speedBonus; } set { _speedBonus = value; } }
+	public			int				speedBonus		{ get { return _speedBonus; } set { _speedBonus = value; } }
 	public			float			timeMalus		{ get { return _timeMalus; } set { _timeMalus = value; } }
-
+	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }	
 
     // Use this for initialization
     private void Start ()
@@ -99,36 +100,17 @@ public class Player : MonoBehaviour
         {
 			this.CleanPlayer ();
             Game.instance.SetNextPlayer();
-        }
+		}
     }
 
 	// Sacrifice a minion to get a bonus/special action
 	public void SacrificeMinion(MinionColor color) {
-		if(this.canAction == true) {
+		if(this.canAction == true && this.GetCountMinions (color) > 0) {
             // Todo : A décommenter
 			Minion minion = this.GetMinion(color);
 		 	minion.Sacrifice ();
+			this.RemoveMinion (color);
 			minion.Kill ();
-
-            switch (color)
-            {
-                case MinionColor.GREEN:
-                    UseMinionGreen();
-                    break;
-
-                case MinionColor.RED:
-                    UseMinionRed();
-                    break;
-
-                case MinionColor.YELLOW:
-                    UseMinionYellow();
-                    break;
-
-                case MinionColor.BLUE:
-                    UseMinionBlue();
-                    break;
-
-            }
 
 			this.SetAction (false);
 		}
@@ -143,7 +125,7 @@ public class Player : MonoBehaviour
 
 	public void KillAllMinions() {
 		Minion minion = null;
-		while(this.GetCountMinions () > 0) {
+		while(this.GetCountMinions (MinionColor.ANY) > 0) {
 			minion = this._minions [0];
 			this.RemoveMinion (minion.color);
 			minion.Kill ();
@@ -212,8 +194,8 @@ public class Player : MonoBehaviour
 
 	// Return one random minion
 	private Minion GetRandomMinion() {
-		if (this.GetCountMinions () > 0) {
-			int randomIndex = Random.Range (0, this.GetCountMinions ());
+		if (this.GetCountMinions (MinionColor.ANY) > 0) {
+			int randomIndex = Random.Range (0, this.GetCountMinions (MinionColor.ANY));
 			return this._minions [randomIndex];
 		} else {
 			#if DEBUG
@@ -224,12 +206,23 @@ public class Player : MonoBehaviour
 	}
 
 	// Return the total of minions of the player
-	public int GetCountMinions() {
-		return this._minions.Count;
+	public int GetCountMinions(MinionColor color) {
+		switch(color) {
+			case MinionColor.BLUE:
+				return this.GetCountMinionsBlue ();
+			case MinionColor.GREEN:
+				return this.GetCountMinionsGreen ();
+			case MinionColor.RED:
+				return this.GetCountMinionsRed ();
+			case MinionColor.YELLOW:
+				return this.GetCountMinionsYellow ();
+			default :
+				return this._minions.Count;
+		}
 	}
 
 	// Return the total of blue minions
-	public int GetCountMinionsBlue() {
+	private int GetCountMinionsBlue() {
 		int totalMinionBlue = 0;
 		foreach(Minion minion in this._minions) {
 			if(minion.color == MinionColor.BLUE) {
@@ -241,7 +234,7 @@ public class Player : MonoBehaviour
 	}
 
 	// Return the total of green minions
-	public int GetCountMinionsGreen() {
+	private int GetCountMinionsGreen() {
 		int totalMinionGreen = 0;
 		foreach(Minion minion in this._minions) {
 			if(minion.color == MinionColor.GREEN) {
@@ -253,7 +246,7 @@ public class Player : MonoBehaviour
 	}
 
 	// Return the total of red minions
-	public int GetCountMinionsRed() {
+	private int GetCountMinionsRed() {
 		int totalMinionRed = 0;
 		foreach(Minion minion in this._minions) {
 			if(minion.color == MinionColor.RED) {
@@ -265,7 +258,7 @@ public class Player : MonoBehaviour
 	}
 
 	// Return the total of yellow minions
-	public int GetCountMinionsYellow() {
+	private int GetCountMinionsYellow() {
 		int totalMinionYellow = 0;
 		foreach(Minion minion in this._minions) {
 			if(minion.color == MinionColor.YELLOW) {
@@ -308,6 +301,13 @@ public class Player : MonoBehaviour
 			this.speed = this.speedBonus;
 			this.speedBonus = 0;
 		}
+
+		if(this.invertedControlLeft > 0) {
+			this.invertedControlLeft--;
+			if (this.invertedControlLeft > 0) {
+				this.speed *= -1;
+			}
+		}
 	}
 
     public bool CanMove(int newTileIndex)
@@ -342,22 +342,34 @@ public class Player : MonoBehaviour
 
 	public void UseMinionGreen()
 	{
-		ChangeColor(Color.green);
+//		ChangeColor(Color.green);
+		if (this.GetCountMinionsGreen () > 0) {
+			this.SacrificeMinion (MinionColor.GREEN);
+		}
 	}
 
 	public void UseMinionBlue()
 	{
-		ChangeColor(Color.blue);
+//		ChangeColor(Color.blue);
+		if (this.GetCountMinionsBlue () > 0) {
+			this.SacrificeMinion (MinionColor.BLUE);
+		}
 	}
 
 	public void UseMinionYellow()
 	{
-		ChangeColor(Color.yellow);
+//		ChangeColor(Color.yellow);
+		if (this.GetCountMinionsYellow () > 0) {
+			this.SacrificeMinion (MinionColor.YELLOW);
+		}
 	}
 
 	public void UseMinionRed()
 	{
-		ChangeColor(Color.red);
+//		ChangeColor(Color.red);
+		if (this.GetCountMinionsRed () > 0) {
+			this.SacrificeMinion (MinionColor.RED);
+		}
 	}
 
 	public void Move(int newTileIndex)
