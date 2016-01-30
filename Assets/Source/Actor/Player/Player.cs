@@ -19,14 +19,15 @@ public class Player : MonoBehaviour
 	[SerializeField]
 	private 		int 			_score 			= 	0;
 	[SerializeField]
-	private			Tile			_position 		= 	null;
+    private			int			    _tileIndex 		= 	0;
 	private			bool			_canAction		= 	false;
 
-	public			Tile			position		{ get { return _position; } set { _position = value; } }
+    public			int			    tileIndex		{ get { return _tileIndex; } set { 
+            _tileIndex = value; 
+            gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(value);
+        } }
 	public			int				score			{ get { return _score; } set { _score = value; } }
 	public			bool			canAction		{ get { return _canAction; } }
-
-
 
 	// Use this for initialization
 	private void Start ()

@@ -116,8 +116,9 @@ public class Game : MonoBehaviour
         GameObject  playerElements  = new GameObject();
 
         player.name = "Player " + (playerIndex + 1);
+        player.tileIndex = tileIndex;
         playerElements.name = player.name + " Elements";
-        player.gameObject.transform.position = mapManager.map.GetPositionFromIndex(tileIndex);
+        //player.gameObject.transform.position = mapManager.map.GetPositionFromIndex(tileIndex);
 
 		playerElements.transform.SetParent (this.gameElements.transform);
 		player.transform.SetParent (playerElements.transform);
