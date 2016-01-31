@@ -16,8 +16,8 @@ namespace Type {
 
 		public static Vector2	DISPERSION_MINIONS_AREA = new Vector2(3, 3);
 
-		public static int		MIN_POP_MINIONS			= 3;
-		public static int		MAX_POP_MINIONS			= 5;
+		public static int		MIN_POP_MINIONS			= 0;
+		public static int		MAX_POP_MINIONS			= 2;
 
 		public BonusConfiguration() {
 			
