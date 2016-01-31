@@ -74,4 +74,16 @@ public class MinionRed : Minion {
 		Debug.Log ("The minions of the other player have been dispersed");
 #endif
 	}
+
+	protected override void PlayAppearFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.appearSoldier, transform.position);
+	}
+
+	protected override void PlayDeathFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.disappearSoldier, transform.position);
+	}
+
+
 }

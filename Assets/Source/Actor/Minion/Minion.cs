@@ -86,6 +86,9 @@ public abstract class Minion : MonoBehaviour {
 	// Use this for initialization
 	private void Start () {
 		_animator = GetComponentInChildren<Animator> ();
+
+		PlayAppearFx ();
+
 		#if DEBUG
 			Debug.Log ("New Minion with color " + this._color);
 		#endif
@@ -146,8 +149,20 @@ public abstract class Minion : MonoBehaviour {
                 Game.instance.PrepareEndTurn();
             }
 
+			PlayDeathFx ();
 			Destroy (this.gameObject);
+
 		}
+	}
+
+	protected virtual void PlayDeathFx()
+	{
+		
+	}
+
+	protected virtual void PlayAppearFx()
+	{
+		
 	}
 
 	public void setMinionOffset(int index) {

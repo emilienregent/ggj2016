@@ -84,4 +84,15 @@ public class MinionGreen : Minion {
 #endif
 	}
 
+	protected override void PlayAppearFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.appearEnv, transform.position);
+	}
+
+	protected override void PlayDeathFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.disappearEnv, transform.position);
+	}
+
+
 }

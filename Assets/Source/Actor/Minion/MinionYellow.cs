@@ -60,4 +60,15 @@ public class MinionYellow : Minion {
 		Debug.Log ("The player has been teleported to a random position");
 #endif
 	}
+
+	protected override void PlayAppearFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.appearFlash, transform.position);
+	}
+
+	protected override void PlayDeathFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.disappearFlash, transform.position);
+	}
+
 }

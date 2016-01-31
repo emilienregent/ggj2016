@@ -97,4 +97,15 @@ public class MinionBlue : Minion {
 		Debug.Log ("Position of the 2 players has been switched !");
 #endif
 	}
+
+	protected override void PlayAppearFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.appearTank, transform.position);
+	}
+
+	protected override void PlayDeathFx ()
+	{
+		ParticleManager.instance.Play (ParticleManager.instance.disappearTank, transform.position);
+	}
+
 }
