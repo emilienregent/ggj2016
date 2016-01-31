@@ -59,6 +59,7 @@ public class Game : MonoBehaviour
     [SerializeField]
     public          GameObject      portraitPlayerTwo;
     public          bool            isEndTurnPaused { get; set; }
+    public          int             numberOfTurnSinceRespawn { get { return _numberOfTurnSinceRespawn; } set{ _numberOfTurnSinceRespawn = value; } }
 
 	private void Awake()
 	{

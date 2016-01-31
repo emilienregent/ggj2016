@@ -174,6 +174,7 @@ public class Player : MonoBehaviour
 			Minion minion = this.GetMinion(color);
             if(minion.canSacrifice == true)
             {
+                Game.instance.numberOfTurnSinceRespawn = 0;
                 this.RemoveMinion(color);
                 minion.Sacrifice();
                 portrait.GetComponent<PlayerUI>().FillMinionSlots(this.minions);
