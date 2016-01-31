@@ -98,7 +98,11 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-		SwitchState(GameState.SPLASHSCREEN);
+#if EMILIEN
+        SwitchState(GameState.LOADING);
+#else
+        SwitchState(GameState.SPLASHSCREEN);
+#endif
     }
 
 	// Set the next player as active
