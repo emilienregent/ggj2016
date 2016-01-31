@@ -13,7 +13,8 @@ public enum GameState
 	MENU,
 	LOADING, 
 	GAME,
-	END
+	END,
+    TUTO
 }
 
 public class Game : MonoBehaviour 
@@ -72,8 +73,10 @@ public class Game : MonoBehaviour
     public          GameObject      blackVictoryScreen;
     [SerializeField]
     public          GameObject      whiteVictoryScreen;
+    [SerializeField]
+    public          GameObject      tutoScreen;
 
-	private void Awake()
+    private void Awake()
 	{
 		instance = this;
 
@@ -285,6 +288,13 @@ public class Game : MonoBehaviour
             case GameState.MENU:
                 break;
 
+            case GameState.TUTO:
+                if (_stateTimer.IsFinished() == true)
+                {
+                    SwitchState(GameState.LOADING);
+                }
+                break;
+
             case GameState.LOADING:
                 if(_stateTimer.IsFinished() == true)
                 {
@@ -343,11 +353,22 @@ public class Game : MonoBehaviour
 #endif
                 break;
 
+            case GameState.TUTO:
+#if DEBUG
+        Debug.Log("TUTO");
+#endif
+                splashScreen.GetComponent<ScreenHelper>().Play(false, 0f);
+                tutoScreen.GetComponent<ScreenHelper>().Play(true, 0f);
+                _stateTimer.duration = 5f;
+                _stateTimer.Start();
+                break;
+
             case GameState.LOADING:
 #if DEBUG
         Debug.Log("LOADING");
 #endif
                 // Screen stuff
+                tutoScreen.GetComponent<ScreenHelper>().Play(false, 0f);
                 splashScreen.GetComponent<ScreenHelper>().Play(false, 0f);
                 blackScreen.GetComponent<ScreenHelper>().Play(false, 2f);
                 _stateTimer.duration = 2f;

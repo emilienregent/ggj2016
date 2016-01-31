@@ -61,7 +61,7 @@ public class ControlManager : MonoBehaviour
         if(GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true)
         {
             PlayerPrefs.SetInt("splashscreen", 1);
-            Game.instance.SwitchState(GameState.LOADING);
+            Game.instance.SwitchState(GameState.TUTO);
         }
         if (GamePad.GetButtonDown(GamePad.Button.Y, GamePad.Index.Any) == true)
         {
