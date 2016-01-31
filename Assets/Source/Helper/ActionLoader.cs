@@ -33,7 +33,9 @@ public class ActionLoader : MonoBehaviour
 
     void Update()
     {
-
+		if(this._isActive == true && Game.instance.currentPlayer.canAction == false) {
+			DesactiveLoader ();
+		}
         // Inactive and we press a button ?
         if (_isActive == false && ControlManager.instance.isTriggered == true)
         {

@@ -102,7 +102,7 @@ public class ControlManager : MonoBehaviour
             }
 
             /* Moves */
-            if (state.Up == true)
+			if (state.Up == true)
             {
                 int tmpTileIndex = Game.instance.currentPlayer.tileIndex - (1 * Game.instance.currentPlayer.speed * Game.instance.mapManager.map.columns);
                 if (Game.instance.currentPlayer.CanMove(tmpTileIndex) == true)
@@ -250,9 +250,10 @@ public class ControlManager : MonoBehaviour
                 
                 break;
 
-            case Mode.Move:
-                Game.instance.currentPlayer.Move(_newTileIndex);
-                break;
+			case Mode.Move:
+				Game.instance.currentPlayer.Move (_newTileIndex);
+				Game.instance.currentPlayer.SetAction (false);
+		                break;
         }
     }
 }
