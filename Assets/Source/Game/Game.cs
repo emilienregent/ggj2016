@@ -58,6 +58,7 @@ public class Game : MonoBehaviour
     public          GameObject      portraitPlayerOne;
     [SerializeField]
     public          GameObject      portraitPlayerTwo;
+    public          bool            isEndTurnPaused { get; set; }
 
 	private void Awake()
 	{
@@ -143,6 +144,8 @@ public class Game : MonoBehaviour
                 _numberOfTurnSinceRespawn = 0;
             }
         }
+
+        isEndTurnPaused = false;
     }
 
 	public Player GetNextPlayer() {
@@ -242,7 +245,7 @@ public class Game : MonoBehaviour
             case GameState.GAME:
                 if(_turnTimer.IsFinished() == true)
                 {
-                    if(ActionLoader.instance.isActive == false)
+                    if(ActionLoader.instance.isActive == false && isEndTurnPaused == false)
                     {
                         this.EndTurn();
                     }

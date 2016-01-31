@@ -27,6 +27,7 @@ namespace Type
         private int         _type       = 0;
         private int         _index      = -1;
         private int         _quantity   = 0;
+        private Animator    _animator   = null;
 
         public  GameObject  gameObject  { get { return _gameObject; } set { _gameObject = value; } }
         public  int         size        { get { return _size; } set { _size = value; } }
@@ -54,10 +55,10 @@ namespace Type
                         Game.instance.tileToMinions[_index].AnchorToPlayer(player);
                     }
                     break;
-				case TileType.ALTAR:
-					player.score += player.getPointsMinions ();
-                    player.portrait.UpdateScore(player.score);
-					player.KillAllMinions ();
+                case TileType.ALTAR:
+                    Game.instance.isEndTurnPaused = true;
+                    _animator = gameObject.transform.GetComponentInChildren<Animator>();
+                    _animator.SetTrigger("Show");
 					break;
             }
         }

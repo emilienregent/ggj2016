@@ -454,14 +454,16 @@ public class Player : MonoBehaviour
 		{
 			tileIndex = newTileIndex;
 
-			Tile newTile = Game.instance.mapManager.map.tiles [tileIndex];
+			Tile newTile = Game.instance.mapManager.map.tiles[tileIndex];
 
-			newTile.ApplyOnPlayer(this);
+            MoveTo(newTile);
 
-			MoveTo (newTile);
+            newTile.ApplyOnPlayer(this);
 
-            // AudioManager.instance.plop.Play ();
-            Game.instance.EndTurn();
+            if (Game.instance.isEndTurnPaused == false)
+            {
+                Game.instance.EndTurn();
+            }
 		}
 	}
 		
