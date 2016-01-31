@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
 	private 		bool 			_isMoving 		= false;
 	private 		Vector3			_targetPosition = Vector3.zero;
 	private 		float			_moveSpeed 		= 10f;
-	private			float			_rotationSpeed 	= 1f;
+	private			float			_rotationSpeed 	= 25f;
 	private			Quaternion		_targetRotation = Quaternion.identity;
 	private 		bool 			_isTurning		= false;
 	private 		int				_playerIndex	= 0;
@@ -481,7 +481,7 @@ public class Player : MonoBehaviour
 
 	private void Turning()
 	{
-		transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, 0.5f /*_rotationSpeed * Time.deltaTime*/);
+		transform.rotation = Quaternion.Lerp(transform.rotation, _targetRotation, _rotationSpeed * Time.deltaTime);
 
 		float angle = Quaternion.Angle(transform.rotation, _targetRotation);
 

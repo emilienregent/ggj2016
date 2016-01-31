@@ -269,7 +269,7 @@ public class Game : MonoBehaviour
 		}
 		else if(state == GameState.GAME)
 		{
-			AudioManager.instance.mainMusic.Play();
+			//AudioManager.instance.mainMusic.Play();
             this.SetNextPlayer();
 		} else if(state == GameState.END) {
 			this.currentPlayer.SetAction (false);
