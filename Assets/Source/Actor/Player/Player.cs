@@ -80,7 +80,36 @@ public class Player : MonoBehaviour
         minion.name = "Minion " + minion.color + " " + (this._minions.Count+1);
         minion.anchor = this.transform;
 		minion.transform.SetParent (this.transform.parent.transform);
+
+		this.setMinionOffset (minion, this.GetCountMinions (MinionColor.ANY));
+		minion.transform.position = this.transform.position + Game.instance.mapManager.map.tiles [this.tileIndex].size / 2.5f * minion.offsetPosition;
+		minion.targetPosition = minion.transform.position;
 		this._minions.Add (minion);
+	}
+
+	private void setMinionOffset(Minion minion, int index) {
+		switch(index) {
+		case 0:
+			minion.offsetPosition = Vector3.left;
+			break;
+		case 1:
+			minion.offsetPosition = new Vector3 (-0.5f, 0f, 1f);
+			break;
+		case 2:
+			minion.offsetPosition = new Vector3 (0.5f, 0f, 1f);
+			break;
+		case 3:
+			minion.offsetPosition = Vector3.right;
+			break;
+		case 4:
+			minion.offsetPosition = new Vector3 (0.5f, 0f, -1f);
+			break;
+		case 5:
+			minion.offsetPosition = new Vector3 (-0.5f, 0f, -1f);
+			break;
+		default :
+			break;
+		}
 	}
 
 	// Remove a minion from the player
@@ -95,6 +124,11 @@ public class Player : MonoBehaviour
 			}
 			if (minionToRemove != null) {
 				this._minions.Remove (minionToRemove);
+				for(int i = 0; i < this.minions.Count; i++) {
+					this.setMinionOffset (minions[i], i);
+					minions[i].transform.position = this.transform.position + Game.instance.mapManager.map.tiles [this.tileIndex].size / 2.5f * minions[i].offsetPosition;
+					minions[i].targetPosition = minions[i].transform.position;
+				}
 				#if DEBUG
 					Debug.Log ("One minion with color " + minionToRemove.color + " has been removed");
 				#endif

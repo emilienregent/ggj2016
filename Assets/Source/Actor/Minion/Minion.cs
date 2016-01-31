@@ -13,8 +13,6 @@ public enum MinionColor
 
 public abstract class Minion : MonoBehaviour {
     public static int number = 0;
-    private static float RANGE = 5f;
-    private static float SPEED = 5f;
 	protected	int				_maxPowers		= 0;
 	[SerializeField]
 	protected 	MinionColor 	_color;
@@ -31,10 +29,11 @@ public abstract class Minion : MonoBehaviour {
     private     bool            _isMoving       = false;
     private     bool            _hasNewTarget   = false;
     private     Vector3         _targetPosition = Vector3.zero;
+	private 	Vector3			_offsetPosition = Vector3.zero;
 
 	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
 	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
-    public		Transform		anchor		    
+    public		Transform		anchor	
     { 
         get 
         { 
@@ -48,6 +47,8 @@ public abstract class Minion : MonoBehaviour {
             _targetPosition = _anchor.position;
         }
     }
+	public		Vector3			targetPosition	{ get { return _targetPosition;} set { _targetPosition = value; } }
+	public 		Vector3			offsetPosition 	{ get { return _offsetPosition;} set { _offsetPosition = value; } }
 
 	// Trigger one bonus of the minion, and kill the minion
 	public void Sacrifice() {
@@ -78,12 +79,13 @@ public abstract class Minion : MonoBehaviour {
 
     private void Move()
     {
-        float speed = _isAnchored == true ? SPEED * 0.5f : SPEED;
+		float speed = GameConfiguration.getMinionSpeed (this.color, this._isAnchored);
+
         transform.position = Vector3.MoveTowards(transform.position, _targetPosition, speed * Time.deltaTime);
 
         float distance = Vector3.Distance(transform.position, _targetPosition);
 
-        if (distance <= 0.5f)
+		if (distance <= 0.5f)
         {
             _isMoving = false;
         }
@@ -100,17 +102,18 @@ public abstract class Minion : MonoBehaviour {
         {
             float distance = Vector3.Distance(transform.position, _anchor.position);
 
-            if (distance > RANGE || _hasNewTarget == true)
+			if (distance > GameConfiguration.MINION_RANGE || _hasNewTarget == true)
             {
                 _isAnchored     = false;
-                _hasNewTarget   = false;
-                _targetPosition = _anchor.position;
+				_hasNewTarget   = false;
+				_targetPosition = _anchor.position + Game.instance.mapManager.map.tiles [this.tileIndex].size / 2.5f * this.offsetPosition;
             }
-            else
-            {
-                _isAnchored     = true;
-                _targetPosition = _anchor.position + new Vector3(Random.Range(-RANGE, RANGE), 0f, Random.Range(-RANGE, RANGE));
-            }
+//			_targetPosition =  _anchor.position + new Vector3 (2f, 0f, 0f);
+//            else
+//            {
+//                _isAnchored     = true;
+//				_targetPosition = _anchor.position + new Vector3(Random.Range(-GameConfiguration.MINION_RANGE, GameConfiguration.MINION_RANGE), 0f, Random.Range(-GameConfiguration.MINION_RANGE, GameConfiguration.MINION_RANGE));
+//            }
 
             _isMoving = true;
             transform.LookAt(_targetPosition);

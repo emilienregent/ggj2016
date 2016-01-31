@@ -19,7 +19,7 @@ public class MinionGreen : Minion {
 	// Execute one random power of the minion
 	override protected void ExecuteRandomPower() {
 		int random = Random.Range (0, this._maxPowers);
-		random = 2;
+
 		switch(random) {
 			case 0:
 				this.TransformObstaclesIntoMinions ();
@@ -86,6 +86,7 @@ public class MinionGreen : Minion {
 				minion.tileIndex = freeTileIndex;
 				minion.anchor = Game.instance.mapManager.map.tiles [freeTileIndex].gameObject.transform;
 			}
+			randomColor = (MinionColor) Random.Range (1, System.Enum.GetValues(typeof(MinionColor)).Length);
 		}
 #if DEBUG
 		Debug.Log ("New minions created in the area");

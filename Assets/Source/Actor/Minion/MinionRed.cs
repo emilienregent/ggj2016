@@ -19,7 +19,7 @@ public class MinionRed : Minion {
 	// Execute one random power of the minion
 	override protected void ExecuteRandomPower() {
 		int random = Random.Range (0, this._maxPowers);
-		random = 2;
+
 		switch(random) {
 			case 0:
 				this.KillAllMinions ();
@@ -63,7 +63,6 @@ public class MinionRed : Minion {
 			List<Minion> minions = Game.instance.GetNextPlayer ().GetMinions (randomColor);
 			foreach(Minion minion in minions) {
 				Game.instance.GetNextPlayer ().RemoveMinion (minion.color);
-				minion.tileIndex = tileIndex;
 				minion.anchor = Game.instance.mapManager.map.tiles [tileIndex].gameObject.transform;
 			}
 		}
