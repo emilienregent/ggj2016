@@ -451,4 +451,11 @@ public class Player : MonoBehaviour
 		gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(tileIndex);
 	}
 		
+	public int getPointsMinions() {
+		int total = 0;
+		foreach(Minion minion in this._minions) {
+			total += GameConfiguration.getPoints (minion.color);
+		}
+		return total;
+	}
 }

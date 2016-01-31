@@ -51,6 +51,10 @@ namespace Type
                         Game.instance.tileToMinions[_index].AnchorToPlayer(player);
                     }
                     break;
+				case TileType.ALTAR:
+					player.score += player.getPointsMinions ();
+					player.KillAllMinions ();
+					break;
             }
         }
 

@@ -9,8 +9,10 @@ using GamepadInput;
 public enum GameState
 {
     NONE,
+	MENU,
 	INTRO, 
-	GAME
+	GAME,
+	END
 }
 
 public class Game : MonoBehaviour 
@@ -98,6 +100,10 @@ public class Game : MonoBehaviour
 
 	// Set the next player as active
 	public void SetNextPlayer() {
+		if(this.currentPlayer.score >= GameConfiguration.MAX_SCORE) {
+			SwitchState (GameState.END);
+		}
+
 		this._currentPlayer = this.GetNextPlayer ();
         ControlManager.instance.Clean();
         this.StartTurn();
@@ -241,7 +247,13 @@ public class Game : MonoBehaviour
 		{
 			AudioManager.instance.mainMusic.Play();
             this.StartTurn();
-        }
+		} else if(state == GameState.END) {
+			this.currentPlayer.SetAction (false);
+			this.GetNextPlayer ().SetAction (false);
+			// TODO : DISPLAY SCORE SCREEN + RESTART BUTTON + MENU BUTTON
+		} else if (state == GameState.MENU) {
+			// TODO : DISPLAY START BUTTON
+		}
 	}
 
 	public void Pause()
