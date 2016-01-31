@@ -9,8 +9,10 @@ public class PlayerUI : MonoBehaviour {
     private     float       _duration = 1f;
     private     float       _targetAmount = 0f;
     private     float       _previousAmount = 0f;
+    private     bool        _timerIsActive = false;
 
     public      GameObject  gauge;
+    public      GameObject  timer;
     public      GameObject  minionsWrapper;
 
     public void Initialize(Player player)
@@ -78,11 +80,28 @@ public class PlayerUI : MonoBehaviour {
         }
     }
 
+    public void InitTimer()
+    {
+        timer.GetComponent<Image>().fillAmount = 1f;
+        _timerIsActive = true;
+    }
+
+    public void StopTimer()
+    {
+        _timerIsActive = false;
+        timer.GetComponent<Image>().fillAmount = 0f;
+    }
+
     void Update()
     {
         if(gauge.GetComponent<Image>().fillAmount < _targetAmount)
         {
             gauge.GetComponent<Image>().fillAmount += (_targetAmount / _duration) * Time.deltaTime;
-        }        
+        }
+
+        if(_timerIsActive == true)
+        {
+            timer.GetComponent<Image>().fillAmount -= (1f / Game.instance.defaultDuration - Game.instance.currentPlayer.timeMalus) * Time.deltaTime;
+        }
     }
 }

@@ -136,13 +136,15 @@ public class Game : MonoBehaviour
         _numberOfTurn++;
         this._turnTimer.duration = this.defaultDuration - this._currentPlayer.timeMalus;
         this._turnTimer.Start();
-        this.currentPlayer.SetAction(true);
+        this._currentPlayer.SetAction(true);
+        this._currentPlayer.portrait.GetComponent<PlayerUI>().InitTimer();
         ActionLoader.instance.endTurn = false;
     }
 
     public void EndTurn()
     {
         this._currentPlayer.SetAction(false);
+        this._currentPlayer.portrait.GetComponent<PlayerUI>().StopTimer();
         this.SetNextPlayer();
 
         if (_numberOfTurn % 2 == 0)
