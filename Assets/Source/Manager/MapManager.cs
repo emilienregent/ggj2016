@@ -65,12 +65,12 @@ namespace Manager
             tileGO.name = tile.gameObject.name;
             tileGO.transform.position = tile.gameObject.transform.position;
             tileGO.transform.SetParent(_root.transform);
-
+			Game.instance.tileToMinions.Remove (tile.index);
             Destroy(tile.gameObject);
 
             tile.gameObject = tileGO;
 
-            PopulateTile(tile, Random.Range(1, 5));
+			PopulateTile(tile, Random.Range(BonusConfiguration.MIN_POP_MINIONS, BonusConfiguration.MAX_POP_MINIONS + 1));
         }
     }
 }

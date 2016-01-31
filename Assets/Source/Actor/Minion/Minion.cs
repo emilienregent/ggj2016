@@ -121,4 +121,29 @@ public abstract class Minion : MonoBehaviour {
             transform.rotation = Quaternion.Euler(270f, transform.rotation.eulerAngles.y, 0f);
         }
 	}
+
+	public void setMinionOffset(int index) {
+		switch(index) {
+		case 0:
+			this.offsetPosition = Vector3.left;
+			break;
+		case 1:
+			this.offsetPosition = new Vector3 (-0.5f, 0f, 1f);
+			break;
+		case 2:
+			this.offsetPosition = new Vector3 (0.5f, 0f, 1f);
+			break;
+		case 3:
+			this.offsetPosition = Vector3.right;
+			break;
+		case 4:
+			this.offsetPosition = new Vector3 (0.5f, 0f, -1f);
+			break;
+		case 5:
+			this.offsetPosition = new Vector3 (-0.5f, 0f, -1f);
+			break;
+		default :
+			break;
+		}
+	}
 }

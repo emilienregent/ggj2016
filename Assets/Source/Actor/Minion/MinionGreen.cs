@@ -42,13 +42,9 @@ public class MinionGreen : Minion {
 
 		foreach(int obstacleIndex in obstacles) {
 			Game.instance.mapManager.map.TransformTile (obstacleIndex, minionTileType);
-			int numberOfMinions = Random.Range (BonusConfiguration.MIN_POP_MINIONS, BonusConfiguration.MAX_POP_MINIONS + 1);
-
-			for (int i = 0; i < numberOfMinions; i++) {
-				Minion minion = Game.instance.CreateMinion (randomColor);
-				minion.tileIndex = obstacleIndex;
-				minion.anchor = Game.instance.mapManager.map.tiles [obstacleIndex].gameObject.transform;
-			}
+			Game.instance.mapManager.RefreshTile (Game.instance.mapManager.map.tiles [obstacleIndex]);
+			randomColor = (MinionColor) Random.Range (1, System.Enum.GetValues(typeof(MinionColor)).Length);
+			minionTileType = Tile.getTileTypeForColor (randomColor);
 		}
 
 #if DEBUG
@@ -79,14 +75,9 @@ public class MinionGreen : Minion {
 
 		foreach (int freeTileIndex in freeTiles) {
 			Game.instance.mapManager.map.TransformTile (freeTileIndex, minionTileType);
-			int numberOfMinions = Random.Range (BonusConfiguration.MIN_POP_MINIONS, BonusConfiguration.MAX_POP_MINIONS + 1);
-
-			for (int i = 0; i < numberOfMinions; i++) {
-				Minion minion = Game.instance.CreateMinion (randomColor);
-				minion.tileIndex = freeTileIndex;
-				minion.anchor = Game.instance.mapManager.map.tiles [freeTileIndex].gameObject.transform;
-			}
+			Game.instance.mapManager.RefreshTile (Game.instance.mapManager.map.tiles [freeTileIndex]);
 			randomColor = (MinionColor) Random.Range (1, System.Enum.GetValues(typeof(MinionColor)).Length);
+			minionTileType = Tile.getTileTypeForColor (randomColor);
 		}
 #if DEBUG
 		Debug.Log ("New minions created in the area");

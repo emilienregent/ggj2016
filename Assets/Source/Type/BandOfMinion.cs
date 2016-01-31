@@ -10,7 +10,7 @@ namespace Type
 
         public BandOfMinion(Tile tile, int count = 0)
         {
-            int quantity = tile.quantity > 0 ? tile.quantity : count;
+			int quantity = count > 0 ? count : tile.quantity;
                 
             switch((TileType) tile.type)
             {
@@ -52,6 +52,12 @@ namespace Type
 
                 minion.anchor = tile.gameObject.transform;
                 minion.transform.position = tile.gameObject.transform.position;
+
+				minion.setMinionOffset (i);
+				minion.transform.position = minion.anchor.position + tile.size/2.5f * minion.offsetPosition;
+				minion.targetPosition = minion.transform.position;
+
+
                 minion.transform.SetParent(tile.gameObject.transform);
             }
         }
