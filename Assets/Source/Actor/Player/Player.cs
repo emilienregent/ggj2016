@@ -335,6 +335,11 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (Game.instance.mapManager.map.tiles[newTileIndex].type >= (int)TileType.OBSTACLE_1)
+        {
+            return false;
+        }
+
         // Horizontal move ?
         int delta = newTileIndex - _tileIndex;
         if (Mathf.Abs(delta) == _speed)
