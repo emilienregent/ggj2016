@@ -25,6 +25,7 @@ public class Game : MonoBehaviour
     private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
     private         Timer           _turnTimer      =   new Timer(0f);
+    private         Timer           _endTurnTimer   =   new Timer(0f);
 	[SerializeField]
 	private 		Player			_currentPlayer 	= 	null;
 	[SerializeField]
@@ -59,7 +60,8 @@ public class Game : MonoBehaviour
     public          GameObject      portraitPlayerOne;
     [SerializeField]
     public          GameObject      portraitPlayerTwo;
-    public          bool            isEndTurnPaused { get; set; }
+    public          bool            isPreparingEndTurn  { get; set; }
+    public          bool            isEndTurnPaused     { get; set; }
     public          int             numberOfTurnSinceRespawn { get { return _numberOfTurnSinceRespawn; } set{ _numberOfTurnSinceRespawn = value; } }
 
     [SerializeField]
@@ -141,7 +143,15 @@ public class Game : MonoBehaviour
         ActionLoader.instance.endTurn = false;
     }
 
-    public void EndTurn()
+    public void PrepareEndTurn()
+    {
+        isPreparingEndTurn = true;
+
+        _endTurnTimer.duration = 0.5f;
+        _endTurnTimer.Start();
+    }
+
+    private void EndTurn()
     {
         this._currentPlayer.SetAction(false);
         this._currentPlayer.portrait.GetComponent<PlayerUI>().StopTimer();
@@ -162,6 +172,7 @@ public class Game : MonoBehaviour
         }
 
         isEndTurnPaused = false;
+        isPreparingEndTurn = false;
     }
 
 	public Player GetNextPlayer() {
@@ -269,11 +280,18 @@ public class Game : MonoBehaviour
                 break;
 
             case GameState.GAME:
-                if(_turnTimer.IsFinished() == true)
+                if (isPreparingEndTurn == true)
+                {
+                    if (_endTurnTimer.IsFinished() == true)
+                    {
+                        this.EndTurn();
+                    }
+                }
+                else if(_turnTimer.IsFinished() == true)
                 {
                     if(ActionLoader.instance.isActive == false && isEndTurnPaused == false)
                     {
-                        this.EndTurn();
+                        this.PrepareEndTurn();
                     }
                     else
                     {

@@ -136,7 +136,7 @@ public abstract class Minion : MonoBehaviour {
 
             if (Game.instance.isEndTurnPaused == true)
             {
-                Game.instance.EndTurn();
+                Game.instance.PrepareEndTurn();
             }
 
 			Destroy (this.gameObject);

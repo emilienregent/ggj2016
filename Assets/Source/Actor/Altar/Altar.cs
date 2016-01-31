@@ -15,7 +15,7 @@ public class Altar : MonoBehaviour
 
     public void OnHide()
     {
-        Game.instance.EndTurn();
+        Game.instance.PrepareEndTurn();
     }
 
     private void Update()

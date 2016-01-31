@@ -66,7 +66,7 @@ public class ActionLoader : MonoBehaviour
             DesactiveLoader();
             if(this.endTurn == true)
             {
-                Game.instance.EndTurn();
+                Game.instance.PrepareEndTurn();
             }
         }
     }

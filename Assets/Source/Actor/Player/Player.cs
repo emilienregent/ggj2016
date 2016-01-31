@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                Game.instance.EndTurn();
+                Game.instance.PrepareEndTurn();
             }
 		}
 	}
@@ -528,7 +528,7 @@ public class Player : MonoBehaviour
 
         if (Game.instance.isEndTurnPaused == false)
         {
-            Game.instance.EndTurn();
+            Game.instance.PrepareEndTurn();
         }
     }
 
