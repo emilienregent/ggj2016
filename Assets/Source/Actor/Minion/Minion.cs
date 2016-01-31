@@ -73,9 +73,6 @@ public abstract class Minion : MonoBehaviour {
 
 	// Use this for initialization
 	private void Start () {
-		#if DEBUG
-			Debug.Log ("New Minion with color " + this._color);
-		#endif
 	}
 
     private void Move()

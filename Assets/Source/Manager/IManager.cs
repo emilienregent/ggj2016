@@ -17,6 +17,7 @@ namespace Manager
         }
 
         abstract public void Initialize();
+        abstract public void StartGame();
         public ManagerType type { get; set;}
     }
 }

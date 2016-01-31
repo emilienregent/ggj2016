@@ -23,7 +23,6 @@ public class PlayerUI : MonoBehaviour {
     {
         for (int i = 0; i < _images.Count; i++)
         {
-            Image image = _images[i];
             Color newColor = _images[i].color;
             newColor.a = 1f;
             _images[i].color = newColor;

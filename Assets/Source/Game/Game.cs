@@ -9,8 +9,9 @@ using GamepadInput;
 public enum GameState
 {
     NONE,
+    SPLASHSCREEN,
 	MENU,
-	INTRO, 
+	LOADING, 
 	GAME,
 	END
 }
@@ -20,8 +21,8 @@ public class Game : MonoBehaviour
 	private const	int 			_MAX_PLAYERS	=	2;
     [SerializeField]
 	private 	 	MinionColor[] 	_minions_start	=   new MinionColor[0];
-
-	private 		GameState 		_state 			= 	GameState.NONE;
+    [SerializeField]
+    private 		GameState 		_state 			= 	GameState.NONE;
 	private 		Timer 			_stateTimer 	= 	new Timer(0f);
     private         Timer           _turnTimer      =   new Timer(0f);
 	[SerializeField]
@@ -47,7 +48,7 @@ public class Game : MonoBehaviour
 
 	public static 	Game 	    	instance		= 	null;
 	public 			List<Player>	players			= 	new List<Player>();
-	public 			GameState 		state 			{ get { return _state; } }
+    public 			GameState 		state 			{ get { return _state; } }
     public          int             mapIndex        { get { return _mapIndex; } }
 	public			Player			currentPlayer	{ get { return _currentPlayer; } }
     public          MapManager      mapManager      { get { return (MapManager) _managers[ManagerType.MAP]; } }
@@ -60,6 +61,11 @@ public class Game : MonoBehaviour
     public          GameObject      portraitPlayerTwo;
     public          bool            isEndTurnPaused { get; set; }
     public          int             numberOfTurnSinceRespawn { get { return _numberOfTurnSinceRespawn; } set{ _numberOfTurnSinceRespawn = value; } }
+
+    [SerializeField]
+    public          GameObject      blackScreen;
+    [SerializeField]
+    public          GameObject      splashScreen;
 
 	private void Awake()
 	{
@@ -92,16 +98,7 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        // Initialize all players
-        for (int i = 0; i < _MAX_PLAYERS; i++)
-        {
-            this.InitializePlayer(i);
-        }
-
-        // Set active player
-        this._currentPlayer = this.players[0];
-
-		SwitchState(GameState.INTRO);
+		SwitchState(GameState.SPLASHSCREEN);
     }
 
 	// Set the next player as active
@@ -236,7 +233,17 @@ public class Game : MonoBehaviour
 	{
         switch(_state)
         {
-            case GameState.INTRO:
+            case GameState.SPLASHSCREEN:
+                if (_stateTimer.IsFinished() == true)
+                {
+                    SwitchState(GameState.MENU);
+                }
+                break;
+
+            case GameState.MENU:
+                break;
+
+            case GameState.LOADING:
                 if(_stateTimer.IsFinished() == true)
                 {
                     SwitchState(GameState.GAME);
@@ -256,29 +263,75 @@ public class Game : MonoBehaviour
                     }
                 }
                 break;
+
+            case GameState.END:
+                break;
         }
 	}
 
-	private void SwitchState(GameState state)
+	public void SwitchState(GameState state)
 	{
 		_state = state;
 
-		if(state == GameState.INTRO)
-		{
-			_stateTimer.duration = 2f;
-			_stateTimer.Start();
-		}
-		else if(state == GameState.GAME)
-		{
-			//AudioManager.instance.mainMusic.Play();
-            this.SetNextPlayer();
-		} else if(state == GameState.END) {
-			this.currentPlayer.SetAction (false);
-			this.GetNextPlayer().SetAction (false);
-			// TODO : DISPLAY SCORE SCREEN + RESTART BUTTON + MENU BUTTON
-		} else if (state == GameState.MENU) {
-			// TODO : DISPLAY START BUTTON
-		}
+        switch(state)
+        {
+            case GameState.SPLASHSCREEN:
+#if DEBUG
+        Debug.Log("SPLASHSCREEN");
+#endif
+                blackScreen.GetComponent<ScreenHelper>().Play(false, 1f);
+                _stateTimer.duration = 2f;
+                _stateTimer.Start();
+                break;
+
+            case GameState.MENU:
+#if DEBUG
+        Debug.Log("MENU");
+#endif
+                // TODO : DISPLAY START BUTTON
+                break;
+
+            case GameState.LOADING:
+#if DEBUG
+        Debug.Log("LOADING");
+#endif
+                // Screen stuff
+                splashScreen.GetComponent<ScreenHelper>().Play(false, 0f);
+                blackScreen.GetComponent<ScreenHelper>().Play(false, 2f);
+                _stateTimer.duration = 2f;
+                _stateTimer.Start();
+
+                // Initialize the map
+                mapManager.StartGame();
+                // Initialize all players
+                for (int i = 0; i < _MAX_PLAYERS; i++)
+                {
+                    this.InitializePlayer(i);
+                }
+                break;
+
+            case GameState.GAME:
+#if DEBUG
+        Debug.Log("GAME");
+#endif
+
+                // TODO : Make some noise !
+                // AudioManager.instance.mainMusic.Play();
+
+                // Set active player
+                this._currentPlayer = this.players[0];
+                this.SetNextPlayer();
+                break;
+
+            case GameState.END:
+#if DEBUG
+        Debug.Log("END");
+#endif
+                this.currentPlayer.SetAction(false);
+                this.GetNextPlayer().SetAction(false);
+                // TODO : DISPLAY SCORE SCREEN + RESTART BUTTON + MENU BUTTON
+                break;
+        }
 	}
 
 	public void Pause()

@@ -38,25 +38,24 @@ public class ControlManager : MonoBehaviour
 	private void Update ()
 	{
 
-        GamePad.Index controller = GamePad.Index.One;
-        GamepadState state = GamePad.GetState(controller);
-
         switch (Game.instance.state)
         {
-            case GameState.INTRO:
-                UpdateIntro(state);
+            case GameState.MENU:
+                UpdateMenu();
                 break;
 
             case GameState.GAME:
-                controller = Game.instance.currentPlayer.controllerIndex;
-                state = GamePad.GetState(controller);
-                UpdateGame(state);
+                UpdateGame(GamePad.GetState(Game.instance.currentPlayer.controllerIndex));
                 break;                
         }
 	}
 
-    private void UpdateIntro (GamepadState state)
+    private void UpdateMenu ()
     {
+        if(GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true)
+        {
+            Game.instance.SwitchState(GameState.LOADING);
+        }
 
     }
 

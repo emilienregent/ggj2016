@@ -16,8 +16,15 @@ namespace Manager
         private GameObject  _root   = null;
         public  Map         map     { get { return _map; } }
 
+
+
         // Use this for initialization
         override public void Initialize()
+        {
+        }
+
+        // Use this for start
+        override public void StartGame()
         {
             type = ManagerType.MAP;
 
