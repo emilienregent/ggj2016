@@ -36,6 +36,7 @@ public class MinionYellow : Minion {
 	private void ReduceTime() {
 		Game.instance.GetNextPlayer ().timeMalus = Game.instance.defaultDuration * BonusConfiguration.TIME_MALUS;
 		Game.instance.GetNextPlayer ().invertedControlLeft = BonusConfiguration.TIME_MALUS_LEFT;
+		Game.instance.GetNextPlayer ().SetTimerFx ();
 #if DEBUG
 		Debug.Log ("The other player will lost X second on his next turn");
 #endif
@@ -44,6 +45,7 @@ public class MinionYellow : Minion {
 	// Move the player X tiles away
 	private void IncreaseMovingSpeed() {
 		Game.instance.currentPlayer.speedBonus = BonusConfiguration.SPEED_BONUS;
+		Game.instance.currentPlayer.SetSpeedBoostFx ();
 
 #if DEBUG
 		Debug.Log ("The player has moved X tiles away");

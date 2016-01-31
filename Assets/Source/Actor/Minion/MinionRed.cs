@@ -44,6 +44,7 @@ public class MinionRed : Minion {
 	// Invert the controls of the player, and play wierd sounds
 	private void InvertControl() {
 		Game.instance.GetNextPlayer ().speed *= -1;
+		Game.instance.GetNextPlayer ().SetDizzyStarsFx ();
 #if DEBUG
 		Debug.Log ("The other player has his controls inverted");
 #endif

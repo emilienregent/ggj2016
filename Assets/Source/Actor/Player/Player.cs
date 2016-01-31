@@ -23,6 +23,18 @@ public class Player : MonoBehaviour
     private			int			    _tileIndex 		= 	0;
 	[SerializeField]
 	private 		Animator		_animator		= null;
+	[SerializeField]
+	private 		GameObject		_dizzyStarsPrefab		= null;
+	[SerializeField]
+	private 		GameObject		_timerFxPrefab			= null;
+	[SerializeField]
+	private 		GameObject 		_speedBoostFxPrefab 	= null;
+	[SerializeField]
+	private 		GameObject 		_topFxRoot 				= null;
+
+	private			GameObject 		_currentTopFxGO 		= null;
+
+
 	private			bool			_canAction		= 	false;
     private         GamePad.Index   _controllerIndex = GamePad.Index.One;
 //	private			bool			_canWalkThroughObstacle 	= 	false;
@@ -35,6 +47,7 @@ public class Player : MonoBehaviour
 	private			float			_rotationSpeed 	= 1f;
 	private			Quaternion		_targetRotation = Quaternion.identity;
 	private 		bool 			_isTurning		= false;
+	private 		int				_playerIndex	= 0;
 
 
     public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
@@ -51,6 +64,7 @@ public class Player : MonoBehaviour
 	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }
 	public			List<Minion>	minions			{ get { return _minions; } set { _minions = value; } }
     public          PlayerUI        portrait;
+	public 			int 			playerIndex      { get { return _playerIndex; } set { _playerIndex = value; } }
 
     // Use this for initialization
     private void Start ()
@@ -359,6 +373,8 @@ public class Player : MonoBehaviour
 				this.speed *= -1;
 			}
 		}
+
+		RemoveTopFX ();
 	}
 
     public bool CanMove(int newTileIndex)
@@ -498,5 +514,47 @@ public class Player : MonoBehaviour
 			total += GameConfiguration.getPoints (minion.color);
 		}
 		return total;
+	}
+
+	public void SetSpeedBoostFx()
+	{
+		_currentTopFxGO = (GameObject) GameObject.Instantiate (_speedBoostFxPrefab, Vector3.zero , _speedBoostFxPrefab.transform.rotation);
+
+		_currentTopFxGO.transform.SetParent (_topFxRoot.transform, false);
+
+		SetColorToFx ();
+	}
+
+	public void SetDizzyStarsFx()
+	{
+		_currentTopFxGO = (GameObject) GameObject.Instantiate (_dizzyStarsPrefab, Vector3.zero , Quaternion.identity);
+
+		_currentTopFxGO.transform.SetParent (_topFxRoot.transform, false);
+
+		SetColorToFx ();
+	}
+
+	public void SetTimerFx()
+	{
+		_currentTopFxGO = (GameObject) GameObject.Instantiate (_timerFxPrefab, Vector3.zero, Quaternion.identity);
+
+		_currentTopFxGO.transform.SetParent (_topFxRoot.transform, false);
+
+		SetColorToFx ();
+	}
+
+
+	private void SetColorToFx()
+	{
+		Renderer[] renderers = _currentTopFxGO.GetComponentsInChildren<Renderer> ();
+
+		for (int i = 0; i < renderers.Length; i++) {
+			renderers [i].material.color = playerIndex == 0 ? Color.black : Color.white;
+		}
+	}
+
+	public void RemoveTopFX()
+	{
+		Destroy (_currentTopFxGO);
 	}
 }

@@ -163,6 +163,8 @@ public class Game : MonoBehaviour
         
         Player player = Instantiate (this.players[playerIndex]) as Player;
 
+		player.playerIndex = playerIndex;
+
         TileType    tileType        = playerIndex == 0 ? TileType.START_P1 : TileType.START_P2;
         int         tileIndex       = mapManager.map.GetStartIndex(tileType);
         GameObject  playerElements  = new GameObject();
