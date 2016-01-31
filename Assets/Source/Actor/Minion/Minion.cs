@@ -29,6 +29,7 @@ public abstract class Minion : MonoBehaviour {
 	protected 	bool			_canSacrifice 	= true;
     private     bool            _isAnchored     = false;
     private     bool            _isMoving       = false;
+    private     bool            _hasNewTarget   = false;
     private     Vector3         _targetPosition = Vector3.zero;
 
 	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
@@ -43,6 +44,7 @@ public abstract class Minion : MonoBehaviour {
         { 
             _anchor         = value; 
             _isMoving       = false;
+            _hasNewTarget   = true;
             _targetPosition = _anchor.position;
         }
     }
@@ -98,9 +100,10 @@ public abstract class Minion : MonoBehaviour {
         {
             float distance = Vector3.Distance(transform.position, _anchor.position);
 
-            if (distance > RANGE)
+            if (distance > RANGE || _hasNewTarget == true)
             {
                 _isAnchored     = false;
+                _hasNewTarget   = false;
                 _targetPosition = _anchor.position;
             }
             else
