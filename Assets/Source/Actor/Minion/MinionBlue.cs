@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Type;
 
 public class MinionBlue : Minion {
 	
@@ -92,6 +93,12 @@ public class MinionBlue : Minion {
 			minion.tileIndex    = Game.instance.GetNextPlayer ().tileIndex;
 			minion.anchor       = Game.instance.GetNextPlayer ().transform;
 		}
+
+        Tile nextTile = Game.instance.mapManager.map.tiles[nextPlayerIndexTile];
+        Tile currentTile = Game.instance.mapManager.map.tiles[currentPlayerIndexTile];
+            
+        nextTile.ApplyOnPlayer(Game.instance.currentPlayer);
+        currentTile.ApplyOnPlayer(Game.instance.GetNextPlayer());
 
 #if DEBUG
 		Debug.Log ("Position of the 2 players has been switched !");

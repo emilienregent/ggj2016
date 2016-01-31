@@ -532,10 +532,16 @@ public class Player : MonoBehaviour
         }
     }
 
-	public void Teleport(int tileIndex)
+    public void Teleport(int tileIndex, bool isInitialization = false)
 	{
 		_tileIndex = tileIndex;
-		gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(tileIndex);
+
+        _destination = Game.instance.mapManager.map.tiles[tileIndex];
+
+        gameObject.transform.position = Game.instance.mapManager.map.GetPositionFromIndex(tileIndex);
+
+        if(isInitialization == false)
+            EndMovement();
 	}
 		
 	public int getPointsMinions() {

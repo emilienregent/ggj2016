@@ -216,7 +216,7 @@ public class Game : MonoBehaviour
         GameObject  playerElements  = new GameObject();
 
         player.name = "Player " + (playerIndex + 1);
-		player.Teleport (tileIndex);
+		player.Teleport (tileIndex, true);
 
         player.controllerIndex = (GamePad.Index)(playerIndex + 1);
         playerElements.name = player.name + " Elements";

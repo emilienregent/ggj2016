@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Type;
 
 public class Altar : MonoBehaviour
 {
@@ -24,9 +25,18 @@ public class Altar : MonoBehaviour
         {
             _isActivated = false;
 
-            Game.instance.currentPlayer.score += Game.instance.currentPlayer.getPointsMinions();
-            Game.instance.currentPlayer.portrait.UpdateScore(Game.instance.currentPlayer.score);
-            Game.instance.currentPlayer.KillAllMinions();
+            for (int i = 0; i < Game.instance.players.Count; i++)
+            {
+                Player player = Game.instance.players[i];
+                Tile tile = Game.instance.mapManager.map.tiles[player.tileIndex];
+
+                if (tile.type == (int)TileType.ALTAR)
+                {
+                    player.score += player.getPointsMinions();
+                    player.portrait.UpdateScore(player.score);
+                    player.KillAllMinions();
+                }
+            }
         }
     }
 }
