@@ -67,23 +67,28 @@ public class MinionBlue : Minion {
 
 	// Switch the position of the two players
 	private void SwitchPlayersPositions() {
-		int currentPlayerIndexTile = Game.instance.currentPlayer.tileIndex;
-		int nextPlayerIndexTile = Game.instance.GetNextPlayer ().tileIndex;
-		Game.instance.currentPlayer.tileIndex = 0;
-		Game.instance.GetNextPlayer ().tileIndex = currentPlayerIndexTile;
-		Game.instance.currentPlayer.tileIndex = nextPlayerIndexTile;
+		int     currentPlayerIndexTile  = Game.instance.currentPlayer.tileIndex;
+		int     nextPlayerIndexTile     = Game.instance.GetNextPlayer ().tileIndex;
+        Vector3 currentPlayerPosition   = Game.instance.mapManager.map.GetPositionFromIndex(currentPlayerIndexTile);
+        Vector3 nextPlayerPosition      = Game.instance.mapManager.map.GetPositionFromIndex(nextPlayerIndexTile);
 
-		List<Minion> currentPlayerMinions = Game.instance.currentPlayer.minions;
-		List<Minion> nextPlayerMinions = Game.instance.GetNextPlayer ().minions;
+        Game.instance.currentPlayer.tileIndex   = 0;
+        Game.instance.GetNextPlayer().tileIndex = currentPlayerIndexTile;
+        Game.instance.currentPlayer.tileIndex   = nextPlayerIndexTile;
+        Game.instance.GetNextPlayer().gameObject.transform.position = currentPlayerPosition;
+        Game.instance.currentPlayer.gameObject.transform.position   = nextPlayerPosition;
+
+		List<Minion> currentPlayerMinions   = Game.instance.currentPlayer.minions;
+		List<Minion> nextPlayerMinions      = Game.instance.GetNextPlayer ().minions;
 
 		foreach(Minion minion in currentPlayerMinions) {
-			minion.tileIndex = Game.instance.currentPlayer.tileIndex;
-			minion.anchor = Game.instance.currentPlayer.transform;
+			minion.tileIndex    = Game.instance.currentPlayer.tileIndex;
+			minion.anchor       = Game.instance.currentPlayer.transform;
 		}
 
 		foreach(Minion minion in nextPlayerMinions) {
-			minion.tileIndex = Game.instance.GetNextPlayer ().tileIndex;
-			minion.anchor = Game.instance.GetNextPlayer ().transform;
+			minion.tileIndex    = Game.instance.GetNextPlayer ().tileIndex;
+			minion.anchor       = Game.instance.GetNextPlayer ().transform;
 		}
 
 #if DEBUG
