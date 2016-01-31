@@ -36,7 +36,7 @@ public class MinionGreen : Minion {
 	// Transform all obstacles in an area into minions
 	private void TransformObstaclesIntoMinions() {
 		MinionColor randomColor = (MinionColor) Random.Range (1, System.Enum.GetValues(typeof(MinionColor)).Length);
-		List<int> obstacles = Game.instance.mapManager.map.GetArea (Game.instance.currentPlayer.tileIndex, (int)BonusConfiguration.REPLACE_OBSTACLES_AREA.x, (int)BonusConfiguration.REPLACE_OBSTACLES_AREA.y, TileType.OBSTACLE_2);
+		List<int> obstacles = Game.instance.mapManager.map.GetArea (Game.instance.currentPlayer.tileIndex, (int)BonusConfiguration.REPLACE_OBSTACLES_AREA.x, (int)BonusConfiguration.REPLACE_OBSTACLES_AREA.y, TileType.OBSTACLE_FOREST_2);
 
 		TileType minionTileType = Tile.getTileTypeForColor (randomColor);
 

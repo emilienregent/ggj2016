@@ -13,8 +13,11 @@ namespace Type
         MINION_RED, 
         MINION_BLUE,
         MINION_YELLOW,
-        OBSTACLE_1,
-        OBSTACLE_2
+        OBSTACLE_FOREST_1,
+        OBSTACLE_FOREST_2,
+        OBSTACLE_ROCK_1,
+        OBSTACLE_ROCK_2,
+        OBSTACLE_TOTEM
     }
 
     public class Tile

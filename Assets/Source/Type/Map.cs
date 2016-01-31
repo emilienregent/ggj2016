@@ -129,7 +129,7 @@ namespace Type
                     {
                         index = nextIndex;
 
-                        if (_tiles[index].type == (int)type || ((int)type >= (int)TileType.OBSTACLE_1 && _tiles[index].type >= (int)TileType.OBSTACLE_1))
+                        if (_tiles[index].type == (int)type || ((int)type >= (int)TileType.OBSTACLE_FOREST_1 && _tiles[index].type >= (int)TileType.OBSTACLE_FOREST_1))
                         {
                             indexes.Add(index);
                         }
@@ -148,7 +148,7 @@ namespace Type
             {
                 Tile tile = _tiles[i];
 
-                if (tile.type >= (int)TileType.OBSTACLE_1)
+                if (tile.type >= (int)TileType.OBSTACLE_FOREST_1)
                 {
                     indexes.Add(i);
                 }

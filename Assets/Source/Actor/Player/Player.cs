@@ -336,7 +336,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Game.instance.mapManager.map.tiles[newTileIndex].type >= (int)TileType.OBSTACLE_1)
+        if (Game.instance.mapManager.map.tiles[newTileIndex].type >= (int)TileType.OBSTACLE_FOREST_1)
         {
             return false;
         }
