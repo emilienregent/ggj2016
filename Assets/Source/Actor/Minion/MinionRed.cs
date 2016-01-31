@@ -19,7 +19,6 @@ public class MinionRed : Minion {
 	// Execute one random power of the minion
 	override protected void ExecuteRandomPower() {
 		int random = Random.Range (0, this._maxPowers);
-
 		switch(random) {
 			case 0:
 				this.KillAllMinions ();
@@ -43,7 +42,10 @@ public class MinionRed : Minion {
 
 	// Invert the controls of the player, and play wierd sounds
 	private void InvertControl() {
+		Game.instance.GetNextPlayer ().ResetMalusPlayer ();
 		Game.instance.GetNextPlayer ().speed *= -1;
+		Game.instance.GetNextPlayer ().invertedControlLeft = BonusConfiguration.INVERTED_CONTROL_MALUS_LEFT;
+
 		Game.instance.GetNextPlayer ().SetDizzyStarsFx ();
 #if DEBUG
 		Debug.Log ("The other player has his controls inverted");

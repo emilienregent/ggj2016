@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 	private			Quaternion		_targetRotation = Quaternion.identity;
 	private 		bool 			_isTurning		= false;
 	private 		int				_playerIndex	= 0;
-
+	private			int				_timeMalusLeft	= 0;
 
     public          GamePad.Index   controllerIndex { get { return _controllerIndex; } set { _controllerIndex = value; } }
     public			int			    tileIndex		{ get { return _tileIndex; } set { 
@@ -57,10 +57,10 @@ public class Player : MonoBehaviour
 
     public			int				score			{ get { return _score; } set { _score = value; } }
 	public			bool			canAction		{ get { return _canAction; } }
-//	public			bool			canWalkThroughObstacle		{ get { return _canWalkThroughObstacle; } set { _canWalkThroughObstacle = value; }  }
 	public			int				speed			{ get { return _speed; } set { _speed = value; } }
 	public			int				speedBonus		{ get { return _speedBonus; } set { _speedBonus = value; } }
 	public			float			timeMalus		{ get { return _timeMalus; } set { _timeMalus = value; } }
+	public			int				timeMalusLeft	{ get { return _timeMalusLeft; } set { _timeMalusLeft = value; } }
 	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }
 	public			List<Minion>	minions			{ get { return _minions; } set { _minions = value; } }
     public          PlayerUI        portrait;
@@ -333,24 +333,41 @@ public class Player : MonoBehaviour
 	{
 	}
 
+	public void ResetMalusPlayer() {
+		this._speed = 1;
+		this._speedBonus = 0;
+		this._timeMalusLeft = 0;
+		this._invertedControlLeft = 0;
+		RemoveTopFX ();
+	}
+
 	public void CleanPlayer() {
-//		this._canWalkThroughObstacle = false;
 		this._speed = 1;
 		this._canAction = false;
 
 		if(this.speedBonus > 0) {
 			this.speed = this.speedBonus;
 			this.speedBonus = 0;
+			RemoveTopFX ();
+		}
+
+		if(this._timeMalusLeft > 0) {
+			this._timeMalusLeft--;
+			if(this._timeMalusLeft == 0) {
+				this.timeMalus = 0;
+				RemoveTopFX ();
+			}
 		}
 
 		if(this.invertedControlLeft > 0) {
 			this.invertedControlLeft--;
 			if (this.invertedControlLeft > 0) {
 				this.speed *= -1;
+			} else {
+				RemoveTopFX ();
 			}
 		}
 
-		RemoveTopFX ();
 	}
 
     public bool CanMove(int newTileIndex)

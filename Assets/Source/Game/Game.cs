@@ -103,6 +103,8 @@ public class Game : MonoBehaviour
 
 	// Set the next player as active
 	public void SetNextPlayer() {
+		this._currentPlayer.CleanPlayer ();
+
 		if(this.currentPlayer.score >= GameConfiguration.MAX_SCORE) {
 			SwitchState (GameState.END);
 		}

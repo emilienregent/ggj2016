@@ -18,7 +18,6 @@ public class MinionYellow : Minion {
 	// Execute one random power of the minion
 	override protected void ExecuteRandomPower() {
 		int random = Random.Range (0, this._maxPowers);
-
 		switch(random) {
 			case 0:
 				this.ReduceTime ();
@@ -34,8 +33,9 @@ public class MinionYellow : Minion {
 
 	// Reduce the timer of the other player
 	private void ReduceTime() {
+		Game.instance.GetNextPlayer ().ResetMalusPlayer ();
 		Game.instance.GetNextPlayer ().timeMalus = Game.instance.defaultDuration * BonusConfiguration.TIME_MALUS;
-		Game.instance.GetNextPlayer ().invertedControlLeft = BonusConfiguration.TIME_MALUS_LEFT;
+		Game.instance.GetNextPlayer ().timeMalusLeft = BonusConfiguration.TIME_MALUS_LEFT;
 		Game.instance.GetNextPlayer ().SetTimerFx ();
 #if DEBUG
 		Debug.Log ("The other player will lost X second on his next turn");
@@ -44,6 +44,7 @@ public class MinionYellow : Minion {
 
 	// Move the player X tiles away
 	private void IncreaseMovingSpeed() {
+		Game.instance.currentPlayer.ResetMalusPlayer ();
 		Game.instance.currentPlayer.speedBonus = BonusConfiguration.SPEED_BONUS;
 		Game.instance.currentPlayer.SetSpeedBoostFx ();
 
