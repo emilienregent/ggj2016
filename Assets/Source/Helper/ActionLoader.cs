@@ -13,7 +13,7 @@ public class ActionLoader : MonoBehaviour
     public float _delayMove = 1f;
     private Camera _camera;
 
-    public static   ActionLoader    instance    = null;
+	public static   ActionLoader    instance    = null;
     public          Color           lastTileColor;
     public          bool            endTurn     = false;
     public          bool            isActive    { get { return _isActive; } }
@@ -33,11 +33,9 @@ public class ActionLoader : MonoBehaviour
 
     void Update()
     {
-		if(this._isActive == true && Game.instance.currentPlayer.canAction == false) {
-			DesactiveLoader ();
-		}
+
         // Inactive and we press a button ?
-        if (_isActive == false && ControlManager.instance.isTriggered == true)
+		if (_isActive == false && ControlManager.instance.isTriggered == true && Game.instance.currentPlayer.canAction == true)
         {
             ActiveLoader();
         }
@@ -58,7 +56,7 @@ public class ActionLoader : MonoBehaviour
             {
                 DesactiveLoader();
                 ControlManager.instance.DoAction();
-                
+				Game.instance.currentPlayer.SetAction (false);
             }
         }
         else if(_isActive == true && ControlManager.instance.isTriggered == false)
@@ -124,7 +122,7 @@ public class ActionLoader : MonoBehaviour
     }
 
     // Desactive delay loader
-    private void DesactiveLoader()
+	private void DesactiveLoader()
     {
         switch (ControlManager.instance.currentMode)
         {

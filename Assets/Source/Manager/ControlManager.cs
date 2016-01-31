@@ -252,7 +252,6 @@ public class ControlManager : MonoBehaviour
 
 			case Mode.Move:
 				Game.instance.currentPlayer.Move (_newTileIndex);
-				Game.instance.currentPlayer.SetAction (false);
 		                break;
         }
     }
