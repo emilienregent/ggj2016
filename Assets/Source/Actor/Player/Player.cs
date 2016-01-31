@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
 
 	private			GameObject 		_currentTopFxGO 		= null;
     private         GameObject      _aura                   = null;
+    private         Tile            _destination            = null;
 
 
 	private			bool			_canAction		= 	false;
@@ -100,7 +101,7 @@ public class Player : MonoBehaviour
 	}
 
 	// Add a minion to the player
-	public void AddMinion(Minion minion) {
+    public void AddMinion(Minion minion, bool teleport = true) {
 		#if DEBUG
 				Debug.Log ("One minion with color " + minion.color + " added to the player");
 		#endif
@@ -109,8 +110,16 @@ public class Player : MonoBehaviour
 		minion.transform.SetParent (this.transform.parent.transform);
 
 		minion.setMinionOffset (this.GetCountMinions (MinionColor.ANY));
-		minion.transform.position = this.transform.position + Game.instance.mapManager.map.tiles [this.tileIndex].size / 2.5f * minion.offsetPosition;
-		minion.targetPosition = minion.transform.position;
+
+        Vector3 position = this.transform.position + Game.instance.mapManager.map.tiles [this.tileIndex].size / 2.5f * minion.offsetPosition;;
+
+        if (teleport == true)
+        {
+            minion.transform.position = position;
+        }
+
+        minion.targetPosition = position;
+
 		this._minions.Add (minion);
 	}
 
@@ -463,13 +472,6 @@ public class Player : MonoBehaviour
 			Tile newTile = Game.instance.mapManager.map.tiles[tileIndex];
 
             MoveTo(newTile);
-
-            newTile.ApplyOnPlayer(this);
-
-            if (Game.instance.isEndTurnPaused == false)
-            {
-                Game.instance.EndTurn();
-            }
 		}
 	}
 		
@@ -479,6 +481,7 @@ public class Player : MonoBehaviour
 		_animator.SetTrigger ("GoThere");
 
 		_isTurning = true;
+        _destination = newTile;
 
 		_targetPosition = newTile.gameObject.transform.position;
 
@@ -507,8 +510,25 @@ public class Player : MonoBehaviour
 		if (Mathf.Approximately(distance, 0f) == true)
 		{
 			_isMoving = false;
+
+            if (_destination != null)
+            {
+                EndMovement();
+            }
 		}
 	}
+
+    private void EndMovement()
+    {
+        _destination.ApplyOnPlayer(this);
+
+        _destination = null;
+
+        if (Game.instance.isEndTurnPaused == false)
+        {
+            Game.instance.EndTurn();
+        }
+    }
 
 	public void Teleport(int tileIndex)
 	{

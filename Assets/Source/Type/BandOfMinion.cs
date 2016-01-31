@@ -57,7 +57,6 @@ namespace Type
 				minion.transform.position = minion.anchor.position + tile.size/2.5f * minion.offsetPosition;
 				minion.targetPosition = minion.transform.position;
 
-
                 minion.transform.SetParent(tile.gameObject.transform);
             }
         }
@@ -71,7 +70,7 @@ namespace Type
 
                 if (player.CanAddMinion() == true)
                 {
-                    player.AddMinion(minion);
+                    player.AddMinion(minion, false);
                     ui.FillMinionSlots(player.minions);
                 }
                 else
@@ -82,4 +81,3 @@ namespace Type
         }
     }
 }
-
