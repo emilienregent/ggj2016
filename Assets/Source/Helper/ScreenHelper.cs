@@ -12,7 +12,6 @@ public class ScreenHelper : MonoBehaviour
 	[SerializeField]
 	private float 	_duration 		= 1f;
 
-    public GameObject   screenObject;
     public bool         isActive { get { return _isActive; } set { _isActive = value; } }
 
 	private void Awake()

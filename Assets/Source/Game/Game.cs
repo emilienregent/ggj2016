@@ -68,6 +68,10 @@ public class Game : MonoBehaviour
     public          GameObject      blackScreen;
     [SerializeField]
     public          GameObject      splashScreen;
+    [SerializeField]
+    public          GameObject      blackVictoryScreen;
+    [SerializeField]
+    public          GameObject      whiteVictoryScreen;
 
 	private void Awake()
 	{
@@ -100,11 +104,20 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        //PlayerPrefs.SetInt("splashscreen", 0);
+        int needSplashScreen = PlayerPrefs.GetInt("splashscreen", 0);
+        if (needSplashScreen == 0)
+        {
 #if EMILIEN
-        SwitchState(GameState.LOADING);
+            SwitchState(GameState.LOADING);
 #else
-        SwitchState(GameState.SPLASHSCREEN);
+            SwitchState(GameState.SPLASHSCREEN);
 #endif
+        }
+        else
+        {
+            SwitchState(GameState.LOADING);
+        }
     }
 
 	// Set the next player as active
@@ -315,6 +328,10 @@ public class Game : MonoBehaviour
 #if DEBUG
         Debug.Log("SPLASHSCREEN");
 #endif
+                // Hide Victory Screens
+                splashScreen.GetComponent<ScreenHelper>().Play(true, 0f);
+                blackVictoryScreen.GetComponent<ScreenHelper>().Play(false, 0f);
+                whiteVictoryScreen.GetComponent<ScreenHelper>().Play(false, 0f);
                 blackScreen.GetComponent<ScreenHelper>().Play(false, 1f);
                 _stateTimer.duration = 2f;
                 _stateTimer.Start();
@@ -324,7 +341,6 @@ public class Game : MonoBehaviour
 #if DEBUG
         Debug.Log("MENU");
 #endif
-                // TODO : DISPLAY START BUTTON
                 break;
 
             case GameState.LOADING:
@@ -346,16 +362,19 @@ public class Game : MonoBehaviour
                 }
                 break;
 
+
             case GameState.GAME:
 #if DEBUG
         Debug.Log("GAME");
 #endif
+                blackVictoryScreen.GetComponent<ScreenHelper>().Play(false, 0f);
+                whiteVictoryScreen.GetComponent<ScreenHelper>().Play(false, 0f);
 
                 // TODO : Make some noise !
                 // AudioManager.instance.mainMusic.Play();
 
                 // Set active player
-                this._currentPlayer = this.players[0];
+                this._currentPlayer = this.players[1];
                 this.SetNextPlayer();
                 break;
 
@@ -363,9 +382,16 @@ public class Game : MonoBehaviour
 #if DEBUG
         Debug.Log("END");
 #endif
+                if(this._currentPlayer == players[0])
+                {
+                    blackVictoryScreen.GetComponent<ScreenHelper>().Play(true, 0f);
+                }
+                else
+                {
+                    whiteVictoryScreen.GetComponent<ScreenHelper>().Play(true, 0f);
+                }
                 this.currentPlayer.SetAction(false);
                 this.GetNextPlayer().SetAction(false);
-                // TODO : DISPLAY SCORE SCREEN + RESTART BUTTON + MENU BUTTON
                 break;
         }
 	}

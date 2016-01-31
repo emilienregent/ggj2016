@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using GamepadInput;
+using UnityEngine.SceneManagement;
 
 public enum Mode
 {
@@ -46,7 +47,12 @@ public class ControlManager : MonoBehaviour
 
             case GameState.GAME:
                 UpdateGame(GamePad.GetState(Game.instance.currentPlayer.controllerIndex));
-                break;                
+                break;
+
+            case GameState.END:
+                UpdateEnd();
+                break;
+
         }
 	}
 
@@ -54,7 +60,30 @@ public class ControlManager : MonoBehaviour
     {
         if(GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true)
         {
+            PlayerPrefs.SetInt("splashscreen", 1);
             Game.instance.SwitchState(GameState.LOADING);
+        }
+        if (GamePad.GetButtonDown(GamePad.Button.Y, GamePad.Index.Any) == true)
+        {
+            PlayerPrefs.SetInt("splashscreen", 0);
+        }
+
+    }
+
+    private void UpdateEnd()
+    {
+        if (GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true)
+        {
+            SceneManager.LoadScene("Main");
+        }
+        if (GamePad.GetButtonDown(GamePad.Button.Back, GamePad.Index.Any) == true)
+        {
+            PlayerPrefs.SetInt("splashscreen", 0);
+            SceneManager.LoadScene("Main");
+        }
+        if (GamePad.GetButtonDown(GamePad.Button.Y, GamePad.Index.Any) == true)
+        {
+            PlayerPrefs.SetInt("splashscreen", 0);
         }
 
     }
