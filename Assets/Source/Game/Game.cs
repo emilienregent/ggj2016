@@ -126,13 +126,13 @@ public class Game : MonoBehaviour
 
         if (_numberOfTurn % 2 == 0)
         {
-            if (++_numberOfTurnSinceRespawn % 3 == 0 && Minion.number < 24)
+            if (++_numberOfTurnSinceRespawn % GameConfiguration.TURN_BEFORE_RESPAWN == 0 && Minion.number < GameConfiguration.NUMBER_OF_MINION_TRESHOLD)
             {
                 int index = mapManager.map.GetRandomAvailableIndex();
 
                 mapManager.map.TransformTile(index, (TileType)Random.Range((int)TileType.MINION_GREEN, (int)TileType.MINION_YELLOW));
             }
-            else if (Minion.number >= 24)
+            else if (Minion.number >= GameConfiguration.NUMBER_OF_MINION_TRESHOLD)
             {
                 _numberOfTurnSinceRespawn = 0;
             }
