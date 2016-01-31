@@ -54,16 +54,18 @@ public class MinionBlue : Minion {
 			minion.tileIndex = Game.instance.currentPlayer.tileIndex;
 			minion.anchor = Game.instance.currentPlayer.transform;
 		}
+        Game.instance.currentPlayer.portrait.GetComponent<PlayerUI>().FillMinionSlots(Game.instance.currentPlayer.minions);
 
 		foreach(Minion minion in Game.instance.GetNextPlayer ().minions) {
 			minion.tileIndex = Game.instance.GetNextPlayer ().tileIndex;
 			minion.anchor = Game.instance.GetNextPlayer ().transform;
-		}
+        }
+        Game.instance.GetNextPlayer().portrait.GetComponent<PlayerUI>().FillMinionSlots(Game.instance.GetNextPlayer().minions);
 
 #if DEBUG
 		Debug.Log ("Minions of the 2 players have been switched !");
 #endif
-	}
+    }
 
 	// Switch the position of the two players
 	private void SwitchPlayersPositions() {

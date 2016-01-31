@@ -65,7 +65,8 @@ public class MinionRed : Minion {
 				Game.instance.GetNextPlayer ().RemoveMinion (minion.color);
 				minion.anchor = Game.instance.mapManager.map.tiles [tileIndex].gameObject.transform;
 			}
-		}
+            Game.instance.GetNextPlayer().portrait.GetComponent<PlayerUI>().FillMinionSlots(Game.instance.GetNextPlayer().minions);
+        }
 #if DEBUG
 		Debug.Log ("The minions of the other player have been dispersed");
 #endif

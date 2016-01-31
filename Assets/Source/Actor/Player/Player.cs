@@ -50,7 +50,7 @@ public class Player : MonoBehaviour
 	public			float			timeMalus		{ get { return _timeMalus; } set { _timeMalus = value; } }
 	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }
 	public			List<Minion>	minions			{ get { return _minions; } set { _minions = value; } }
-    public          OpacityHelper   portrait;
+    public          PlayerUI        portrait;
 
     // Use this for initialization
     private void Start ()
@@ -158,9 +158,12 @@ public class Player : MonoBehaviour
 		if(this.canAction == true && this.GetCountMinions (color) > 0) {
             // Todo : A décommenter
 			Minion minion = this.GetMinion(color);
-		 	minion.Sacrifice ();
-			this.RemoveMinion (color);
-			minion.Kill ();
+            if(minion.canSacrifice == true)
+            {
+                this.RemoveMinion(color);
+                minion.Sacrifice();
+                portrait.GetComponent<PlayerUI>().FillMinionSlots(this.minions);
+            }
 
             Game.instance.EndTurn();
 		}
@@ -171,15 +174,18 @@ public class Player : MonoBehaviour
 		Minion minion = this.GetMinion (color);
 		this._minions.Remove (minion);
 		minion.Kill ();
-	}
+        portrait.GetComponent<PlayerUI>().FillMinionSlots(this.minions);
+    }
 
 	public void KillAllMinions() {
 		Minion minion = null;
+        PlayerUI ui = portrait.GetComponent<PlayerUI>();
 		while(this.GetCountMinions (MinionColor.ANY) > 0) {
 			minion = this._minions [0];
 			this.RemoveMinion (minion.color);
 			minion.Kill ();
-		}
+            ui.FillMinionSlots(this.minions);
+        }
 	}
 
 	// Return one minion of the selected color

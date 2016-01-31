@@ -58,6 +58,7 @@ namespace Type
 
         public void AnchorToPlayer(Player player)
         {
+            PlayerUI ui = player.portrait.GetComponent<PlayerUI>();
             for (int i = 0; i < _minions.Count; i++)
             {
                 Minion minion = _minions[i];
@@ -65,6 +66,7 @@ namespace Type
                 if (player.CanAddMinion() == true)
                 {
                     player.AddMinion(minion);
+                    ui.FillMinionSlots(player.minions);
                 }
                 else
                 {

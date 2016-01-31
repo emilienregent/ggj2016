@@ -56,6 +56,7 @@ namespace Type
                     break;
 				case TileType.ALTAR:
 					player.score += player.getPointsMinions ();
+                    player.portrait.UpdateScore(player.score);
 					player.KillAllMinions ();
 					break;
             }

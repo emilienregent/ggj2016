@@ -57,6 +57,7 @@ public abstract class Minion : MonoBehaviour {
 				Debug.Log ("Minion's power activated !");
 			#endif
 			this.ExecuteRandomPower ();
+            this.Kill();
 		}
 
 	}

@@ -9,13 +9,16 @@ public class ActionLoader : MonoBehaviour
 
     private Image _loader = null;
     private bool _isActive = false;
-    private float _duration = 1f;
+    public float _delayAction = 1f;
+    public float _delayMove = 1f;
     private Camera _camera;
 
     public static   ActionLoader    instance    = null;
     public          Color           lastTileColor;
     public          bool            endTurn     = false;
     public          bool            isActive    { get { return _isActive; } }
+    public          float           delayAction { get { return _delayAction; } set { _delayAction = value; } }
+    public          float           delayMove   { get { return _delayMove; } set { _delayMove = value; } }
 
     private void Awake()
     {
@@ -38,7 +41,17 @@ public class ActionLoader : MonoBehaviour
         }
         else if(_isActive == true && ControlManager.instance.isTriggered == true)
         {
-            _loader.fillAmount += (1f / _duration) * Time.deltaTime;
+            switch (ControlManager.instance.currentMode)
+            {
+                case Mode.Action:
+                    _loader.fillAmount += (1f / delayAction) * Time.deltaTime;
+                    break;
+
+                case Mode.Move:
+                    _loader.fillAmount += (1f / delayMove) * Time.deltaTime;
+                    break;
+            }
+            
             if (_loader.fillAmount >= 1f)
             {
                 DesactiveLoader();
@@ -62,7 +75,6 @@ public class ActionLoader : MonoBehaviour
         switch (ControlManager.instance.currentMode)
         {
             case Mode.Action:
-                Debug.Log("Active action loader for Action");
                 // Color
                 switch (ControlManager.instance.buttonTriggered)
                 {
@@ -82,7 +94,6 @@ public class ActionLoader : MonoBehaviour
                 break;
 
             case Mode.Move:
-                Debug.Log("Active action loader for Move");
                 // Color
                 GetComponent<Image>().color = Color.white;
                 // Highlight

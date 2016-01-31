@@ -108,9 +108,9 @@ public class Game : MonoBehaviour
 			SwitchState (GameState.END);
 		}
         
-        this.currentPlayer.portrait.GetComponent<OpacityHelper>().FadeOut();
+        this.currentPlayer.portrait.GetComponent<PlayerUI>().FadeOut();
 		this._currentPlayer = this.GetNextPlayer();
-        this.currentPlayer.portrait.GetComponent<OpacityHelper>().FadeIn();
+        this.currentPlayer.portrait.GetComponent<PlayerUI>().FadeIn();
 
         ControlManager.instance.Clean();
         this.StartTurn();
@@ -118,7 +118,6 @@ public class Game : MonoBehaviour
 
     public void StartTurn()
     {
-        Debug.Log("Start Turn");
         _numberOfTurn++;
         this._turnTimer.duration = this.defaultDuration - this._currentPlayer.timeMalus;
         this._turnTimer.Start();
@@ -127,7 +126,6 @@ public class Game : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log("End Turn");
         this._currentPlayer.SetAction(false);
         this.SetNextPlayer();
 
@@ -181,14 +179,14 @@ public class Game : MonoBehaviour
         switch (playerIndex)
         {
             case 0:
-                portraitPlayerOne.GetComponent<OpacityHelper>().Initialize(player);
+                portraitPlayerOne.GetComponent<PlayerUI>().Initialize(player);
                 break;
 
             case 1:
-                portraitPlayerTwo.GetComponent<OpacityHelper>().Initialize(player);
+                portraitPlayerTwo.GetComponent<PlayerUI>().Initialize(player);
                 break;
         }
-        player.portrait.GetComponent<OpacityHelper>().FadeOut();
+        player.portrait.GetComponent<PlayerUI>().FadeOut();
 
         foreach (MinionColor color in this._minions_start) {
 
