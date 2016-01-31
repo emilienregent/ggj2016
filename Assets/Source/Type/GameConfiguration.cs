@@ -11,7 +11,7 @@ public class GameConfiguration {
 	private	static	int BLUE_POINT = 1;
 	private	static	int YELLOW_POINT = 1;
 
-    public  static  int NUMBER_OF_MINION_TRESHOLD = 18;
+    public  static  int NUMBER_OF_MINION_TRESHOLD = 14;
     public  static  int TURN_BEFORE_RESPAWN = 3;
 
 	public static	float MINION_RANGE = 4f;

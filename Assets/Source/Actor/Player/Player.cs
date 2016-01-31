@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
 	private 		GameObject 		_topFxRoot 				= null;
 
 	private			GameObject 		_currentTopFxGO 		= null;
+    private         GameObject      _aura                   = null;
 
 
 	private			bool			_canAction		= 	false;
@@ -65,6 +66,18 @@ public class Player : MonoBehaviour
 	public			List<Minion>	minions			{ get { return _minions; } set { _minions = value; } }
     public          PlayerUI        portrait;
 	public 			int 			playerIndex      { get { return _playerIndex; } set { _playerIndex = value; } }
+    public          GameObject      aura            { get { return _aura; } }
+
+    private void Awake()
+    {
+        Transform auraTransform = gameObject.transform.FindChild("Aura");
+
+        if (auraTransform != null)
+        {
+            _aura = auraTransform.gameObject;
+            _aura.SetActive(false);
+        }
+    }
 
     // Use this for initialization
     private void Start ()

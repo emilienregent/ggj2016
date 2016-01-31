@@ -108,10 +108,20 @@ public class Game : MonoBehaviour
 		if(this.currentPlayer.score >= GameConfiguration.MAX_SCORE) {
 			SwitchState (GameState.END);
 		}
+
+        if (_currentPlayer.aura != null)
+        {
+            _currentPlayer.aura.SetActive(false);
+        }
         
         this.currentPlayer.portrait.GetComponent<PlayerUI>().FadeOut();
 		this._currentPlayer = this.GetNextPlayer();
         this.currentPlayer.portrait.GetComponent<PlayerUI>().FadeIn();
+
+        if (_currentPlayer.aura != null)
+        {
+            _currentPlayer.aura.SetActive(true);
+        }
 
         ControlManager.instance.Clean();
         this.StartTurn();
