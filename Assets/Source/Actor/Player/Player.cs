@@ -169,15 +169,17 @@ public class Player : MonoBehaviour
 		if(this.canAction == true && this.GetCountMinions (color) > 0) {
             // Todo : A décommenter
 			Minion minion = this.GetMinion(color);
-            if(minion.canSacrifice == true)
+            if (minion.canSacrifice == true)
             {
                 Game.instance.numberOfTurnSinceRespawn = 0;
                 this.RemoveMinion(color);
                 minion.Sacrifice();
                 portrait.GetComponent<PlayerUI>().FillMinionSlots(this.minions);
             }
-
-            Game.instance.EndTurn();
+            else
+            {
+                Game.instance.EndTurn();
+            }
 		}
 	}
 

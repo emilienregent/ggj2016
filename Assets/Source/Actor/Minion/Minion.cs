@@ -58,10 +58,11 @@ public abstract class Minion : MonoBehaviour {
 			#if DEBUG
 				Debug.Log ("Minion's power activated !");
 			#endif
-			this.ExecuteRandomPower ();
+
+            Game.instance.isEndTurnPaused = true;
+
             this.Kill();
 		}
-
 	}
 
 	// Kill the minion
@@ -131,6 +132,13 @@ public abstract class Minion : MonoBehaviour {
 
 		if (_killTimer.IsFinished () == true) 
 		{
+            this.ExecuteRandomPower ();
+
+            if (Game.instance.isEndTurnPaused == true)
+            {
+                Game.instance.EndTurn();
+            }
+
 			Destroy (this.gameObject);
 		}
 	}
