@@ -51,6 +51,7 @@ public class ScreenHelper : MonoBehaviour
 				if(_screen.color.a < (1 - _limit))
 				{
 					_isActive = false;
+                    gameObject.SetActive(false);
 				}
 			}
 		}
@@ -61,6 +62,11 @@ public class ScreenHelper : MonoBehaviour
 		Color color = _screen.color;
 
 		_screen.color = new Color(color.r, color.g, color.b, isAppearing ? 0 : 1);
+
+        if(isAppearing == true)
+        {
+            gameObject.SetActive(true);
+        }
 
 		_isActive 	= true;
 		_appear 	= isAppearing;
