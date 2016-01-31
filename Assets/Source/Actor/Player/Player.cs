@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
 	public			float			timeMalus		{ get { return _timeMalus; } set { _timeMalus = value; } }
 	public			int				invertedControlLeft	{ get { return _invertedControlLeft; } set { _invertedControlLeft = value; } }
 	public			List<Minion>	minions			{ get { return _minions; } set { _minions = value; } }
+    public          OpacityHelper   portrait;
 
     // Use this for initialization
     private void Start ()

@@ -54,6 +54,10 @@ public class Game : MonoBehaviour
     public          Dictionary<int, BandOfMinion> tileToMinions  { get { return _tileToMinions; } set { _tileToMinions = value; } }
     [SerializeField]
     public			float			defaultDuration = 4f;
+    [SerializeField]
+    public          GameObject      portraitPlayerOne;
+    [SerializeField]
+    public          GameObject      portraitPlayerTwo;
 
 	private void Awake()
 	{
@@ -103,8 +107,11 @@ public class Game : MonoBehaviour
 		if(this.currentPlayer.score >= GameConfiguration.MAX_SCORE) {
 			SwitchState (GameState.END);
 		}
+        
+        this.currentPlayer.portrait.GetComponent<OpacityHelper>().FadeOut();
+		this._currentPlayer = this.GetNextPlayer();
+        this.currentPlayer.portrait.GetComponent<OpacityHelper>().FadeIn();
 
-		this._currentPlayer = this.GetNextPlayer ();
         ControlManager.instance.Clean();
         this.StartTurn();
     }
@@ -169,8 +176,21 @@ public class Game : MonoBehaviour
 
 		playerElements.transform.SetParent (this.gameElements.transform);
 		player.transform.SetParent (playerElements.transform);
-  
-		foreach(MinionColor color in this._minions_start) {
+
+        // Portrait
+        switch (playerIndex)
+        {
+            case 0:
+                portraitPlayerOne.GetComponent<OpacityHelper>().Initialize(player);
+                break;
+
+            case 1:
+                portraitPlayerTwo.GetComponent<OpacityHelper>().Initialize(player);
+                break;
+        }
+        player.portrait.GetComponent<OpacityHelper>().FadeOut();
+
+        foreach (MinionColor color in this._minions_start) {
 
             if (player.CanAddMinion () == true) {
                 Minion minion = this.CreateMinion(color);
@@ -246,10 +266,10 @@ public class Game : MonoBehaviour
 		else if(state == GameState.GAME)
 		{
 			AudioManager.instance.mainMusic.Play();
-            this.StartTurn();
+            this.SetNextPlayer();
 		} else if(state == GameState.END) {
 			this.currentPlayer.SetAction (false);
-			this.GetNextPlayer ().SetAction (false);
+			this.GetNextPlayer().SetAction (false);
 			// TODO : DISPLAY SCORE SCREEN + RESTART BUTTON + MENU BUTTON
 		} else if (state == GameState.MENU) {
 			// TODO : DISPLAY START BUTTON
