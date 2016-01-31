@@ -122,6 +122,7 @@ public class Game : MonoBehaviour
         this._turnTimer.duration = this.defaultDuration - this._currentPlayer.timeMalus;
         this._turnTimer.Start();
         this.currentPlayer.SetAction(true);
+        ActionLoader.instance.endTurn = false;
     }
 
     public void EndTurn()

@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
 	private			int				_invertedControlLeft = 0;
 	private 		bool 			_isMoving 		= false;
 	private 		Vector3			_targetPosition = Vector3.zero;
-	private 		float			_moveSpeed 		= 7f;
+	private 		float			_moveSpeed 		= 10f;
 	private			float			_rotationSpeed 	= 1f;
 	private			Quaternion		_targetRotation = Quaternion.identity;
 	private 		bool 			_isTurning		= false;
