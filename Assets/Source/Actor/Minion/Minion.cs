@@ -30,6 +30,8 @@ public abstract class Minion : MonoBehaviour {
     private     bool            _hasNewTarget   = false;
     private     Vector3         _targetPosition = Vector3.zero;
 	private 	Vector3			_offsetPosition = Vector3.zero;
+	private 	Animator 		_animator 		= null;
+	protected 	Timer 			_killTimer 		= new Timer (2f);
 
 	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
 	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
@@ -65,7 +67,10 @@ public abstract class Minion : MonoBehaviour {
 	// Kill the minion
 	public void Kill() {
         Minion.number--;
-		Destroy (this.gameObject);
+
+		_animator.SetTrigger ("Skill");
+
+		_killTimer.Start ();
 	}
 
 	// Execute one random power of the minion
@@ -73,6 +78,10 @@ public abstract class Minion : MonoBehaviour {
 
 	// Use this for initialization
 	private void Start () {
+		_animator = GetComponentInChildren<Animator> ();
+		#if DEBUG
+			Debug.Log ("New Minion with color " + this._color);
+		#endif
 	}
 
     private void Move()
@@ -115,8 +124,15 @@ public abstract class Minion : MonoBehaviour {
 
             _isMoving = true;
             transform.LookAt(_targetPosition);
-            transform.rotation = Quaternion.Euler(270f, transform.rotation.eulerAngles.y, 0f);
+
+            //transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+
         }
+
+		if (_killTimer.IsFinished () == true) 
+		{
+			Destroy (this.gameObject);
+		}
 	}
 
 	public void setMinionOffset(int index) {

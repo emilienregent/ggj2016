@@ -61,6 +61,7 @@ ModelImporter:
     4300018: Tank_Weapon_L
     7400000: Walk
     7400002: Idle
+    7400004: Skill
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -114,11 +115,11 @@ ModelImporter:
         weight: 1
       - path: Tank_Body/Tank_Head
         weight: 1
-      - path: Tank_Body/Tank_Head/Tank_Mask
+      - path: Tank_Mask
         weight: 1
-      - path: Tank_Body/Tank_Weapon_L
+      - path: Tank_Weapon_L
         weight: 1
-      - path: Tank_Body/Tank_Weapon_R
+      - path: Tank_Weapon_R
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
@@ -126,8 +127,48 @@ ModelImporter:
     - serializedVersion: 16
       name: Idle
       takeName: Take 001
-      firstFrame: 0
-      lastFrame: 0
+      firstFrame: 21
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Tank_Body
+        weight: 1
+      - path: Tank_Body/Tank_Head
+        weight: 1
+      - path: Tank_Mask
+        weight: 1
+      - path: Tank_Weapon_L
+        weight: 1
+      - path: Tank_Weapon_R
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Skill
+      takeName: Take 001
+      firstFrame: 91
+      lastFrame: 144
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -154,11 +195,11 @@ ModelImporter:
         weight: 1
       - path: Tank_Body/Tank_Head
         weight: 1
-      - path: Tank_Body/Tank_Head/Tank_Mask
+      - path: Tank_Mask
         weight: 1
-      - path: Tank_Body/Tank_Weapon_L
+      - path: Tank_Weapon_L
         weight: 1
-      - path: Tank_Body/Tank_Weapon_R
+      - path: Tank_Weapon_R
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
