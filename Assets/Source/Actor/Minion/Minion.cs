@@ -32,6 +32,7 @@ public abstract class Minion : MonoBehaviour {
 	private 	Vector3			_offsetPosition = Vector3.zero;
 	private 	Animator 		_animator 		= null;
 	protected 	Timer 			_killTimer 		= new Timer (2f);
+    private     bool            _isSacrified    = false;
 
 	public		MinionColor		color			{ get { return _color; } set { _color = value; } }
 	public		bool			canSacrifice	{ get { return _canSacrifice; } set { _canSacrifice = value; } }
@@ -61,15 +62,20 @@ public abstract class Minion : MonoBehaviour {
 
             Game.instance.isEndTurnPaused = true;
 
+            _isSacrified = true;
+
             this.Kill();
 		}
 	}
 
 	// Kill the minion
-	public void Kill() {
+    public void Kill() {
         Minion.number--;
 
-		_animator.SetTrigger ("Skill");
+        if(_isSacrified == true)
+		    _animator.SetTrigger ("Skill");
+        else
+            _animator.SetTrigger ("Skill"); // TODO : Use another animation
 
 		_killTimer.Start ();
 	}
@@ -132,7 +138,8 @@ public abstract class Minion : MonoBehaviour {
 
 		if (_killTimer.IsFinished () == true) 
 		{
-            this.ExecuteRandomPower ();
+            if(_isSacrified == true)
+                this.ExecuteRandomPower ();
 
             if (Game.instance.isEndTurnPaused == true)
             {
