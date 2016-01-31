@@ -327,6 +327,14 @@ public class Player : MonoBehaviour
             return false;
         }
 
+        for (int i = 0; i < Game.instance.players.Count; i++)
+        {
+            if (Game.instance.players[i].tileIndex == newTileIndex)
+            {
+                return false;
+            }
+        }
+
         // Horizontal move ?
         int delta = newTileIndex - _tileIndex;
         if (Mathf.Abs(delta) == _speed)
