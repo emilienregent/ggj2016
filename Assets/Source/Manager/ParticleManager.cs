@@ -28,7 +28,7 @@ public class ParticleManager : MonoBehaviour
 	}
 
 	// Use this for initialization
-	void Start ()
+	private void Start ()
 	{
 		_particleManager = this;
 	}
@@ -39,9 +39,7 @@ public class ParticleManager : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update ()
+	private void Update ()
 	{
-
 	}
 }
-
