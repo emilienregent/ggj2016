@@ -107,7 +107,7 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        //PlayerPrefs.SetInt("splashscreen", 0);
+        PlayerPrefs.SetInt("splashscreen", 0);
         int needSplashScreen = PlayerPrefs.GetInt("splashscreen", 0);
         if (needSplashScreen == 0)
         {

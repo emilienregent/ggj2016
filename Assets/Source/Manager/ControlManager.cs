@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using GamepadInput;
-using UnityEngine.SceneManagement;
 
 public enum Mode
 {
@@ -11,6 +10,7 @@ public enum Mode
 public class ControlManager : MonoBehaviour
 {
     private int             _newTileIndex;
+    private bool            _isKeyStroke = false;
 
     public static   ControlManager  instance        = null;
     public          bool            loadMove        = false;
@@ -58,32 +58,24 @@ public class ControlManager : MonoBehaviour
 
     private void UpdateMenu ()
     {
-        if(GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true)
+        if(GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true || Input.GetButton("Start"))
         {
             PlayerPrefs.SetInt("splashscreen", 1);
             Game.instance.SwitchState(GameState.TUTO);
-        }
-        if (GamePad.GetButtonDown(GamePad.Button.Y, GamePad.Index.Any) == true)
-        {
-            PlayerPrefs.SetInt("splashscreen", 0);
         }
 
     }
 
     private void UpdateEnd()
     {
-        if (GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true)
+        if (GamePad.GetButtonDown(GamePad.Button.Start, GamePad.Index.Any) == true || Input.GetButton("Start"))
         {
-            SceneManager.LoadScene("Main");
+            Application.LoadLevel("Main");
         }
         if (GamePad.GetButtonDown(GamePad.Button.Back, GamePad.Index.Any) == true)
         {
             PlayerPrefs.SetInt("splashscreen", 0);
-            SceneManager.LoadScene("Main");
-        }
-        if (GamePad.GetButtonDown(GamePad.Button.Y, GamePad.Index.Any) == true)
-        {
-            PlayerPrefs.SetInt("splashscreen", 0);
+            Application.LoadLevel("Main");
         }
 
     }
@@ -100,80 +92,119 @@ public class ControlManager : MonoBehaviour
         // Do you press a button ?
         if(isTriggered == false)
         {
-            /* Actions */
-			if (GamePad.GetButtonDown(GamePad.Button.A, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.GREEN) > 0)
+            /****** Actions ******/
+            /* Button A */
+			if (GamePad.GetButtonDown(GamePad.Button.A, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions(MinionColor.GREEN) > 0)
             {
                 buttonTriggered = GamePad.Button.A;
                 isTriggered = true;
+                _isKeyStroke = false;
+                currentMode = Mode.Action;
+                return;
+            } else if (Input.GetButton("Button_A") == true && Game.instance.currentPlayer.GetCountMinions(MinionColor.GREEN) > 0) {
+                buttonTriggered = GamePad.Button.A;
+                isTriggered = true;
+                _isKeyStroke = true;
                 currentMode = Mode.Action;
                 return;
             }
+
+            /* Button B */
 			if (GamePad.GetButtonDown(GamePad.Button.B, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.RED) > 0)
             {
                 buttonTriggered = GamePad.Button.B;
                 isTriggered = true;
+                _isKeyStroke = false;
+                currentMode = Mode.Action;
+                return;
+            } else if (Input.GetButton("Button_B") == true && Game.instance.currentPlayer.GetCountMinions(MinionColor.RED) > 0) {
+                buttonTriggered = GamePad.Button.B;
+                isTriggered = true;
+                _isKeyStroke = true;
                 currentMode = Mode.Action;
                 return;
             }
-			if (GamePad.GetButtonDown(GamePad.Button.X, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.BLUE) > 0)
+
+            /* Button X */
+            if (GamePad.GetButtonDown(GamePad.Button.X, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.BLUE) > 0)
             {
                 buttonTriggered = GamePad.Button.X;
                 isTriggered = true;
+                _isKeyStroke = false;
+                currentMode = Mode.Action;
+                return;
+            } else if (Input.GetButton("Button_X") == true && Game.instance.currentPlayer.GetCountMinions(MinionColor.BLUE) > 0) {
+                buttonTriggered = GamePad.Button.X;
+                isTriggered = true;
+                _isKeyStroke = true;
                 currentMode = Mode.Action;
                 return;
             }
-			if (GamePad.GetButtonDown(GamePad.Button.Y, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.YELLOW) > 0)
+
+            /* Button Y */
+            if (GamePad.GetButtonDown(GamePad.Button.Y, Game.instance.currentPlayer.controllerIndex) == true && Game.instance.currentPlayer.GetCountMinions (MinionColor.YELLOW) > 0)
             {
                 buttonTriggered = GamePad.Button.Y;
                 isTriggered = true;
+                _isKeyStroke = false;
+                currentMode = Mode.Action;
+                return;
+            } else if (Input.GetButton("Button_Y") == true && Game.instance.currentPlayer.GetCountMinions(MinionColor.YELLOW) > 0) {
+                buttonTriggered = GamePad.Button.Y;
+                isTriggered = true;
+                _isKeyStroke = true;
                 currentMode = Mode.Action;
                 return;
             }
 
             /* Moves */
-			if (state.Up == true)
+			if (Input.GetButton("Up") == true || state.Up == true)
             {
                 int tmpTileIndex = Game.instance.currentPlayer.tileIndex - (1 * Game.instance.currentPlayer.speed * Game.instance.mapManager.map.columns);
                 if (Game.instance.currentPlayer.CanMove(tmpTileIndex) == true)
                 {
                     buttonTriggered = GamePad.Button.Up;
                     isTriggered = true;
+                    _isKeyStroke = Input.GetButton("Up") == true;
                     currentMode = Mode.Move;
                     _newTileIndex = tmpTileIndex;
                     return;
                 }
             }
-            if (state.Right == true)
+            if (Input.GetButton("Right") == true || state.Right == true)
             {
                 int tmpTileIndex = Game.instance.currentPlayer.tileIndex + (1 * Game.instance.currentPlayer.speed);
                 if (Game.instance.currentPlayer.CanMove(tmpTileIndex) == true)
                 {
                     buttonTriggered = GamePad.Button.Right;
                     isTriggered = true;
+                    _isKeyStroke = Input.GetButton("Right") == true;
                     currentMode = Mode.Move;
                     _newTileIndex = tmpTileIndex;
                     return;
                 }
             }
-            if (state.Down == true)
+            if (Input.GetButton("Down") == true || state.Down == true)
             {
                 int tmpTileIndex = Game.instance.currentPlayer.tileIndex + (1 * Game.instance.currentPlayer.speed * Game.instance.mapManager.map.columns);
                 if (Game.instance.currentPlayer.CanMove(tmpTileIndex) == true)
                 {
                     buttonTriggered = GamePad.Button.Down;
                     isTriggered = true;
+                    _isKeyStroke = Input.GetButton("Down") == true;
                     currentMode = Mode.Move;
                     _newTileIndex = tmpTileIndex;
                     return;
                 }
             }
-            if (state.Left == true)
+            if (Input.GetButton("Left") == true || state.Left == true)
             {
                 int tmpTileIndex = Game.instance.currentPlayer.tileIndex - (1 * Game.instance.currentPlayer.speed);
                 if (Game.instance.currentPlayer.CanMove(tmpTileIndex) == true)
                 {
                     buttonTriggered = GamePad.Button.Left;
                     isTriggered = true;
+                    _isKeyStroke = Input.GetButton("Left") == true;
                     currentMode = Mode.Move;
                     _newTileIndex = tmpTileIndex;
                     return;
@@ -183,62 +214,94 @@ public class ControlManager : MonoBehaviour
         // Do you release a button ?
         else
         {
-            if (buttonTriggered == GamePad.Button.A && GamePad.GetButtonUp(GamePad.Button.A, Game.instance.currentPlayer.controllerIndex) == true)
+            if (buttonTriggered == GamePad.Button.A && 
+                ((GamePad.GetButtonUp(GamePad.Button.A, Game.instance.currentPlayer.controllerIndex) == true && _isKeyStroke == false) || 
+                (Input.GetButton("Button_A") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 return;
             }
-            if (buttonTriggered == GamePad.Button.B && GamePad.GetButtonUp(GamePad.Button.B, Game.instance.currentPlayer.controllerIndex) == true)
+            if (buttonTriggered == GamePad.Button.B && 
+                ((GamePad.GetButtonUp(GamePad.Button.B, Game.instance.currentPlayer.controllerIndex) == true && _isKeyStroke == false) || 
+                (Input.GetButton("Button_B") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 return;
             }
-            if (buttonTriggered == GamePad.Button.X && GamePad.GetButtonUp(GamePad.Button.X, Game.instance.currentPlayer.controllerIndex) == true)
+            if (buttonTriggered == GamePad.Button.X && 
+                ((GamePad.GetButtonUp(GamePad.Button.X, Game.instance.currentPlayer.controllerIndex) == true && _isKeyStroke == false) ||
+                (Input.GetButton("Button_X") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 return;
             }
-            if (buttonTriggered == GamePad.Button.Y && GamePad.GetButtonUp(GamePad.Button.Y, Game.instance.currentPlayer.controllerIndex) == true)
+            if (buttonTriggered == GamePad.Button.Y && 
+                ((GamePad.GetButtonUp(GamePad.Button.Y, Game.instance.currentPlayer.controllerIndex) == true && _isKeyStroke == false) ||
+                (Input.GetButton("Button_Y") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 return;
             }
-            if (buttonTriggered == GamePad.Button.Up && state.Up == false)
+            if (buttonTriggered == GamePad.Button.Up && 
+                ((state.Up == false && _isKeyStroke == false) ||
+                (Input.GetButton("Up") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 ActionLoader.instance.CleanHighlight(_newTileIndex);
                 return;
             }
-            if (buttonTriggered == GamePad.Button.Right && state.Right == false)
+            if (buttonTriggered == GamePad.Button.Right && 
+                ((state.Right == false && _isKeyStroke == false) || 
+                (Input.GetButton("Right") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 ActionLoader.instance.CleanHighlight(_newTileIndex);
                 return;
             }
-            if (buttonTriggered == GamePad.Button.Down && state.Down == false)
+            if (buttonTriggered == GamePad.Button.Down &&
+                ((state.Down == false && _isKeyStroke == false) ||
+                (Input.GetButton("Down") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 ActionLoader.instance.CleanHighlight(_newTileIndex);
                 return;
             }
-            if (buttonTriggered == GamePad.Button.Left && state.Left == false)
+            if (buttonTriggered == GamePad.Button.Left &&
+                ((state.Left == false && _isKeyStroke == false) ||
+                (Input.GetButton("Left") == false && _isKeyStroke == true))
+            )
             {
                 buttonTriggered = GamePad.Button.None;
                 isTriggered = false;
+                _isKeyStroke = false;
                 currentMode = Mode.None;
                 ActionLoader.instance.CleanHighlight(_newTileIndex);
                 return;
@@ -250,10 +313,11 @@ public class ControlManager : MonoBehaviour
 
     public void Clean()
     {
+        _isKeyStroke = false;
         isTriggered = false;
         currentMode = Mode.None;
         buttonTriggered = GamePad.Button.None;
-}
+    }
 
     public void DoAction()
     {
